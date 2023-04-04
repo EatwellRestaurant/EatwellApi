@@ -17,6 +17,8 @@ namespace DataAccess.Concrete.EntityFramework
         }
 
         public DbSet<Branch> Branches { get; set; }
+        public DbSet<City> Cities { get; set; }
+        public DbSet<Country> Countries { get; set; }
         public DbSet<Evaluation> Evaluations { get; set; }
         public DbSet<Image> Images { get; set; }
         public DbSet<ImageCategory> ImageCategories { get; set; }

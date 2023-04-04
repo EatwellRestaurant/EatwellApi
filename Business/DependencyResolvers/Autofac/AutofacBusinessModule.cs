@@ -56,6 +56,14 @@ namespace Business.DependencyResolvers.Autofac
             builder.RegisterType<UserManager>().As<IUserService>().SingleInstance();
             builder.RegisterType<EfUserDal>().As<IUserDal>().SingleInstance();
 
+            builder.RegisterType<CountryManager>().As<ICountryService>().SingleInstance();
+            builder.RegisterType<EfCountryDal>().As<ICountryDal>().SingleInstance();
+
+            builder.RegisterType<CityManager>().As<ICityService>().SingleInstance();
+            builder.RegisterType<EfCityDal>().As<ICityDal>().SingleInstance();
+
+
+
 
             var assembly = System.Reflection.Assembly.GetExecutingAssembly();
 

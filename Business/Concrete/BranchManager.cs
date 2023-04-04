@@ -57,10 +57,9 @@ namespace Business.Concrete
         }
 
 
-        [SecuredOperation("admin")]
         public IDataResult<List<Branch>> GetAll()
         {
-            return new SuccessDataResult<List<Branch>>(_branchDal.GetAll(), BranchMessages.BranchsListed);
+            return new SuccessDataResult<List<Branch>>(_branchDal.GetAll(), BranchMessages.BranchesListed);
         }
 
 

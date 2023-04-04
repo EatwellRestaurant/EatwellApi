@@ -12,7 +12,7 @@ namespace Business.Constants.Messages.Entity
         public static string BranchDeleted = "Şube Silindi";
         public static string BranchUpdated = "Şube Güncellendi";
         public static string BranchWasBrought = "Şube Getirildi";
-        public static string BranchsListed = "Şubeler Listelendi";
+        public static string BranchesListed = "Şubeler Listelendi";
         public static string BranchNameAlreadyExists = "Bu isimde zaten başka bir şube var";
         public static string BranchAddressAlreadyExists = "Bu adreste başka bir şube var";
     }
