@@ -13,5 +13,7 @@ namespace Business.Constants.Messages.Entity
         public static string ReservationUpdated = "Rezervasyon Güncellendi";
         public static string ReservationWasBrought = "Rezervasyon Getirildi";
         public static string ReservationsListed = "Rezervasyonlar Listelendi";
+        public static string ReservationExists = "Bu saatte başka bir rezervasyon var";
+
     }
 }

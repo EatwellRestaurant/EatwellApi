@@ -2,6 +2,7 @@
 using Business.Constants.Messages.Entity;
 using Business.ValidationRules.FluentValidation;
 using Core.Aspects.Autofac.Validation;
+using Core.Utilities.Business;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
@@ -26,6 +27,14 @@ namespace Business.Concrete
         [ValidationAspect(typeof(ReservationValidator))]
         public IResult Add(Reservation reservation)
         {
+            var result = BusinessRules.Run(
+                CheckIfReservation(reservation.ReservationDate, reservation.ReservationTime));
+
+            if (!result.Success)
+            {
+                return result;
+            }
+
             _reservationDal.Add(reservation);
             return new SuccessResult(ReservationMessages.ReservationAdded);
         }
@@ -52,6 +61,27 @@ namespace Business.Concrete
         {
             _reservationDal.Update(reservation);
             return new SuccessResult(ReservationMessages.ReservationUpdated);
+        }
+
+
+
+
+        //Business Codes
+        private IResult CheckIfReservation(DateTime reservationDate, string reservationTime)
+        {
+            var resultDate = _reservationDal.GetAll(r => r.ReservationDate == reservationDate);
+
+            if (resultDate.Count > 0)
+            {
+                var resultTime = _reservationDal.GetAll(r => r.ReservationTime == reservationTime).Any();
+
+                if (resultTime)
+                {
+                    return new ErrorResult(ReservationMessages.ReservationExists);
+                }
+                return new SuccessResult();
+            }
+            return new SuccessResult();
         }
     }
 }

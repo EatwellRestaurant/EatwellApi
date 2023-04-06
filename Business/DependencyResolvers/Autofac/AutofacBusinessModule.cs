@@ -47,9 +47,6 @@ namespace Business.DependencyResolvers.Autofac
             builder.RegisterType<RestaurantManager>().As<IRestaurantService>().SingleInstance();
             builder.RegisterType<EfRestaurantDal>().As<IRestaurantDal>().SingleInstance();
 
-            builder.RegisterType<TableManager>().As<ITableService>().SingleInstance();
-            builder.RegisterType<EfTableDal>().As<ITableDal>().SingleInstance();
-
             builder.RegisterType<AuthManager>().As<IAuthService>().SingleInstance();
             builder.RegisterType<JwtHelper>().As<ITokenHelper>().SingleInstance();
 
