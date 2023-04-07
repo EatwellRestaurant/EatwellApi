@@ -1,10 +1,13 @@
 ﻿using Business.Abstract;
 using Business.Constants.Messages.Entity;
+using Business.Constants.Paths;
 using Business.ValidationRules.FluentValidation;
 using Core.Aspects.Autofac.Validation;
+using Core.Utilities.FileHelper;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,14 +26,30 @@ namespace Business.Concrete
         }
 
         [ValidationAspect(typeof(ProductValidator))]
-        public IResult Add(Product product)
+        public IResult Add(IFormFile file, Product product)
         {
+            var result = FileHelper.Upload(file, ImagesPath.ImagePath);
+
+            if (!result.Success)
+            {
+                return result;
+            }
+
+            product.ImagePath = result.Data;
+
             _productDal.Add(product);
             return new SuccessResult(ProductMessages.ProductAdded);
         }
 
         public IResult Delete(Product product)
         {
+            var result = FileHelper.Delete(product.ImagePath);
+
+            if (!result.Success)
+            {
+                return result;
+            }
+
             _productDal.Delete(product);
             return new SuccessResult(ProductMessages.ProductDeleted);
         }
@@ -47,8 +66,17 @@ namespace Business.Concrete
 
 
         [ValidationAspect(typeof(ProductValidator))]
-        public IResult Update(Product product)
+        public IResult Update(IFormFile file, Product product)
         {
+            var result = FileHelper.Update(file, product.ImagePath, ImagesPath.ImagePath);
+
+            if (!result.Success)
+            {
+                return result;
+            }
+
+            product.ImagePath = result.Data;
+
             _productDal.Update(product);
             return new SuccessResult(ProductMessages.ProductUpdated);
         }

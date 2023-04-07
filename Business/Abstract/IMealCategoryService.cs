@@ -1,5 +1,6 @@
 ﻿using Core.Utilities.Results;
 using Entities.Concrete;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,8 +13,8 @@ namespace Business.Abstract
     {
         IDataResult<List<MealCategory>> GetAll();
         IDataResult<MealCategory> Get(int id);
-        IResult Add(MealCategory mealCategory);
-        IResult Update(MealCategory mealCategory);
+        IResult Add(IFormFile file, MealCategory mealCategory);
+        IResult Update(IFormFile file, MealCategory mealCategory);
         IResult Delete(MealCategory mealCategory);
     }
 }

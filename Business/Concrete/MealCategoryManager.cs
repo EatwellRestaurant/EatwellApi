@@ -1,8 +1,11 @@
 ﻿using Business.Abstract;
 using Business.Constants.Messages.Entity;
+using Business.Constants.Paths;
+using Core.Utilities.FileHelper;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,8 +23,17 @@ namespace Business.Concrete
             _mealCategoryDal = mealCategoryDal;
         }
 
-        public IResult Add(MealCategory mealCategory)
+        public IResult Add(IFormFile file, MealCategory mealCategory)
         {
+            var result = FileHelper.Upload(file, ImagesPath.ImagePath);
+
+            if (!result.Success)
+            {
+                return result;
+            }
+
+            mealCategory.ImagePath = result.Data;
+
             _mealCategoryDal.Add(mealCategory);
             return new SuccessResult(MealCategoryMessages.MealCategoryAdded);
         }
@@ -42,8 +54,17 @@ namespace Business.Concrete
             return new SuccessDataResult<List<MealCategory>>(_mealCategoryDal.GetAll(), MealCategoryMessages.MealCategoriesListed);
         }
 
-        public IResult Update(MealCategory mealCategory)
+        public IResult Update(IFormFile file, MealCategory mealCategory)
         {
+            var result = FileHelper.Update(file, mealCategory.ImagePath, ImagesPath.ImagePath);
+
+            if (!result.Success)
+            {
+                return result;
+            }
+
+            mealCategory.ImagePath = result.Data;
+
             _mealCategoryDal.Update(mealCategory);
             return new SuccessResult(MealCategoryMessages.MealCategoryUpdated);
         }

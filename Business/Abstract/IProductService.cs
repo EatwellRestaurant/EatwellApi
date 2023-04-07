@@ -1,5 +1,6 @@
 ﻿using Core.Utilities.Results;
 using Entities.Concrete;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,8 +13,8 @@ namespace Business.Abstract
     {
         IDataResult<List<Product>> GetAll();
         IDataResult<Product> Get(int id);
-        IResult Add(Product product);
+        IResult Add(IFormFile file, Product product);
         IResult Delete(Product product);
-        IResult Update(Product product);
+        IResult Update(IFormFile file, Product product);
     }
 }
