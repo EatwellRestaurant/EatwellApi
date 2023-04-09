@@ -25,7 +25,7 @@ namespace Business.Concrete
 
         public IResult Add(IFormFile file, MealCategory mealCategory)
         {
-            var result = FileHelper.Upload(file, ImagesPath.ImagePath);
+            var result = FileHelper.Upload(file, ImagePaths.ImagePath);
 
             if (!result.Success)
             {
@@ -56,7 +56,7 @@ namespace Business.Concrete
 
         public IResult Update(IFormFile file, MealCategory mealCategory)
         {
-            var result = FileHelper.Update(file, mealCategory.ImagePath, ImagesPath.ImagePath);
+            var result = FileHelper.Update(file, mealCategory.ImagePath, ImagePaths.ImagePath);
 
             if (!result.Success)
             {

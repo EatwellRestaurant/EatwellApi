@@ -39,7 +39,7 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost("update")]
-        public IActionResult Update([FromForm(Name = "Image")] IFormFile file, MealCategory mealCategory)
+        public IActionResult Update([FromForm(Name = "Image")] IFormFile file, [FromForm] MealCategory mealCategory)
         {
             var result = _mealCategoryService.Update(file, mealCategory);
             if (result.Success)

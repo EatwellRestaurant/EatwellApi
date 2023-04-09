@@ -29,23 +29,11 @@ namespace Business.DependencyResolvers.Autofac
             builder.RegisterType<MealCategoryManager>().As<IMealCategoryService>().SingleInstance();
             builder.RegisterType<EfMealCategoryDal>().As<IMealCategoryDal>().SingleInstance();
 
-            builder.RegisterType<ImageManager>().As<IImageService>().SingleInstance();
-            builder.RegisterType<EfImageDal>().As<IImageDal>().SingleInstance();
-
-            builder.RegisterType<ImageCategoryManager>().As<IImageCategoryService>().SingleInstance();
-            builder.RegisterType<EfImageCategoryDal>().As<IImageCategoryDal>().SingleInstance();
-
-            builder.RegisterType<MenuManager>().As<IMenuService>().SingleInstance();
-            builder.RegisterType<EfMenuDal>().As<IMenuDal>().SingleInstance();
-
             builder.RegisterType<ProductManager>().As<IProductService>().SingleInstance();
             builder.RegisterType<EfProductDal>().As<IProductDal>().SingleInstance();
 
             builder.RegisterType<ReservationManager>().As<IReservationService>().SingleInstance();
             builder.RegisterType<EfReservationDal>().As<IReservationDal>().SingleInstance();
-
-            builder.RegisterType<RestaurantManager>().As<IRestaurantService>().SingleInstance();
-            builder.RegisterType<EfRestaurantDal>().As<IRestaurantDal>().SingleInstance();
 
             builder.RegisterType<AuthManager>().As<IAuthService>().SingleInstance();
             builder.RegisterType<JwtHelper>().As<ITokenHelper>().SingleInstance();

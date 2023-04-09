@@ -17,7 +17,7 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost("add")]
-        public IActionResult Add([FromForm(Name = "Image")] IFormFile file, Product product)
+        public IActionResult Add([FromForm(Name = "Image")] IFormFile file, [FromForm] Product product)
         {
             var result = _productService.Add(file, product);
 
@@ -41,7 +41,7 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost("update")]
-        public IActionResult Update([FromForm(Name = "Image")] IFormFile file, Product product)
+        public IActionResult Update([FromForm(Name = "Image")] IFormFile file, [FromForm] Product product)
         {
             var result = _productService.Update(file, product);
 

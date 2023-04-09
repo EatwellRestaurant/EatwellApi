@@ -28,7 +28,7 @@ namespace Business.Concrete
         [ValidationAspect(typeof(ProductValidator))]
         public IResult Add(IFormFile file, Product product)
         {
-            var result = FileHelper.Upload(file, ImagesPath.ImagePath);
+            var result = FileHelper.Upload(file, ImagePaths.ImagePath);
 
             if (!result.Success)
             {
@@ -68,7 +68,7 @@ namespace Business.Concrete
         [ValidationAspect(typeof(ProductValidator))]
         public IResult Update(IFormFile file, Product product)
         {
-            var result = FileHelper.Update(file, product.ImagePath, ImagesPath.ImagePath);
+            var result = FileHelper.Update(file, product.ImagePath, ImagePaths.ImagePath);
 
             if (!result.Success)
             {
