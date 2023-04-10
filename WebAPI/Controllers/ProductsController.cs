@@ -17,7 +17,7 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost]
-        public IActionResult Add([FromForm(Name = "Image")] IFormFile file, [FromBody] Product product)
+        public IActionResult Add([FromForm(Name = "Image")] IFormFile file, [FromForm] Product product)
         {
             var result = _productService.Add(file, product);
 
