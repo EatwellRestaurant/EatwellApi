@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace WebAPI.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[action]")]
     [ApiController]
     public class ReservationsController : ControllerBase
     {
@@ -16,7 +16,7 @@ namespace WebAPI.Controllers
             _reservationService = reservationService;
         }
 
-        [HttpPost("add")]
+        [HttpPost]
         public IActionResult Add(Reservation reservation)
         {
             var result = _reservationService.Add(reservation);
@@ -27,7 +27,7 @@ namespace WebAPI.Controllers
             return BadRequest(result);
         }
 
-        [HttpPost("delete")]
+        [HttpDelete]
         public IActionResult Delete(Reservation reservation)
         {
             var result = _reservationService.Delete(reservation);
@@ -38,7 +38,7 @@ namespace WebAPI.Controllers
             return BadRequest(result);
         }
 
-        [HttpPost("update")]
+        [HttpPut]
         public IActionResult Update(Reservation reservation)
         {
             var result = _reservationService.Update(reservation);
@@ -49,7 +49,7 @@ namespace WebAPI.Controllers
             return BadRequest(result);
         }
 
-        [HttpGet("get")]
+        [HttpGet]
         public IActionResult Get(int id)
         {
             var result = _reservationService.Get(id);
@@ -60,7 +60,7 @@ namespace WebAPI.Controllers
             return BadRequest(result);
         }
 
-        [HttpGet("getall")]
+        [HttpGet]
         public IActionResult GetAll()
         {
             var result = _reservationService.GetAll();

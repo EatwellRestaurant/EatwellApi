@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace WebAPI.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[action]")]
     [ApiController]
     public class EvaluationsController : ControllerBase
     {
@@ -16,7 +16,7 @@ namespace WebAPI.Controllers
             _evaluationService = evaluationService;
         }
 
-        [HttpPost("add")]
+        [HttpPost]
         public IActionResult Add(Evaluation evaluation)
         {
             var result = _evaluationService.Add(evaluation);
@@ -27,7 +27,7 @@ namespace WebAPI.Controllers
             return BadRequest(result);
         }
 
-        [HttpPost("delete")]
+        [HttpDelete]
         public IActionResult Delete(Evaluation evaluation)
         {
             var result = _evaluationService.Delete(evaluation);

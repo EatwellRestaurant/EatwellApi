@@ -64,6 +64,10 @@ namespace Business.Concrete
             return new SuccessDataResult<List<Product>>(_productDal.GetAll(), ProductMessages.ProductsListed);
         }
 
+        public IDataResult<List<Product>> GetProductsByMealCategoryId(int id)
+        {
+            return new SuccessDataResult<List<Product>>(_productDal.GetAll(p => p.MealCategoryId == id), ProductMessages.ProductsListed);
+        }
 
         [ValidationAspect(typeof(ProductValidator))]
         public IResult Update(IFormFile file, Product product)

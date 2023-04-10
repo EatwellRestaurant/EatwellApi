@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace WebAPI.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[action]")]
     [ApiController]
     public class CountriesController : ControllerBase
     {
@@ -16,7 +16,7 @@ namespace WebAPI.Controllers
             _countryService = countryService;
         }
 
-        [HttpPost("add")]
+        [HttpPost]
         public IActionResult Add(Country country)
         {
             var result = _countryService.Add(country);
@@ -27,7 +27,7 @@ namespace WebAPI.Controllers
             return BadRequest(result);
         }
 
-        [HttpPost("delete")]
+        [HttpDelete]
         public IActionResult Delete(Country country)
         {
             var result = _countryService.Delete(country);
@@ -38,7 +38,7 @@ namespace WebAPI.Controllers
             return BadRequest(result);
         }
 
-        [HttpPost("update")]
+        [HttpPut]
         public IActionResult Update(Country country)
         {
             var result = _countryService.Update(country);
@@ -49,7 +49,7 @@ namespace WebAPI.Controllers
             return BadRequest(result);
         }
 
-        [HttpGet("get")]
+        [HttpGet]
         public IActionResult Get(int id)
         {
             var result = _countryService.Get(id);
@@ -60,7 +60,7 @@ namespace WebAPI.Controllers
             return BadRequest(result);
         }
 
-        [HttpGet("getall")]
+        [HttpGet]
         public IActionResult GetAll()
         {
             var result = _countryService.GetAll();

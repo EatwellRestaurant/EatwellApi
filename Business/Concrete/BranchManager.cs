@@ -70,6 +70,7 @@ namespace Business.Concrete
             _branchDal.Update(branch);
             return new SuccessResult(BranchMessages.BranchUpdated);
         }
+       
 
 
 

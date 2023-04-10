@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace WebAPI.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[action]")]
     [ApiController]
     public class BranchsController : ControllerBase
     {
@@ -16,7 +16,7 @@ namespace WebAPI.Controllers
             _branchService = branchService;
         }
 
-        [HttpPost("add")]
+        [HttpPost]
         public IActionResult Add(Branch branch)
         {
             var result = _branchService.Add(branch);
@@ -27,7 +27,7 @@ namespace WebAPI.Controllers
             return BadRequest(result);
         }
 
-        [HttpPost("delete")]
+        [HttpDelete]
         public IActionResult Delete(Branch branch)
         {
             var result = _branchService.Delete(branch);
@@ -38,7 +38,7 @@ namespace WebAPI.Controllers
             return BadRequest(result);
         }
 
-        [HttpPost("update")]
+        [HttpPut]
         public IActionResult Update(Branch branch)
         {
             var result = _branchService.Update(branch);
@@ -49,7 +49,7 @@ namespace WebAPI.Controllers
             return BadRequest(result);
         }
 
-        [HttpGet("get")]
+        [HttpGet]
         public IActionResult Get(int id)
         {
             var result = _branchService.Get(id);
@@ -60,7 +60,7 @@ namespace WebAPI.Controllers
             return BadRequest(result);
         }
 
-        [HttpGet("getall")]
+        [HttpGet]
         public IActionResult GetAll()
         {
             var result = _branchService.GetAll();

@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace WebAPI.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[action]")]
     [ApiController]
     public class MealCategoriesController : ControllerBase
     {
@@ -16,8 +16,8 @@ namespace WebAPI.Controllers
             _mealCategoryService = mealCategoryService;
         }
 
-        [HttpPost("add")]
-        public IActionResult Add([FromForm(Name = "Image")] IFormFile file, [FromForm] MealCategory mealCategory)
+        [HttpPut]
+        public IActionResult Add([FromForm(Name = "Image")] IFormFile file, MealCategory mealCategory)
         {
             var result = _mealCategoryService.Add(file, mealCategory);
             if (result.Success)
@@ -27,7 +27,7 @@ namespace WebAPI.Controllers
             return BadRequest(result);
         }
 
-        [HttpPost("delete")]
+        [HttpDelete]
         public IActionResult Delete(MealCategory mealCategory)
         {
             var result = _mealCategoryService.Delete(mealCategory);
@@ -38,8 +38,8 @@ namespace WebAPI.Controllers
             return BadRequest(result);
         }
 
-        [HttpPost("update")]
-        public IActionResult Update([FromForm(Name = "Image")] IFormFile file, [FromForm] MealCategory mealCategory)
+        [HttpPost]
+        public IActionResult Update([FromForm(Name = "Image")] IFormFile file, MealCategory mealCategory)
         {
             var result = _mealCategoryService.Update(file, mealCategory);
             if (result.Success)
@@ -49,7 +49,7 @@ namespace WebAPI.Controllers
             return BadRequest(result);
         }
 
-        [HttpGet("get")]
+        [HttpGet]
         public IActionResult Get(int id)
         {
             var result = _mealCategoryService.Get(id);
@@ -60,7 +60,7 @@ namespace WebAPI.Controllers
             return BadRequest(result);
         }
 
-        [HttpGet("getall")]
+        [HttpGet]
         public IActionResult GetAll()
         {
             var result = _mealCategoryService.GetAll();

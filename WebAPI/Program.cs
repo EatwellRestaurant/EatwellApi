@@ -17,13 +17,13 @@ builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory())
 
 // Add services to the container.
 
+builder.Services.AddHttpContextAccessor();
+
 builder.Services.AddControllers();
 
 builder.Services.AddCors(options =>
-{
-    options.AddPolicy("AllowOrigin",
-        builder => builder.WithOrigins("http://127.0.0.1:5500"));
-});
+    options.AddDefaultPolicy(policy => policy.WithOrigins("https://localhost:7189", 
+    "http://localhost:5189", "http://127.0.0.1:5500").AllowAnyHeader().AllowAnyMethod().AllowCredentials()));
 
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -32,7 +32,6 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddControllers();
 
-builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 var tokenOptions = builder.Configuration.GetSection("TokenOptions").Get<TokenOptions>();
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -61,13 +60,11 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseCors();
+
 app.UseHttpsRedirection();
 
 app.UseStaticFiles();
-
-app.UseRouting();
-
-app.UseCors(builder => builder.WithOrigins("http://127.0.0.1:5500").AllowAnyHeader());
 
 app.UseAuthentication(); 
 

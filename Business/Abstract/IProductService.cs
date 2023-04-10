@@ -16,5 +16,6 @@ namespace Business.Abstract
         IResult Add(IFormFile file, Product product);
         IResult Delete(Product product);
         IResult Update(IFormFile file, Product product);
+        IDataResult<List<Product>> GetProductsByMealCategoryId(int id);
     }
 }

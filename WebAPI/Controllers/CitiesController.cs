@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace WebAPI.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[action]")]
     [ApiController]
     public class CitiesController : ControllerBase
     {
@@ -16,7 +16,7 @@ namespace WebAPI.Controllers
             _cityService = cityService;
         }
 
-        [HttpPost("add")]
+        [HttpPost]
         public IActionResult Add(City city)
         {
             var result = _cityService.Add(city);
@@ -27,7 +27,7 @@ namespace WebAPI.Controllers
             return BadRequest(result);
         }
 
-        [HttpPost("delete")]
+        [HttpDelete]
         public IActionResult Delete(City city)
         {
             var result = _cityService.Delete(city);
@@ -38,7 +38,7 @@ namespace WebAPI.Controllers
             return BadRequest(result);
         }
 
-        [HttpPost("update")]
+        [HttpPut]
         public IActionResult Update(City city)
         {
             var result = _cityService.Update(city);
@@ -49,7 +49,7 @@ namespace WebAPI.Controllers
             return BadRequest(result);
         }
 
-        [HttpGet("get")]
+        [HttpGet]
         public IActionResult Get(int id)
         {
             var result = _cityService.Get(id);
@@ -60,7 +60,7 @@ namespace WebAPI.Controllers
             return BadRequest(result);
         }
 
-        [HttpGet("getall")]
+        [HttpGet]
         public IActionResult GetAll()
         {
             var result = _cityService.GetAll();
