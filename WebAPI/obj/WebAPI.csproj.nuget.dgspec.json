@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\HP\\Desktop\\GitHub\\Backend\\RestaurantProject\\WebAPI\\WebAPI.csproj": {}
+    "C:\\Users\\HP\\Desktop\\GitHub\\Backend\\- Organizasyon\\RestaurantProject\\WebAPI\\WebAPI.csproj": {}
   },
   "projects": {
-    "C:\\Users\\HP\\Desktop\\GitHub\\Backend\\RestaurantProject\\Business\\Business.csproj": {
+    "C:\\Users\\HP\\Desktop\\GitHub\\Backend\\- Organizasyon\\RestaurantProject\\Business\\Business.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\HP\\Desktop\\GitHub\\Backend\\RestaurantProject\\Business\\Business.csproj",
+        "projectUniqueName": "C:\\Users\\HP\\Desktop\\GitHub\\Backend\\- Organizasyon\\RestaurantProject\\Business\\Business.csproj",
         "projectName": "Business",
-        "projectPath": "C:\\Users\\HP\\Desktop\\GitHub\\Backend\\RestaurantProject\\Business\\Business.csproj",
+        "projectPath": "C:\\Users\\HP\\Desktop\\GitHub\\Backend\\- Organizasyon\\RestaurantProject\\Business\\Business.csproj",
         "packagesPath": "C:\\Users\\HP\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\HP\\Desktop\\GitHub\\Backend\\RestaurantProject\\Business\\obj\\",
+        "outputPath": "C:\\Users\\HP\\Desktop\\GitHub\\Backend\\- Organizasyon\\RestaurantProject\\Business\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\HP\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -28,14 +28,14 @@
           "net6.0": {
             "targetAlias": "net6.0",
             "projectReferences": {
-              "C:\\Users\\HP\\Desktop\\GitHub\\Backend\\RestaurantProject\\Core\\Core.csproj": {
-                "projectPath": "C:\\Users\\HP\\Desktop\\GitHub\\Backend\\RestaurantProject\\Core\\Core.csproj"
+              "C:\\Users\\HP\\Desktop\\GitHub\\Backend\\- Organizasyon\\RestaurantProject\\Core\\Core.csproj": {
+                "projectPath": "C:\\Users\\HP\\Desktop\\GitHub\\Backend\\- Organizasyon\\RestaurantProject\\Core\\Core.csproj"
               },
-              "C:\\Users\\HP\\Desktop\\GitHub\\Backend\\RestaurantProject\\DataAccess\\DataAccess.csproj": {
-                "projectPath": "C:\\Users\\HP\\Desktop\\GitHub\\Backend\\RestaurantProject\\DataAccess\\DataAccess.csproj"
+              "C:\\Users\\HP\\Desktop\\GitHub\\Backend\\- Organizasyon\\RestaurantProject\\DataAccess\\DataAccess.csproj": {
+                "projectPath": "C:\\Users\\HP\\Desktop\\GitHub\\Backend\\- Organizasyon\\RestaurantProject\\DataAccess\\DataAccess.csproj"
               },
-              "C:\\Users\\HP\\Desktop\\GitHub\\Backend\\RestaurantProject\\Entities\\Entities.csproj": {
-                "projectPath": "C:\\Users\\HP\\Desktop\\GitHub\\Backend\\RestaurantProject\\Entities\\Entities.csproj"
+              "C:\\Users\\HP\\Desktop\\GitHub\\Backend\\- Organizasyon\\RestaurantProject\\Entities\\Entities.csproj": {
+                "projectPath": "C:\\Users\\HP\\Desktop\\GitHub\\Backend\\- Organizasyon\\RestaurantProject\\Entities\\Entities.csproj"
               }
             }
           }
@@ -82,14 +82,14 @@
         }
       }
     },
-    "C:\\Users\\HP\\Desktop\\GitHub\\Backend\\RestaurantProject\\Core\\Core.csproj": {
+    "C:\\Users\\HP\\Desktop\\GitHub\\Backend\\- Organizasyon\\RestaurantProject\\Core\\Core.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\HP\\Desktop\\GitHub\\Backend\\RestaurantProject\\Core\\Core.csproj",
+        "projectUniqueName": "C:\\Users\\HP\\Desktop\\GitHub\\Backend\\- Organizasyon\\RestaurantProject\\Core\\Core.csproj",
         "projectName": "Core",
-        "projectPath": "C:\\Users\\HP\\Desktop\\GitHub\\Backend\\RestaurantProject\\Core\\Core.csproj",
+        "projectPath": "C:\\Users\\HP\\Desktop\\GitHub\\Backend\\- Organizasyon\\RestaurantProject\\Core\\Core.csproj",
         "packagesPath": "C:\\Users\\HP\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\HP\\Desktop\\GitHub\\Backend\\RestaurantProject\\Core\\obj\\",
+        "outputPath": "C:\\Users\\HP\\Desktop\\GitHub\\Backend\\- Organizasyon\\RestaurantProject\\Core\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\HP\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -178,14 +178,14 @@
         }
       }
     },
-    "C:\\Users\\HP\\Desktop\\GitHub\\Backend\\RestaurantProject\\DataAccess\\DataAccess.csproj": {
+    "C:\\Users\\HP\\Desktop\\GitHub\\Backend\\- Organizasyon\\RestaurantProject\\DataAccess\\DataAccess.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\HP\\Desktop\\GitHub\\Backend\\RestaurantProject\\DataAccess\\DataAccess.csproj",
+        "projectUniqueName": "C:\\Users\\HP\\Desktop\\GitHub\\Backend\\- Organizasyon\\RestaurantProject\\DataAccess\\DataAccess.csproj",
         "projectName": "DataAccess",
-        "projectPath": "C:\\Users\\HP\\Desktop\\GitHub\\Backend\\RestaurantProject\\DataAccess\\DataAccess.csproj",
+        "projectPath": "C:\\Users\\HP\\Desktop\\GitHub\\Backend\\- Organizasyon\\RestaurantProject\\DataAccess\\DataAccess.csproj",
         "packagesPath": "C:\\Users\\HP\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\HP\\Desktop\\GitHub\\Backend\\RestaurantProject\\DataAccess\\obj\\",
+        "outputPath": "C:\\Users\\HP\\Desktop\\GitHub\\Backend\\- Organizasyon\\RestaurantProject\\DataAccess\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\HP\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -202,11 +202,11 @@
           "net6.0": {
             "targetAlias": "net6.0",
             "projectReferences": {
-              "C:\\Users\\HP\\Desktop\\GitHub\\Backend\\RestaurantProject\\Core\\Core.csproj": {
-                "projectPath": "C:\\Users\\HP\\Desktop\\GitHub\\Backend\\RestaurantProject\\Core\\Core.csproj"
+              "C:\\Users\\HP\\Desktop\\GitHub\\Backend\\- Organizasyon\\RestaurantProject\\Core\\Core.csproj": {
+                "projectPath": "C:\\Users\\HP\\Desktop\\GitHub\\Backend\\- Organizasyon\\RestaurantProject\\Core\\Core.csproj"
               },
-              "C:\\Users\\HP\\Desktop\\GitHub\\Backend\\RestaurantProject\\Entities\\Entities.csproj": {
-                "projectPath": "C:\\Users\\HP\\Desktop\\GitHub\\Backend\\RestaurantProject\\Entities\\Entities.csproj"
+              "C:\\Users\\HP\\Desktop\\GitHub\\Backend\\- Organizasyon\\RestaurantProject\\Entities\\Entities.csproj": {
+                "projectPath": "C:\\Users\\HP\\Desktop\\GitHub\\Backend\\- Organizasyon\\RestaurantProject\\Entities\\Entities.csproj"
               }
             }
           }
@@ -245,14 +245,14 @@
         }
       }
     },
-    "C:\\Users\\HP\\Desktop\\GitHub\\Backend\\RestaurantProject\\Entities\\Entities.csproj": {
+    "C:\\Users\\HP\\Desktop\\GitHub\\Backend\\- Organizasyon\\RestaurantProject\\Entities\\Entities.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\HP\\Desktop\\GitHub\\Backend\\RestaurantProject\\Entities\\Entities.csproj",
+        "projectUniqueName": "C:\\Users\\HP\\Desktop\\GitHub\\Backend\\- Organizasyon\\RestaurantProject\\Entities\\Entities.csproj",
         "projectName": "Entities",
-        "projectPath": "C:\\Users\\HP\\Desktop\\GitHub\\Backend\\RestaurantProject\\Entities\\Entities.csproj",
+        "projectPath": "C:\\Users\\HP\\Desktop\\GitHub\\Backend\\- Organizasyon\\RestaurantProject\\Entities\\Entities.csproj",
         "packagesPath": "C:\\Users\\HP\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\HP\\Desktop\\GitHub\\Backend\\RestaurantProject\\Entities\\obj\\",
+        "outputPath": "C:\\Users\\HP\\Desktop\\GitHub\\Backend\\- Organizasyon\\RestaurantProject\\Entities\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\HP\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -269,8 +269,8 @@
           "net6.0": {
             "targetAlias": "net6.0",
             "projectReferences": {
-              "C:\\Users\\HP\\Desktop\\GitHub\\Backend\\RestaurantProject\\Core\\Core.csproj": {
-                "projectPath": "C:\\Users\\HP\\Desktop\\GitHub\\Backend\\RestaurantProject\\Core\\Core.csproj"
+              "C:\\Users\\HP\\Desktop\\GitHub\\Backend\\- Organizasyon\\RestaurantProject\\Core\\Core.csproj": {
+                "projectPath": "C:\\Users\\HP\\Desktop\\GitHub\\Backend\\- Organizasyon\\RestaurantProject\\Core\\Core.csproj"
               }
             }
           }
@@ -303,14 +303,14 @@
         }
       }
     },
-    "C:\\Users\\HP\\Desktop\\GitHub\\Backend\\RestaurantProject\\WebAPI\\WebAPI.csproj": {
+    "C:\\Users\\HP\\Desktop\\GitHub\\Backend\\- Organizasyon\\RestaurantProject\\WebAPI\\WebAPI.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\HP\\Desktop\\GitHub\\Backend\\RestaurantProject\\WebAPI\\WebAPI.csproj",
+        "projectUniqueName": "C:\\Users\\HP\\Desktop\\GitHub\\Backend\\- Organizasyon\\RestaurantProject\\WebAPI\\WebAPI.csproj",
         "projectName": "WebAPI",
-        "projectPath": "C:\\Users\\HP\\Desktop\\GitHub\\Backend\\RestaurantProject\\WebAPI\\WebAPI.csproj",
+        "projectPath": "C:\\Users\\HP\\Desktop\\GitHub\\Backend\\- Organizasyon\\RestaurantProject\\WebAPI\\WebAPI.csproj",
         "packagesPath": "C:\\Users\\HP\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\HP\\Desktop\\GitHub\\Backend\\RestaurantProject\\WebAPI\\obj\\",
+        "outputPath": "C:\\Users\\HP\\Desktop\\GitHub\\Backend\\- Organizasyon\\RestaurantProject\\WebAPI\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\HP\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -327,8 +327,8 @@
           "net6.0": {
             "targetAlias": "net6.0",
             "projectReferences": {
-              "C:\\Users\\HP\\Desktop\\GitHub\\Backend\\RestaurantProject\\Business\\Business.csproj": {
-                "projectPath": "C:\\Users\\HP\\Desktop\\GitHub\\Backend\\RestaurantProject\\Business\\Business.csproj"
+              "C:\\Users\\HP\\Desktop\\GitHub\\Backend\\- Organizasyon\\RestaurantProject\\Business\\Business.csproj": {
+                "projectPath": "C:\\Users\\HP\\Desktop\\GitHub\\Backend\\- Organizasyon\\RestaurantProject\\Business\\Business.csproj"
               }
             }
           }

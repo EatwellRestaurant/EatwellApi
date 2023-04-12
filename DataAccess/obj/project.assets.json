@@ -7549,11 +7549,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\HP\\Desktop\\GitHub\\Backend\\RestaurantProject\\DataAccess\\DataAccess.csproj",
+      "projectUniqueName": "C:\\Users\\HP\\Desktop\\GitHub\\Backend\\- Organizasyon\\RestaurantProject\\DataAccess\\DataAccess.csproj",
       "projectName": "DataAccess",
-      "projectPath": "C:\\Users\\HP\\Desktop\\GitHub\\Backend\\RestaurantProject\\DataAccess\\DataAccess.csproj",
+      "projectPath": "C:\\Users\\HP\\Desktop\\GitHub\\Backend\\- Organizasyon\\RestaurantProject\\DataAccess\\DataAccess.csproj",
       "packagesPath": "C:\\Users\\HP\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\HP\\Desktop\\GitHub\\Backend\\RestaurantProject\\DataAccess\\obj\\",
+      "outputPath": "C:\\Users\\HP\\Desktop\\GitHub\\Backend\\- Organizasyon\\RestaurantProject\\DataAccess\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\HP\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -7570,11 +7570,11 @@
         "net6.0": {
           "targetAlias": "net6.0",
           "projectReferences": {
-            "C:\\Users\\HP\\Desktop\\GitHub\\Backend\\RestaurantProject\\Core\\Core.csproj": {
-              "projectPath": "C:\\Users\\HP\\Desktop\\GitHub\\Backend\\RestaurantProject\\Core\\Core.csproj"
+            "C:\\Users\\HP\\Desktop\\GitHub\\Backend\\- Organizasyon\\RestaurantProject\\Core\\Core.csproj": {
+              "projectPath": "C:\\Users\\HP\\Desktop\\GitHub\\Backend\\- Organizasyon\\RestaurantProject\\Core\\Core.csproj"
             },
-            "C:\\Users\\HP\\Desktop\\GitHub\\Backend\\RestaurantProject\\Entities\\Entities.csproj": {
-              "projectPath": "C:\\Users\\HP\\Desktop\\GitHub\\Backend\\RestaurantProject\\Entities\\Entities.csproj"
+            "C:\\Users\\HP\\Desktop\\GitHub\\Backend\\- Organizasyon\\RestaurantProject\\Entities\\Entities.csproj": {
+              "projectPath": "C:\\Users\\HP\\Desktop\\GitHub\\Backend\\- Organizasyon\\RestaurantProject\\Entities\\Entities.csproj"
             }
           }
         }

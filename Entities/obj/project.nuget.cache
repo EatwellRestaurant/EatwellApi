@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "XNWm34dnB+8HBK/Gfo8uvmuMx0A8yrcZAsPlpbLn8UpO94yus1RpsPpM844/IrkP20sIjlFWVABBHs0kSFe1uw==",
+  "dgSpecHash": "zPySUuTox4K3bz9B5efhD/CgxAUww0L0KhCXhyyvsyIngfRQxUCgCWRIW30v67AjNMHi1aWNzU1mV5ghEdo1Pg==",
   "success": true,
-  "projectFilePath": "C:\\Users\\HP\\Desktop\\GitHub\\Backend\\RestaurantProject\\Entities\\Entities.csproj",
+  "projectFilePath": "C:\\Users\\HP\\Desktop\\GitHub\\Backend\\- Organizasyon\\RestaurantProject\\Entities\\Entities.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\HP\\.nuget\\packages\\autofac\\6.5.0\\autofac.6.5.0.nupkg.sha512",
     "C:\\Users\\HP\\.nuget\\packages\\autofac.extras.dynamicproxy\\6.0.1\\autofac.extras.dynamicproxy.6.0.1.nupkg.sha512",

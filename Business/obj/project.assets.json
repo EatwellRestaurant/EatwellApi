@@ -7572,11 +7572,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\HP\\Desktop\\GitHub\\Backend\\RestaurantProject\\Business\\Business.csproj",
+      "projectUniqueName": "C:\\Users\\HP\\Desktop\\GitHub\\Backend\\- Organizasyon\\RestaurantProject\\Business\\Business.csproj",
       "projectName": "Business",
-      "projectPath": "C:\\Users\\HP\\Desktop\\GitHub\\Backend\\RestaurantProject\\Business\\Business.csproj",
+      "projectPath": "C:\\Users\\HP\\Desktop\\GitHub\\Backend\\- Organizasyon\\RestaurantProject\\Business\\Business.csproj",
       "packagesPath": "C:\\Users\\HP\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\HP\\Desktop\\GitHub\\Backend\\RestaurantProject\\Business\\obj\\",
+      "outputPath": "C:\\Users\\HP\\Desktop\\GitHub\\Backend\\- Organizasyon\\RestaurantProject\\Business\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\HP\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -7593,14 +7593,14 @@
         "net6.0": {
           "targetAlias": "net6.0",
           "projectReferences": {
-            "C:\\Users\\HP\\Desktop\\GitHub\\Backend\\RestaurantProject\\Core\\Core.csproj": {
-              "projectPath": "C:\\Users\\HP\\Desktop\\GitHub\\Backend\\RestaurantProject\\Core\\Core.csproj"
+            "C:\\Users\\HP\\Desktop\\GitHub\\Backend\\- Organizasyon\\RestaurantProject\\Core\\Core.csproj": {
+              "projectPath": "C:\\Users\\HP\\Desktop\\GitHub\\Backend\\- Organizasyon\\RestaurantProject\\Core\\Core.csproj"
             },
-            "C:\\Users\\HP\\Desktop\\GitHub\\Backend\\RestaurantProject\\DataAccess\\DataAccess.csproj": {
-              "projectPath": "C:\\Users\\HP\\Desktop\\GitHub\\Backend\\RestaurantProject\\DataAccess\\DataAccess.csproj"
+            "C:\\Users\\HP\\Desktop\\GitHub\\Backend\\- Organizasyon\\RestaurantProject\\DataAccess\\DataAccess.csproj": {
+              "projectPath": "C:\\Users\\HP\\Desktop\\GitHub\\Backend\\- Organizasyon\\RestaurantProject\\DataAccess\\DataAccess.csproj"
             },
-            "C:\\Users\\HP\\Desktop\\GitHub\\Backend\\RestaurantProject\\Entities\\Entities.csproj": {
-              "projectPath": "C:\\Users\\HP\\Desktop\\GitHub\\Backend\\RestaurantProject\\Entities\\Entities.csproj"
+            "C:\\Users\\HP\\Desktop\\GitHub\\Backend\\- Organizasyon\\RestaurantProject\\Entities\\Entities.csproj": {
+              "projectPath": "C:\\Users\\HP\\Desktop\\GitHub\\Backend\\- Organizasyon\\RestaurantProject\\Entities\\Entities.csproj"
             }
           }
         }

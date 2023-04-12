@@ -26,6 +26,9 @@ namespace Business.DependencyResolvers.Autofac
             builder.RegisterType<BranchImageManager>().As<IBranchImageService>().SingleInstance();
             builder.RegisterType<EfBranchImageDal>().As<IBranchImageDal>().SingleInstance();
 
+            builder.RegisterType<BranchEmployeeManager>().As<IBranchEmployeeService>().SingleInstance();
+            builder.RegisterType<EfBranchEmployeeDal>().As<IBranchEmployeeDal>().SingleInstance();
+
             builder.RegisterType<EvaluationManager>().As<IEvaluationService>().SingleInstance();
             builder.RegisterType<EfEvaluationDal>().As<IEvaluationDal>().SingleInstance();
 

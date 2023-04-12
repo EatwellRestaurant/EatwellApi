@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "f+BrcpqkmC7BtsLXKmpFziUEdTYnoDKFlo5BFcUiN4g8faD1Ck6huia9+2C9gbPka+15TcsInjdoQSjpuD2mGQ==",
+  "dgSpecHash": "QlNurRcjzz8LNW+OV8ZYpTit+V7kv1LcPxSw/dG2srksQOOx8fQPIxKYCPsBdBCFgfZftg9U7sOn81amaPr8Iw==",
   "success": true,
-  "projectFilePath": "C:\\Users\\HP\\Desktop\\GitHub\\Backend\\RestaurantProject\\Core\\Core.csproj",
+  "projectFilePath": "C:\\Users\\HP\\Desktop\\GitHub\\Backend\\- Organizasyon\\RestaurantProject\\Core\\Core.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\HP\\.nuget\\packages\\autofac\\6.5.0\\autofac.6.5.0.nupkg.sha512",
     "C:\\Users\\HP\\.nuget\\packages\\autofac.extras.dynamicproxy\\6.0.1\\autofac.extras.dynamicproxy.6.0.1.nupkg.sha512",

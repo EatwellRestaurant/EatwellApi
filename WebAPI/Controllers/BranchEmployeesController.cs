@@ -7,20 +7,19 @@ namespace WebAPI.Controllers
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
-    public class ProductsController : ControllerBase
+    public class BranchEmployeesController : ControllerBase
     {
-        private IProductService _productService;
+        private IBranchEmployeeService _branchEmployeeService;
 
-        public ProductsController(IProductService productService)
+        public BranchEmployeesController(IBranchEmployeeService branchEmployeeService)
         {
-            _productService = productService;
+            _branchEmployeeService = branchEmployeeService;
         }
 
         [HttpPost]
-        public IActionResult Add([FromForm(Name = "Image")] IFormFile file, [FromForm] Product product)
+        public IActionResult Add([FromForm(Name = "Image")] IFormFile file, [FromForm] BranchEmployee branchEmployee)
         {
-            var result = _productService.Add(file, product);
-
+            var result = _branchEmployeeService.Add(file, branchEmployee);
             if (result.Success)
             {
                 return Ok(result);
@@ -29,10 +28,9 @@ namespace WebAPI.Controllers
         }
 
         [HttpDelete]
-        public IActionResult Delete(Product product)
+        public IActionResult Delete(BranchEmployee branchEmployee)
         {
-            var result = _productService.Delete(product);
-
+            var result = _branchEmployeeService.Delete(branchEmployee);
             if (result.Success)
             {
                 return Ok(result);
@@ -41,10 +39,9 @@ namespace WebAPI.Controllers
         }
 
         [HttpPut]
-        public IActionResult Update([FromForm(Name = "Image")] IFormFile file, [FromBody] Product product)
+        public IActionResult Update([FromForm(Name = "Employee")] IFormFile file, [FromForm] BranchEmployee branchEmployee)
         {
-            var result = _productService.Update(file, product);
-
+            var result = _branchEmployeeService.Update(file, branchEmployee);
             if (result.Success)
             {
                 return Ok(result);
@@ -55,8 +52,7 @@ namespace WebAPI.Controllers
         [HttpGet]
         public IActionResult Get(int id)
         {
-            var result = _productService.Get(id);
-
+            var result = _branchEmployeeService.Get(id);
             if (result.Success)
             {
                 return Ok(result);
@@ -67,20 +63,7 @@ namespace WebAPI.Controllers
         [HttpGet]
         public IActionResult GetAll()
         {
-            var result = _productService.GetAll();
-
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-            return BadRequest(result);
-        }
-
-        [HttpGet] 
-        public IActionResult GetProductsByMealCategoryId(int id)
-        {
-            var result = _productService.GetProductsByMealCategoryId(id);
-
+            var result = _branchEmployeeService.GetAll();
             if (result.Success)
             {
                 return Ok(result);
