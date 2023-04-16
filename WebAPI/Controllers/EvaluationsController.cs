@@ -38,6 +38,26 @@ namespace WebAPI.Controllers
             return BadRequest(result);
         }
 
+        [HttpGet]
+        public IActionResult GetEvaluationDetail(int evaluationId)
+        {
+            var result = _evaluationService.GetEvaluationDetail(evaluationId);
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
+        }
 
+        [HttpGet]
+        public IActionResult GetEvaluationDetails()
+        {
+            var result = _evaluationService.GetEvaluationDetails();
+            if (result.Success)
+            {
+                return Ok(result);
+            }
+            return BadRequest(result);
+        }
     }
 }

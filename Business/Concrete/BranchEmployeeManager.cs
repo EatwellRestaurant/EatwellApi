@@ -26,7 +26,7 @@ namespace Business.Concrete
 
         public IResult Add(IFormFile file, BranchEmployee branchEmployee)
         {
-            var result = BusinessRules.Run(ChechIfImagePathIsEmpty(branchEmployee.ImagePath));
+            var result = BusinessRules.Run(CheckIfFileEnter(file));
 
             if (result.Success)
             {
@@ -36,6 +36,7 @@ namespace Business.Concrete
                 {
                     return result;
                 }
+                branchEmployee.ImagePath = resultOfUpload.Data;
             }
 
             _branchEmployeeDal.Add(branchEmployee);
@@ -44,7 +45,7 @@ namespace Business.Concrete
 
         public IResult Delete(BranchEmployee branchEmployee)
         {
-            var result = BusinessRules.Run(ChechIfImagePathIsEmpty(branchEmployee.ImagePath));
+            var result = BusinessRules.Run(CheckIfImagePathIsEmpty(branchEmployee.ImagePath));
 
             if (result.Success) 
             { 
@@ -69,20 +70,34 @@ namespace Business.Concrete
         public IDataResult<List<BranchEmployee>> GetAll()
         {
             return new SuccessDataResult<List<BranchEmployee>>(_branchEmployeeDal.GetAll(),
-                BranchEmployeeMessages.BranchEmployeeWasBrought);
+                BranchEmployeeMessages.BranchEmployeesListed);
         }
 
         public IResult Update(IFormFile file, BranchEmployee branchEmployee)
         {
-            var result = BusinessRules.Run(ChechIfImagePathIsEmpty(branchEmployee.ImagePath));
+            var employee = _branchEmployeeDal.Get(b => b.Id == branchEmployee.Id);
 
-            if (result.Success)
+            if (CheckIfFileEnter(file).Success)
             {
-                var resultOfUpdate = FileHelper.Update(file, branchEmployee.ImagePath, ImagePaths.ImagePath);
-
-                if (!resultOfUpdate.Success)
+                if (CheckIfImagePathIsEmpty(employee.ImagePath).Success)
                 {
-                    return result;
+                    var resultOfUpdate = FileHelper.Update(file, employee.ImagePath, ImagePaths.ImagePath);
+
+                    if (!resultOfUpdate.Success)
+                    {
+                        return resultOfUpdate;
+                    }
+                    branchEmployee.ImagePath = resultOfUpdate.Data;
+                }
+                else
+                {
+                    var resultOfAdd = FileHelper.Upload(file, ImagePaths.ImagePath);
+
+                    if (!resultOfAdd.Success)
+                    {
+                        return resultOfAdd;
+                    }
+                    branchEmployee.ImagePath = resultOfAdd.Data;
                 }
             }
 
@@ -93,13 +108,22 @@ namespace Business.Concrete
 
 
         //Business Codes
-        private IResult ChechIfImagePathIsEmpty(string imagePath)
+        private IResult CheckIfImagePathIsEmpty(string imagePath)
         {
             if(imagePath != null)
             {
                 return new SuccessResult("ImagePath is full");
             }
             return new ErrorResult("ImagePath is null");
+        }
+
+        private static IResult CheckIfFileEnter(IFormFile file)
+        {
+            if (file.Length < 0)
+            {
+                return new ErrorResult("Dosya girilmemiş");
+            }
+            return new SuccessResult();
         }
     }
 }

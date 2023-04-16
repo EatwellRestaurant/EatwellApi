@@ -10,7 +10,7 @@ namespace Business.Constants.Messages.Entity
     {
         public static string EvaluationAdded = "Değerlendirme Eklendi";
         public static string EvaluationDeleted = "Değerlendirme Silindi";
-        public static string EvaluationUpdated = "Değerlendirme Güncellendi";
-        public static string EvaluationWasBrought = "Değerlendirme Getirildi";
-    }
+        public static string EvaluationDetailWasBrought = "Değerlendirme Detayı Getirildi";
+        public static string EvaluationDetailsWasBrought = "Değerlendirme Detayları Getirildi";
+    } 
 }

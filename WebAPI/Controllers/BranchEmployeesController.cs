@@ -39,7 +39,7 @@ namespace WebAPI.Controllers
         }
 
         [HttpPut]
-        public IActionResult Update([FromForm(Name = "Employee")] IFormFile file, [FromForm] BranchEmployee branchEmployee)
+        public IActionResult Update([FromForm(Name = "Image")] IFormFile file, [FromForm] BranchEmployee branchEmployee)
         {
             var result = _branchEmployeeService.Update(file, branchEmployee);
             if (result.Success)

@@ -1,5 +1,6 @@
 ﻿using Core.Utilities.Results;
 using Entities.Concrete;
+using Entities.Dtos;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,5 +13,7 @@ namespace Business.Abstract
     {
         IResult Add(Evaluation evaluation);
         IResult Delete(Evaluation evaluation);
+        IDataResult<EvaluationDetailDto> GetEvaluationDetail(int evaluationId);
+        IDataResult<List<EvaluationDetailDto>> GetEvaluationDetails();
     }
 }
