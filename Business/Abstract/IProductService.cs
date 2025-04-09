@@ -1,5 +1,6 @@
 ﻿using Core.Utilities.Results;
 using Entities.Concrete;
+using Entities.Dtos;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
@@ -11,11 +12,11 @@ namespace Business.Abstract
 {
     public interface IProductService
     {
-        IDataResult<List<Product>> GetAll();
-        IDataResult<Product> Get(int id);
-        IResult Add(IFormFile file, Product product);
+        Task<IDataResult<List<Product>>> GetAll();
+        Task<IDataResult<Product?>> Get(int id);
+        Task<IResult> Add(IFormFile file, ProductForCreateDto product);
         IResult Delete(Product product);
-        IResult Update(IFormFile file, Product product);
-        IDataResult<List<Product>> GetProductsByMealCategoryId(int id);
+        IResult Update(IFormFile file, ProductForUpdateDto product);
+        Task<IDataResult<List<Product>>> GetProductsByMealCategoryId(int id);
     }
 }

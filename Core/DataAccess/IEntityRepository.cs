@@ -11,10 +11,28 @@ namespace Core.DataAccess
 {
     public interface IEntityRepository<T> where T : class, IEntity, new() 
     {
-        List<T> GetAll(Expression<Func<T, bool>> filter = null);
-        T Get(Expression<Func<T, bool>> filter);
-        void Add(T entity);
+        Task AddAsync(T entity);
+
+        Task AddRangeAsync(IEnumerable<T> entities);
+
+        Task<bool> AnyAsync(Expression<Func<T, bool>> expression);
+
+        Task<List<T>> GetAllAsync(Expression<Func<T, bool>>? expression = null);
+
+        Task<T?> GetByIdAsync(int id);
+
+        Task<T?> GetAsync(Expression<Func<T, bool>> filter);
+
+        void Remove(T entity);
+
+        void RemoveRange(IEnumerable<T> entities);
+
         void Update(T entity);
-        void Delete(T entity);
+
+        void UpdateRange(IEnumerable<T> entities);
+
+        IQueryable<T> Where(Expression<Func<T, bool>> expression);
+
+        Task<int> CountAsync(Expression<Func<T, bool>> expression);
     }
 }

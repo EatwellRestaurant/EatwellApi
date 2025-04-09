@@ -10,9 +10,9 @@ namespace Business.Abstract
 {
     public interface ICountryService
     {
-        IDataResult<List<Country>> GetAll();
-        IDataResult<Country> Get(int id);
-        IResult Add(Country country);
+        Task<IDataResult<List<Country>>> GetAll();
+        Task<IDataResult<Country?>> Get(int id);
+        Task<IResult> Add(Country country);
         IResult Delete(Country country);
         IResult Update(Country country);
     }

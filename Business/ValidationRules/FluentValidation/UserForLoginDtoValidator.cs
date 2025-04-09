@@ -13,8 +13,14 @@ namespace Business.ValidationRules.FluentValidation
     {
         public UserForLoginDtoValidator()
         {
-            RuleFor(u => u.Email).NotEmpty();
-            RuleFor(u => u.Password).NotEmpty();
+            RuleFor(u => u.Email)
+                .NotEmpty()
+                .WithMessage("Lütfen e-posta adresinizi giriniz!");
+            
+            
+            RuleFor(u => u.Password)
+                .NotEmpty()
+                .WithMessage("Lütfen şifrenizi giriniz!");
         }
     }
 }

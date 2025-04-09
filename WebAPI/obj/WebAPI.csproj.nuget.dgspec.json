@@ -1,20 +1,24 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\HP\\Desktop\\GitHub\\Backend\\- Organizasyon\\RestaurantProject\\WebAPI\\WebAPI.csproj": {}
+    "C:\\Users\\burcu\\OneDrive\\Desktop\\Github\\EatwellRestaurantApi\\WebAPI\\WebAPI.csproj": {}
   },
   "projects": {
-    "C:\\Users\\HP\\Desktop\\GitHub\\Backend\\- Organizasyon\\RestaurantProject\\Business\\Business.csproj": {
+    "C:\\Users\\burcu\\OneDrive\\Desktop\\Github\\EatwellRestaurantApi\\Business\\Business.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\HP\\Desktop\\GitHub\\Backend\\- Organizasyon\\RestaurantProject\\Business\\Business.csproj",
+        "projectUniqueName": "C:\\Users\\burcu\\OneDrive\\Desktop\\Github\\EatwellRestaurantApi\\Business\\Business.csproj",
         "projectName": "Business",
-        "projectPath": "C:\\Users\\HP\\Desktop\\GitHub\\Backend\\- Organizasyon\\RestaurantProject\\Business\\Business.csproj",
-        "packagesPath": "C:\\Users\\HP\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\HP\\Desktop\\GitHub\\Backend\\- Organizasyon\\RestaurantProject\\Business\\obj\\",
+        "projectPath": "C:\\Users\\burcu\\OneDrive\\Desktop\\Github\\EatwellRestaurantApi\\Business\\Business.csproj",
+        "packagesPath": "C:\\Users\\burcu\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\burcu\\OneDrive\\Desktop\\Github\\EatwellRestaurantApi\\Business\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
         "configFilePaths": [
-          "C:\\Users\\HP\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\burcu\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -22,20 +26,21 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "net6.0": {
             "targetAlias": "net6.0",
             "projectReferences": {
-              "C:\\Users\\HP\\Desktop\\GitHub\\Backend\\- Organizasyon\\RestaurantProject\\Core\\Core.csproj": {
-                "projectPath": "C:\\Users\\HP\\Desktop\\GitHub\\Backend\\- Organizasyon\\RestaurantProject\\Core\\Core.csproj"
+              "C:\\Users\\burcu\\OneDrive\\Desktop\\Github\\EatwellRestaurantApi\\Core\\Core.csproj": {
+                "projectPath": "C:\\Users\\burcu\\OneDrive\\Desktop\\Github\\EatwellRestaurantApi\\Core\\Core.csproj"
               },
-              "C:\\Users\\HP\\Desktop\\GitHub\\Backend\\- Organizasyon\\RestaurantProject\\DataAccess\\DataAccess.csproj": {
-                "projectPath": "C:\\Users\\HP\\Desktop\\GitHub\\Backend\\- Organizasyon\\RestaurantProject\\DataAccess\\DataAccess.csproj"
+              "C:\\Users\\burcu\\OneDrive\\Desktop\\Github\\EatwellRestaurantApi\\DataAccess\\DataAccess.csproj": {
+                "projectPath": "C:\\Users\\burcu\\OneDrive\\Desktop\\Github\\EatwellRestaurantApi\\DataAccess\\DataAccess.csproj"
               },
-              "C:\\Users\\HP\\Desktop\\GitHub\\Backend\\- Organizasyon\\RestaurantProject\\Entities\\Entities.csproj": {
-                "projectPath": "C:\\Users\\HP\\Desktop\\GitHub\\Backend\\- Organizasyon\\RestaurantProject\\Entities\\Entities.csproj"
+              "C:\\Users\\burcu\\OneDrive\\Desktop\\Github\\EatwellRestaurantApi\\Entities\\Entities.csproj": {
+                "projectPath": "C:\\Users\\burcu\\OneDrive\\Desktop\\Github\\EatwellRestaurantApi\\Entities\\Entities.csproj"
               }
             }
           }
@@ -44,6 +49,11 @@
           "warnAsError": [
             "NU1605"
           ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
         }
       },
       "frameworks": {
@@ -52,7 +62,11 @@
           "dependencies": {
             "Autofac": {
               "target": "Package",
-              "version": "[6.5.0, )"
+              "version": "[8.0.0, )"
+            },
+            "BCrypt.Net-Next": {
+              "target": "Package",
+              "version": "[4.0.3, )"
             },
             "FluentValidation": {
               "target": "Package",
@@ -60,7 +74,7 @@
             },
             "Microsoft.AspNetCore.Http.Abstractions": {
               "target": "Package",
-              "version": "[2.2.0, )"
+              "version": "[2.3.0, )"
             }
           },
           "imports": [
@@ -69,7 +83,8 @@
             "net47",
             "net471",
             "net472",
-            "net48"
+            "net48",
+            "net481"
           ],
           "assetTargetFallback": true,
           "warn": true,
@@ -78,21 +93,25 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.203\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.200\\RuntimeIdentifierGraph.json"
         }
       }
     },
-    "C:\\Users\\HP\\Desktop\\GitHub\\Backend\\- Organizasyon\\RestaurantProject\\Core\\Core.csproj": {
+    "C:\\Users\\burcu\\OneDrive\\Desktop\\Github\\EatwellRestaurantApi\\Core\\Core.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\HP\\Desktop\\GitHub\\Backend\\- Organizasyon\\RestaurantProject\\Core\\Core.csproj",
+        "projectUniqueName": "C:\\Users\\burcu\\OneDrive\\Desktop\\Github\\EatwellRestaurantApi\\Core\\Core.csproj",
         "projectName": "Core",
-        "projectPath": "C:\\Users\\HP\\Desktop\\GitHub\\Backend\\- Organizasyon\\RestaurantProject\\Core\\Core.csproj",
-        "packagesPath": "C:\\Users\\HP\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\HP\\Desktop\\GitHub\\Backend\\- Organizasyon\\RestaurantProject\\Core\\obj\\",
+        "projectPath": "C:\\Users\\burcu\\OneDrive\\Desktop\\Github\\EatwellRestaurantApi\\Core\\Core.csproj",
+        "packagesPath": "C:\\Users\\burcu\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\burcu\\OneDrive\\Desktop\\Github\\EatwellRestaurantApi\\Core\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
         "configFilePaths": [
-          "C:\\Users\\HP\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\burcu\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -100,6 +119,7 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -112,6 +132,11 @@
           "warnAsError": [
             "NU1605"
           ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
         }
       },
       "frameworks": {
@@ -120,7 +145,7 @@
           "dependencies": {
             "Autofac": {
               "target": "Package",
-              "version": "[6.5.0, )"
+              "version": "[8.0.0, )"
             },
             "Autofac.Extras.DynamicProxy": {
               "target": "Package",
@@ -132,7 +157,7 @@
             },
             "Microsoft.AspNetCore.Http": {
               "target": "Package",
-              "version": "[2.2.2, )"
+              "version": "[2.3.0, )"
             },
             "Microsoft.EntityFrameworkCore": {
               "target": "Package",
@@ -148,15 +173,15 @@
             },
             "Microsoft.Extensions.DependencyInjection.Abstractions": {
               "target": "Package",
-              "version": "[7.0.0, )"
+              "version": "[8.0.0, )"
             },
             "Microsoft.IdentityModel.Tokens": {
               "target": "Package",
-              "version": "[6.27.0, )"
+              "version": "[8.0.0, )"
             },
             "System.IdentityModel.Tokens.Jwt": {
               "target": "Package",
-              "version": "[6.27.0, )"
+              "version": "[8.0.0, )"
             }
           },
           "imports": [
@@ -165,7 +190,8 @@
             "net47",
             "net471",
             "net472",
-            "net48"
+            "net48",
+            "net481"
           ],
           "assetTargetFallback": true,
           "warn": true,
@@ -174,21 +200,25 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.203\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.200\\RuntimeIdentifierGraph.json"
         }
       }
     },
-    "C:\\Users\\HP\\Desktop\\GitHub\\Backend\\- Organizasyon\\RestaurantProject\\DataAccess\\DataAccess.csproj": {
+    "C:\\Users\\burcu\\OneDrive\\Desktop\\Github\\EatwellRestaurantApi\\DataAccess\\DataAccess.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\HP\\Desktop\\GitHub\\Backend\\- Organizasyon\\RestaurantProject\\DataAccess\\DataAccess.csproj",
+        "projectUniqueName": "C:\\Users\\burcu\\OneDrive\\Desktop\\Github\\EatwellRestaurantApi\\DataAccess\\DataAccess.csproj",
         "projectName": "DataAccess",
-        "projectPath": "C:\\Users\\HP\\Desktop\\GitHub\\Backend\\- Organizasyon\\RestaurantProject\\DataAccess\\DataAccess.csproj",
-        "packagesPath": "C:\\Users\\HP\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\HP\\Desktop\\GitHub\\Backend\\- Organizasyon\\RestaurantProject\\DataAccess\\obj\\",
+        "projectPath": "C:\\Users\\burcu\\OneDrive\\Desktop\\Github\\EatwellRestaurantApi\\DataAccess\\DataAccess.csproj",
+        "packagesPath": "C:\\Users\\burcu\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\burcu\\OneDrive\\Desktop\\Github\\EatwellRestaurantApi\\DataAccess\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
         "configFilePaths": [
-          "C:\\Users\\HP\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\burcu\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -196,17 +226,18 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "net6.0": {
             "targetAlias": "net6.0",
             "projectReferences": {
-              "C:\\Users\\HP\\Desktop\\GitHub\\Backend\\- Organizasyon\\RestaurantProject\\Core\\Core.csproj": {
-                "projectPath": "C:\\Users\\HP\\Desktop\\GitHub\\Backend\\- Organizasyon\\RestaurantProject\\Core\\Core.csproj"
+              "C:\\Users\\burcu\\OneDrive\\Desktop\\Github\\EatwellRestaurantApi\\Core\\Core.csproj": {
+                "projectPath": "C:\\Users\\burcu\\OneDrive\\Desktop\\Github\\EatwellRestaurantApi\\Core\\Core.csproj"
               },
-              "C:\\Users\\HP\\Desktop\\GitHub\\Backend\\- Organizasyon\\RestaurantProject\\Entities\\Entities.csproj": {
-                "projectPath": "C:\\Users\\HP\\Desktop\\GitHub\\Backend\\- Organizasyon\\RestaurantProject\\Entities\\Entities.csproj"
+              "C:\\Users\\burcu\\OneDrive\\Desktop\\Github\\EatwellRestaurantApi\\Entities\\Entities.csproj": {
+                "projectPath": "C:\\Users\\burcu\\OneDrive\\Desktop\\Github\\EatwellRestaurantApi\\Entities\\Entities.csproj"
               }
             }
           }
@@ -215,6 +246,11 @@
           "warnAsError": [
             "NU1605"
           ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
         }
       },
       "frameworks": {
@@ -224,6 +260,20 @@
             "Microsoft.EntityFrameworkCore.SqlServer": {
               "target": "Package",
               "version": "[7.0.0, )"
+            },
+            "Microsoft.EntityFrameworkCore.Tools": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[7.0.0, )"
+            },
+            "Microsoft.Extensions.Configuration": {
+              "target": "Package",
+              "version": "[9.0.3, )"
+            },
+            "Microsoft.Extensions.Configuration.Json": {
+              "target": "Package",
+              "version": "[7.0.0, )"
             }
           },
           "imports": [
@@ -232,7 +282,8 @@
             "net47",
             "net471",
             "net472",
-            "net48"
+            "net48",
+            "net481"
           ],
           "assetTargetFallback": true,
           "warn": true,
@@ -241,21 +292,25 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.203\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.200\\RuntimeIdentifierGraph.json"
         }
       }
     },
-    "C:\\Users\\HP\\Desktop\\GitHub\\Backend\\- Organizasyon\\RestaurantProject\\Entities\\Entities.csproj": {
+    "C:\\Users\\burcu\\OneDrive\\Desktop\\Github\\EatwellRestaurantApi\\Entities\\Entities.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\HP\\Desktop\\GitHub\\Backend\\- Organizasyon\\RestaurantProject\\Entities\\Entities.csproj",
+        "projectUniqueName": "C:\\Users\\burcu\\OneDrive\\Desktop\\Github\\EatwellRestaurantApi\\Entities\\Entities.csproj",
         "projectName": "Entities",
-        "projectPath": "C:\\Users\\HP\\Desktop\\GitHub\\Backend\\- Organizasyon\\RestaurantProject\\Entities\\Entities.csproj",
-        "packagesPath": "C:\\Users\\HP\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\HP\\Desktop\\GitHub\\Backend\\- Organizasyon\\RestaurantProject\\Entities\\obj\\",
+        "projectPath": "C:\\Users\\burcu\\OneDrive\\Desktop\\Github\\EatwellRestaurantApi\\Entities\\Entities.csproj",
+        "packagesPath": "C:\\Users\\burcu\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\burcu\\OneDrive\\Desktop\\Github\\EatwellRestaurantApi\\Entities\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
         "configFilePaths": [
-          "C:\\Users\\HP\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\burcu\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -263,14 +318,15 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "net6.0": {
             "targetAlias": "net6.0",
             "projectReferences": {
-              "C:\\Users\\HP\\Desktop\\GitHub\\Backend\\- Organizasyon\\RestaurantProject\\Core\\Core.csproj": {
-                "projectPath": "C:\\Users\\HP\\Desktop\\GitHub\\Backend\\- Organizasyon\\RestaurantProject\\Core\\Core.csproj"
+              "C:\\Users\\burcu\\OneDrive\\Desktop\\Github\\EatwellRestaurantApi\\Core\\Core.csproj": {
+                "projectPath": "C:\\Users\\burcu\\OneDrive\\Desktop\\Github\\EatwellRestaurantApi\\Core\\Core.csproj"
               }
             }
           }
@@ -279,6 +335,11 @@
           "warnAsError": [
             "NU1605"
           ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
         }
       },
       "frameworks": {
@@ -290,7 +351,8 @@
             "net47",
             "net471",
             "net472",
-            "net48"
+            "net48",
+            "net481"
           ],
           "assetTargetFallback": true,
           "warn": true,
@@ -299,21 +361,25 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.203\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.200\\RuntimeIdentifierGraph.json"
         }
       }
     },
-    "C:\\Users\\HP\\Desktop\\GitHub\\Backend\\- Organizasyon\\RestaurantProject\\WebAPI\\WebAPI.csproj": {
+    "C:\\Users\\burcu\\OneDrive\\Desktop\\Github\\EatwellRestaurantApi\\WebAPI\\WebAPI.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\HP\\Desktop\\GitHub\\Backend\\- Organizasyon\\RestaurantProject\\WebAPI\\WebAPI.csproj",
+        "projectUniqueName": "C:\\Users\\burcu\\OneDrive\\Desktop\\Github\\EatwellRestaurantApi\\WebAPI\\WebAPI.csproj",
         "projectName": "WebAPI",
-        "projectPath": "C:\\Users\\HP\\Desktop\\GitHub\\Backend\\- Organizasyon\\RestaurantProject\\WebAPI\\WebAPI.csproj",
-        "packagesPath": "C:\\Users\\HP\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\HP\\Desktop\\GitHub\\Backend\\- Organizasyon\\RestaurantProject\\WebAPI\\obj\\",
+        "projectPath": "C:\\Users\\burcu\\OneDrive\\Desktop\\Github\\EatwellRestaurantApi\\WebAPI\\WebAPI.csproj",
+        "packagesPath": "C:\\Users\\burcu\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\burcu\\OneDrive\\Desktop\\Github\\EatwellRestaurantApi\\WebAPI\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
         "configFilePaths": [
-          "C:\\Users\\HP\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\burcu\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -321,14 +387,15 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "net6.0": {
             "targetAlias": "net6.0",
             "projectReferences": {
-              "C:\\Users\\HP\\Desktop\\GitHub\\Backend\\- Organizasyon\\RestaurantProject\\Business\\Business.csproj": {
-                "projectPath": "C:\\Users\\HP\\Desktop\\GitHub\\Backend\\- Organizasyon\\RestaurantProject\\Business\\Business.csproj"
+              "C:\\Users\\burcu\\OneDrive\\Desktop\\Github\\EatwellRestaurantApi\\Business\\Business.csproj": {
+                "projectPath": "C:\\Users\\burcu\\OneDrive\\Desktop\\Github\\EatwellRestaurantApi\\Business\\Business.csproj"
               }
             }
           }
@@ -337,6 +404,11 @@
           "warnAsError": [
             "NU1605"
           ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
         }
       },
       "frameworks": {
@@ -349,11 +421,25 @@
             },
             "Microsoft.AspNetCore.Authentication.JwtBearer": {
               "target": "Package",
-              "version": "[3.1.12, )"
+              "version": "[6.0.1, )"
+            },
+            "Microsoft.EntityFrameworkCore.Design": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[7.0.0, )"
+            },
+            "Microsoft.EntityFrameworkCore.SqlServer": {
+              "target": "Package",
+              "version": "[7.0.0, )"
             },
             "Swashbuckle.AspNetCore": {
               "target": "Package",
               "version": "[6.2.3, )"
+            },
+            "System.IdentityModel.Tokens.Jwt": {
+              "target": "Package",
+              "version": "[8.0.0, )"
             }
           },
           "imports": [
@@ -362,7 +448,8 @@
             "net47",
             "net471",
             "net472",
-            "net48"
+            "net48",
+            "net481"
           ],
           "assetTargetFallback": true,
           "warn": true,
@@ -374,7 +461,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.203\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.200\\RuntimeIdentifierGraph.json"
         }
       }
     }

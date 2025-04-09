@@ -16,5 +16,10 @@ namespace Entities.Concrete
         public string LastName { get; set; }
         public string? ImagePath { get; set; }
         public string Description { get; set; }
+
+         
+
+
+        public Branch Branch { get; set; }
     }
 }

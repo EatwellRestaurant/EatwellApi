@@ -13,6 +13,12 @@ namespace Entities.Concrete
         public int BranchId { get; set; }
         public string? ImagePath { get; set; }
         public string Title { get; set; }
-        public string? Description { get; set; } 
+        public string? Description { get; set; }
+
+
+
+
+        public Branch Branch { get; set; }
+
     }
 }

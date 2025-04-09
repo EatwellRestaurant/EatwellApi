@@ -11,9 +11,9 @@ namespace Business.Abstract
 {
     public interface IMealCategoryService
     {
-        IDataResult<List<MealCategory>> GetAll();
-        IDataResult<MealCategory> Get(int id);
-        IResult Add(IFormFile file, MealCategory mealCategory);
+        Task<IDataResult<List<MealCategory>>> GetAll();
+        Task<IDataResult<MealCategory?>> Get(int id);
+        Task<IResult> Add(IFormFile file, MealCategory mealCategory);
         IResult Update(IFormFile file, MealCategory mealCategory);
         IResult Delete(MealCategory mealCategory);
     }

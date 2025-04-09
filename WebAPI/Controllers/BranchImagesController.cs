@@ -17,9 +17,9 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost]
-        public IActionResult Add([FromForm(Name = "Image")]IFormFile file, [FromForm]BranchImage branchImage)
+        public async Task<IActionResult> Add([FromForm(Name = "Image")]IFormFile file, [FromForm]BranchImage branchImage)
         {
-            var result = _branchImageService.Add(file, branchImage);
+            var result = await _branchImageService.Add(file, branchImage);
             if (result.Success)
             {
                 return Ok(result);
@@ -50,9 +50,9 @@ namespace WebAPI.Controllers
         }
 
         [HttpGet]
-        public IActionResult Get(int id)
+        public async Task<IActionResult> Get(int id)
         {
-            var result = _branchImageService.Get(id);
+            var result = await _branchImageService.Get(id);
             if (result.Success)
             {
                 return Ok(result);
@@ -61,9 +61,9 @@ namespace WebAPI.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetAll()
+        public async Task<IActionResult> GetAll()
         {
-            var result = _branchImageService.GetAll();
+            var result = await _branchImageService.GetAll();
             if (result.Success)
             {
                 return Ok(result);

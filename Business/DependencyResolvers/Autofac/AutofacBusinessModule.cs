@@ -20,6 +20,8 @@ namespace Business.DependencyResolvers.Autofac
     {
         protected override void Load(ContainerBuilder builder)
         {
+            builder.RegisterType<RestaurantContext>().InstancePerLifetimeScope();
+
             builder.RegisterType<BranchManager>().As<IBranchService>().SingleInstance();
             builder.RegisterType<EfBranchDal>().As<IBranchDal>().SingleInstance();
 
@@ -32,11 +34,11 @@ namespace Business.DependencyResolvers.Autofac
             builder.RegisterType<EvaluationManager>().As<IEvaluationService>().SingleInstance();
             builder.RegisterType<EfEvaluationDal>().As<IEvaluationDal>().SingleInstance();
 
-            builder.RegisterType<MealCategoryManager>().As<IMealCategoryService>().SingleInstance();
-            builder.RegisterType<EfMealCategoryDal>().As<IMealCategoryDal>().SingleInstance();
+            builder.RegisterType<MealCategoryManager>().As<IMealCategoryService>().InstancePerLifetimeScope();
+            builder.RegisterType<EfMealCategoryDal>().As<IMealCategoryDal>().InstancePerLifetimeScope();
 
-            builder.RegisterType<ProductManager>().As<IProductService>().SingleInstance();
-            builder.RegisterType<EfProductDal>().As<IProductDal>().SingleInstance();
+            builder.RegisterType<ProductManager>().As<IProductService>().InstancePerLifetimeScope();
+            builder.RegisterType<EfProductDal>().As<IProductDal>().InstancePerLifetimeScope();
 
             builder.RegisterType<ReservationManager>().As<IReservationService>().SingleInstance();
             builder.RegisterType<EfReservationDal>().As<IReservationDal>().SingleInstance();
@@ -46,6 +48,12 @@ namespace Business.DependencyResolvers.Autofac
 
             builder.RegisterType<UserManager>().As<IUserService>().SingleInstance();
             builder.RegisterType<EfUserDal>().As<IUserDal>().SingleInstance();
+            
+            builder.RegisterType<UserOperationClaimManager>().As<IUserOperationClaimService>().SingleInstance();
+            builder.RegisterType<EfUserOperationClaimDal>().As<IUserOperationClaimDal>().SingleInstance();
+            
+            builder.RegisterType<OperationClaimManager>().As<IOperationClaimService>().SingleInstance();
+            builder.RegisterType<EfOperationClaimDal>().As<IOperationClaimDal>().SingleInstance();
 
             builder.RegisterType<CountryManager>().As<ICountryService>().SingleInstance();
             builder.RegisterType<EfCountryDal>().As<ICountryDal>().SingleInstance();

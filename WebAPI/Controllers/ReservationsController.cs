@@ -17,9 +17,9 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost]
-        public IActionResult Add(Reservation reservation)
+        public async Task<IActionResult> Add(Reservation reservation)
         {
-            var result = _reservationService.Add(reservation);
+            var result = await _reservationService.Add(reservation);
             if (result.Success)
             {
                 return Ok(result);
@@ -50,9 +50,9 @@ namespace WebAPI.Controllers
         }
 
         [HttpGet]
-        public IActionResult Get(int id)
+        public async Task<IActionResult> Get(int id)
         {
-            var result = _reservationService.Get(id);
+            var result = await _reservationService.Get(id);
             if (result.Success)
             {
                 return Ok(result);
@@ -61,9 +61,9 @@ namespace WebAPI.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetAll()
+        public async Task<IActionResult> GetAll()
         {
-            var result = _reservationService.GetAll();
+            var result = await _reservationService.GetAll();
             if (result.Success)
             {
                 return Ok(result);

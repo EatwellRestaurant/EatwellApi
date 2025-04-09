@@ -1,5 +1,4 @@
 ﻿using Core.Entities.Abstract;
-using Core.Entities.Concrete;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,5 +12,11 @@ namespace Entities.Concrete
         public int Id { get; set; }
         public string Name { get; set; }
         public string? ImagePath { get; set; }
+
+
+
+
+        public ICollection<Product> Products { get; set; }
+
     }
 }

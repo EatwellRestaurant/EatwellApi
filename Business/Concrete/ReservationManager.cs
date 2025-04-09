@@ -25,34 +25,34 @@ namespace Business.Concrete
 
 
         [ValidationAspect(typeof(ReservationValidator))]
-        public IResult Add(Reservation reservation)
+        public async Task<IResult> Add(Reservation reservation)
         {
             var result = BusinessRules.Run(
-                CheckIfReservation(reservation.ReservationDate, reservation.ReservationTime));
+                await CheckIfReservation(reservation.ReservationDate, reservation.ReservationTime));
 
             if (!result.Success)
             {
                 return result;
             }
 
-            _reservationDal.Add(reservation);
+            await _reservationDal.AddAsync(reservation);
             return new SuccessResult(ReservationMessages.ReservationAdded);
         }
 
         public IResult Delete(Reservation reservation)
         {
-            _reservationDal.Delete(reservation);
+            _reservationDal.Remove(reservation);
             return new SuccessResult(ReservationMessages.ReservationDeleted);
         }
 
-        public IDataResult<Reservation> Get(int id)
+        public async Task<IDataResult<Reservation?>> Get(int id)
         {
-            return new SuccessDataResult<Reservation>(_reservationDal.Get(r => r.Id == id), ReservationMessages.ReservationWasBrought);
+            return new SuccessDataResult<Reservation?>(await _reservationDal.GetAsync(r => r.Id == id), ReservationMessages.ReservationWasBrought);
         }
 
-        public IDataResult<List<Reservation>> GetAll()
+        public async Task<IDataResult<List<Reservation>>> GetAll()
         {
-            return new SuccessDataResult<List<Reservation>>(_reservationDal.GetAll(), ReservationMessages.ReservationsListed);
+            return new SuccessDataResult<List<Reservation>>(await _reservationDal.GetAllAsync(), ReservationMessages.ReservationsListed);
         }
 
 
@@ -67,13 +67,13 @@ namespace Business.Concrete
 
 
         //Business Codes
-        private IResult CheckIfReservation(DateTime reservationDate, string reservationTime)
+        private async Task<IResult> CheckIfReservation(DateTime reservationDate, string reservationTime)
         {
-            var resultDate = _reservationDal.GetAll(r => r.ReservationDate == reservationDate);
+            var resultDate = await _reservationDal.GetAllAsync(r => r.ReservationDate == reservationDate);
 
             if (resultDate.Count > 0)
             {
-                var resultTime = _reservationDal.GetAll(r => r.ReservationTime == reservationTime).Any();
+                var resultTime = await _reservationDal.AnyAsync(r => r.ReservationTime == reservationTime);
 
                 if (resultTime)
                 {

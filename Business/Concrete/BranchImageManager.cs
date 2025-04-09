@@ -23,7 +23,7 @@ namespace Business.Concrete
             _branchImageDal = branchImageDal;
         }
 
-        public IResult Add(IFormFile file, BranchImage branchImage)
+        public async Task<IResult> Add(IFormFile file, BranchImage branchImage)
         {
             var result = FileHelper.Upload(file, ImagePaths.ImagePath);
 
@@ -34,7 +34,7 @@ namespace Business.Concrete
 
             branchImage.ImagePath = result.Data;
 
-            _branchImageDal.Add(branchImage);
+            await _branchImageDal.AddAsync(branchImage);
             return new SuccessResult(BranchImageMessages.BranchImageAdded);
         }
 
@@ -47,18 +47,18 @@ namespace Business.Concrete
                 return result;
             }
 
-            _branchImageDal.Delete(branchImage);
+            _branchImageDal.Remove(branchImage);
             return new SuccessResult(BranchImageMessages.BranchImageDeleted);
         }
 
-        public IDataResult<BranchImage> Get(int id)
+        public async Task<IDataResult<BranchImage?>> Get(int id)
         {
-            return new SuccessDataResult<BranchImage>(_branchImageDal.Get(b => b.Id == id), BranchImageMessages.BranchImageWasBrought);
+            return new SuccessDataResult<BranchImage?>(await _branchImageDal.GetAsync(b => b.Id == id), BranchImageMessages.BranchImageWasBrought);
         }
 
-        public IDataResult<List<BranchImage>> GetAll()
+        public async Task<IDataResult<List<BranchImage>>> GetAll()
         {
-            return new SuccessDataResult<List<BranchImage>>(_branchImageDal.GetAll(), BranchImageMessages.BranchImagesListed);
+            return new SuccessDataResult<List<BranchImage>>(await _branchImageDal.GetAllAsync(), BranchImageMessages.BranchImagesListed);
         }
 
         public IResult Update(IFormFile file, BranchImage branchImage)

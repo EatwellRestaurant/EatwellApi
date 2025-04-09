@@ -1,5 +1,6 @@
 ﻿using Business.Abstract;
 using Entities.Concrete;
+using Entities.Dtos;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -17,9 +18,9 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost]
-        public IActionResult Add([FromForm(Name = "Image")] IFormFile file, [FromForm] Product product)
+        public async Task<IActionResult> Add([FromForm(Name = "Image")] IFormFile file, [FromForm] ProductForCreateDto product)
         {
-            var result = _productService.Add(file, product);
+            var result = await _productService.Add(file, product);
 
             if (result.Success)
             {
@@ -41,7 +42,7 @@ namespace WebAPI.Controllers
         }
 
         [HttpPut]
-        public IActionResult Update([FromForm(Name = "Image")] IFormFile file, [FromBody] Product product)
+        public IActionResult Update([FromForm(Name = "Image")] IFormFile file, [FromBody] ProductForUpdateDto product)
         {
             var result = _productService.Update(file, product);
 
@@ -53,9 +54,9 @@ namespace WebAPI.Controllers
         }
 
         [HttpGet]
-        public IActionResult Get(int id)
+        public async Task<IActionResult> Get(int id)
         {
-            var result = _productService.Get(id);
+            var result = await _productService.Get(id);
 
             if (result.Success)
             {
@@ -65,9 +66,9 @@ namespace WebAPI.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetAll()
+        public async Task<IActionResult> GetAll()
         {
-            var result = _productService.GetAll();
+            var result = await _productService.GetAll();
 
             if (result.Success)
             {
@@ -77,9 +78,9 @@ namespace WebAPI.Controllers
         }
 
         [HttpGet] 
-        public IActionResult GetProductsByMealCategoryId(int id)
+        public async Task<IActionResult> GetProductsByMealCategoryId(int id)
         {
-            var result = _productService.GetProductsByMealCategoryId(id);
+            var result = await _productService.GetProductsByMealCategoryId(id);
 
             if (result.Success)
             {

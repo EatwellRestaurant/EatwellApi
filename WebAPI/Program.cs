@@ -1,10 +1,13 @@
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using Business.DependencyResolvers.Autofac;
+using Core.Middlewares;
 using Core.Utilities.IoC;
 using Core.Utilities.Security.Encryption;
 using Core.Utilities.Security.JWT;
+using DataAccess.Concrete.EntityFramework;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -14,6 +17,12 @@ builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory())
     {
         builder.RegisterModule(new AutofacBusinessModule());
     });
+
+
+//builder.Services.AddDbContext<RestaurantContext>(options => options.UseSqlServer(
+//    builder.Configuration.GetConnectionString("SqlConnection")
+//    ));
+
 
 // Add services to the container.
 
@@ -30,7 +39,6 @@ builder.Services.AddCors(options =>
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddControllers();
 
 var tokenOptions = builder.Configuration.GetSection("TokenOptions").Get<TokenOptions>();
 
@@ -61,6 +69,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseCors();
+
+app.UseMiddleware<ExceptionMiddleware>();
 
 app.UseHttpsRedirection();
 

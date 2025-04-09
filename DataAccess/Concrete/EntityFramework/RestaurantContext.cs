@@ -1,11 +1,7 @@
-﻿using Core.Entities.Concrete;
-using Entities.Concrete;
+﻿using Entities.Concrete;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.Extensions.Configuration;
+using System.Reflection;
 
 namespace DataAccess.Concrete.EntityFramework
 {
@@ -13,8 +9,15 @@ namespace DataAccess.Concrete.EntityFramework
     {
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer(@"Server=HP\SQLEXPRESS;Database=Restaurant;Trusted_Connection=true;TrustServerCertificate=true");
+            IConfigurationRoot configuration = new ConfigurationBuilder()
+                .SetBasePath(Directory.GetCurrentDirectory())
+                .AddJsonFile("appsettings.Development.json")
+                .Build();
+
+
+            optionsBuilder.UseSqlServer(configuration.GetConnectionString("SqlConnection"));
         }
+
 
         public DbSet<Branch> Branches { get; set; }
         public DbSet<BranchImage> BranchImages { get; set; }
@@ -28,6 +31,13 @@ namespace DataAccess.Concrete.EntityFramework
         public DbSet<User> Users { get; set; }
         public DbSet<OperationClaim> OperationClaims { get; set; }
         public DbSet<UserOperationClaim> UserOperationClaims { get; set; }
+
+
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+        }
 
 
     }

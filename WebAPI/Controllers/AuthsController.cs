@@ -1,6 +1,5 @@
 ﻿using Business.Abstract;
 using Entities.Dtos;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebAPI.Controllers
@@ -16,41 +15,17 @@ namespace WebAPI.Controllers
             _authService = authService;
         }
 
-        [HttpPost]
-        public IActionResult Login(UserForLoginDto userForLoginDto)
-        {
-            var userToLogin = _authService.Login(userForLoginDto);
-            if (!userToLogin.Success)
-            {
-                return BadRequest(userToLogin.Message);
-            }
-
-            var result = _authService.CreateAccessToken(userToLogin.Data);
-            if (result.Success)
-            {
-                return Ok(result.Data);
-            }
-
-            return BadRequest(result.Message);
-        }
 
         [HttpPost]
-        public IActionResult Register(UserForRegisterDto userForRegisterDto)
-        {
-            var userExists = _authService.UserExists(userForRegisterDto.Email);
-            if (!userExists.Success)
-            {
-                return BadRequest(userExists.Message);
-            }
+        public async Task<IActionResult> Login(UserForLoginDto userForLoginDto) 
+            => Ok(await _authService.Login(userForLoginDto));
+            
+        
 
-            var registerResult = _authService.Register(userForRegisterDto, userForRegisterDto.Password);
-            var result = _authService.CreateAccessToken(registerResult.Data);
-            if (result.Success)
-            {
-                return Ok(result.Data);
-            }
 
-            return BadRequest(result.Message);
-        }
+        [HttpPost]
+        public async Task<IActionResult> Register(UserForRegisterDto userForRegisterDto) 
+            => Ok(await _authService.Register(userForRegisterDto));
+            
     }
 }

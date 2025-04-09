@@ -11,5 +11,8 @@ namespace DataAccess.Concrete.EntityFramework
 {
     public class EfBranchDal : EfEntityRepositoryBase<Branch, RestaurantContext>, IBranchDal
     {
+        public EfBranchDal(RestaurantContext context) : base(context)
+        {
+        }
     }
 }

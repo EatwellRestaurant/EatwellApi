@@ -1,6 +1,6 @@
-﻿using Core.Entities.Concrete;
-using Core.Extensions;
+﻿using Core.Extensions;
 using Core.Utilities.Security.Encryption;
+using Entities.Concrete;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System;
@@ -23,7 +23,6 @@ namespace Core.Utilities.Security.JWT
         {
             Configuration = configuration; 
             _tokenOptions = Configuration.GetSection("TokenOptions").Get<TokenOptions>();
-
         }
 
         public AccessToken CreateToken(User user, List<OperationClaim> operationClaims)

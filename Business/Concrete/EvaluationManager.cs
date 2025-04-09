@@ -21,26 +21,26 @@ namespace Business.Concrete
             _evaluationDal = evaluationDal;
         }
 
-        public IResult Add(Evaluation evaluation)
+        public async Task<IResult> Add(Evaluation evaluation)
         {
-            _evaluationDal.Add(evaluation);
+            await _evaluationDal.AddAsync(evaluation);
             return new SuccessResult(EvaluationMessages.EvaluationAdded);
         }
 
         public IResult Delete(Evaluation evaluation)
         {
-            _evaluationDal.Delete(evaluation);
+            _evaluationDal.Remove(evaluation);
             return new SuccessResult(EvaluationMessages.EvaluationDeleted);
         }
 
-        public IDataResult<EvaluationDetailDto> GetEvaluationDetail(int evaluationId)
-        {
-            return new SuccessDataResult<EvaluationDetailDto>(_evaluationDal.GetEvaluationDetail(evaluationId), EvaluationMessages.EvaluationDetailWasBrought);
-        }
+        //public IDataResult<EvaluationDetailDto> GetEvaluationDetail(int evaluationId)
+        //{
+        //    return new SuccessDataResult<EvaluationDetailDto>(_evaluationDal.GetEvaluationDetail(evaluationId), EvaluationMessages.EvaluationDetailWasBrought);
+        //}
 
-        public IDataResult<List<EvaluationDetailDto>> GetEvaluationDetails()
-        {
-            return new SuccessDataResult<List<EvaluationDetailDto>>(_evaluationDal.GetEvaluationDetails(), EvaluationMessages.EvaluationDetailsWasBrought);
-        }
+        //public IDataResult<List<EvaluationDetailDto>> GetEvaluationDetails()
+        //{
+        //    return new SuccessDataResult<List<EvaluationDetailDto>>(_evaluationDal.GetEvaluationDetails(), EvaluationMessages.EvaluationDetailsWasBrought);
+        //}
     }
 }

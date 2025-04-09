@@ -15,5 +15,9 @@ namespace Entities.Concrete
         public string? ImagePath { get; set; }
         public decimal Price { get; set; }
 
+
+         
+        public MealCategory MealCategory { get; set; }
+
     }
 }

@@ -9,7 +9,10 @@ using System.Threading.Tasks;
 
 namespace DataAccess.Concrete.EntityFramework
 {
-    public class EfBranchImageDal : EfEntityRepositoryBase<BranchImage,RestaurantContext>, IBranchImageDal
+    public class EfBranchImageDal : EfEntityRepositoryBase<BranchImage, RestaurantContext>, IBranchImageDal
     {
+        public EfBranchImageDal(RestaurantContext context) : base(context)
+        {
+        }
     }
 }

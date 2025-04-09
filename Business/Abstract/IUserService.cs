@@ -1,5 +1,8 @@
-﻿using Core.Entities.Concrete;
+﻿using Core.ResponseModels;
 using Core.Utilities.Results;
+using Core.Utilities.Security;
+using Entities.Concrete;
+using Service.Abstract;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,10 +11,14 @@ using System.Threading.Tasks;
 
 namespace Business.Abstract
 {
-    public interface IUserService
+    public interface IUserService : IService<User>
     {
-        IDataResult<List<OperationClaim>> GetClaims(User user);
-        IResult Add(User user);
-        IDataResult<User> GetByMail(string email);
+        Task Add(User user);
+
+        Task CheckIfUserEMail(string email); 
+
+        Task<User> GetUserByEmail(string email);
+
+        Task<DataResponse<AccessToken>> CreateAccessToken(User user);
     }
 }

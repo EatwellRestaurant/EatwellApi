@@ -19,26 +19,26 @@ namespace Business.Concrete
             _cityDal = cityDal;
         }
 
-        public IResult Add(City city)
+        public async Task<IResult> Add(City city)
         {
-            _cityDal.Add(city);
+            await _cityDal.AddAsync(city);
             return new SuccessResult(CityMessages.CityAdded);
         }
 
         public IResult Delete(City city)
         {
-            _cityDal.Delete(city);
+            _cityDal.Remove(city);
             return new SuccessResult(CityMessages.CityDeleted);
         }
 
-        public IDataResult<City> Get(int id)
+        public async Task<IDataResult<City?>> Get(int id)
         {
-            return new SuccessDataResult<City>(_cityDal.Get(c => c.Id == id), CityMessages.CityWasBrought);
+            return new SuccessDataResult<City?>(await _cityDal.GetAsync(c => c.Id == id), CityMessages.CityWasBrought);
         }
 
-        public IDataResult<List<City>> GetAll()
+        public async Task<IDataResult<List<City>>> GetAll()
         {
-            return new SuccessDataResult<List<City>>(_cityDal.GetAll(), CityMessages.CitiesListed);
+            return new SuccessDataResult<List<City>>(await _cityDal.GetAllAsync(), CityMessages.CitiesListed);
         }
 
         public IResult Update(City city)

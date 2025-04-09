@@ -11,9 +11,9 @@ namespace Business.Abstract
 {
     public interface IEvaluationService
     {
-        IResult Add(Evaluation evaluation);
+        Task<IResult> Add(Evaluation evaluation);
         IResult Delete(Evaluation evaluation);
-        IDataResult<EvaluationDetailDto> GetEvaluationDetail(int evaluationId);
-        IDataResult<List<EvaluationDetailDto>> GetEvaluationDetails();
+        //IDataResult<EvaluationDetailDto> GetEvaluationDetail(int evaluationId);
+        //IDataResult<List<EvaluationDetailDto>> GetEvaluationDetails();
     }
 }

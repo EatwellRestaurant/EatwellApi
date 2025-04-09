@@ -11,10 +11,10 @@ namespace Business.Abstract
 {
     public interface IBranchEmployeeService
     {
-        IDataResult<List<BranchEmployee>> GetAll();
-        IDataResult<BranchEmployee> Get(int id);
-        IResult Add(IFormFile file, BranchEmployee branchEmployee);
+        Task<IDataResult<List<BranchEmployee>>> GetAll();
+        Task<IDataResult<BranchEmployee?>> Get(int id);
+        Task<IResult> Add(IFormFile file, BranchEmployee branchEmployee);
         IResult Delete(BranchEmployee branchEmployee);
-        IResult Update(IFormFile file, BranchEmployee branchEmployee);
+        Task<IResult> Update(IFormFile file, BranchEmployee branchEmployee);
     }
 }

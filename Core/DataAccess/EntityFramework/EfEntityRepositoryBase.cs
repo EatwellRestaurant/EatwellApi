@@ -1,64 +1,93 @@
 ﻿using Core.Entities.Abstract;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Core.DataAccess.EntityFramework
 {
     public class EfEntityRepositoryBase<TEntity, TContext> : IEntityRepository<TEntity>
         where TEntity : class, IEntity, new()
-        where TContext : DbContext, new() 
+        where TContext : DbContext
     {
 
-        public void Add(TEntity entity)
+        readonly DbSet<TEntity> _dbSet;
+
+        public EfEntityRepositoryBase(TContext context)
         {
-            using (TContext context = new TContext())
-            {
-                var addedEntity = context.Entry(entity);
-                addedEntity.State = EntityState.Added;
-                context.SaveChanges();
-            }
+            _dbSet = context.Set<TEntity>();
         }
 
-        public void Delete(TEntity entity)
-        {
-            using (TContext context = new TContext())
-            {
-                var deletedEntity = context.Entry(entity);
-                deletedEntity.State = EntityState.Deleted;
-                context.SaveChanges();
-            }
-        }
 
-        public void Update(TEntity entity)
-        {
-            using (TContext context = new TContext())
-            {
-                var updatedEntity = context.Entry(entity);
-                updatedEntity.State = EntityState.Modified;
-                context.SaveChanges();
-            }
-        }
 
-        public List<TEntity> GetAll(Expression<Func<TEntity, bool>> filter = null)
-        {
-            using (TContext context = new TContext())
-            {
-                return filter == null ? context.Set<TEntity>().ToList() : context.Set<TEntity>().Where(filter).ToList();
-            }
-        }
 
-        public TEntity Get(Expression<Func<TEntity, bool>> filter)
-        {
-            using (TContext context = new TContext())
-            {
-                var result = context.Set<TEntity>().SingleOrDefault(filter);
-                return result;
-            }
-        }
+        public async Task AddAsync(TEntity entity) 
+            => await _dbSet.AddAsync(entity);
+
+
+
+
+        public async Task AddRangeAsync(IEnumerable<TEntity> entities) 
+            => await _dbSet.AddRangeAsync(entities);
+
+
+
+
+        public async Task<bool> AnyAsync(Expression<Func<TEntity, bool>> expression) 
+            => await _dbSet.AnyAsync(expression);
+
+
+
+         
+        public async Task<List<TEntity>> GetAllAsync(Expression<Func<TEntity, bool>>? expression = null) 
+            => expression == null ? await _dbSet.ToListAsync() : await _dbSet.Where(expression).ToListAsync();
+        
+
+
+
+        public async Task<TEntity?> GetByIdAsync(int id) 
+            => await _dbSet.FindAsync(id);
+
+
+
+
+        public async Task<TEntity?> GetAsync(Expression<Func<TEntity, bool>> filter) 
+            => await _dbSet.SingleOrDefaultAsync(filter);
+
+
+
+
+        public void Remove(TEntity entity) 
+            => _dbSet.Remove(entity);
+        
+
+
+
+        public void RemoveRange(IEnumerable<TEntity> entities)
+            => _dbSet.RemoveRange(entities);
+
+
+
+
+        public void Update(TEntity entity) 
+            => _dbSet.Update(entity);
+        
+        
+
+
+        public void UpdateRange(IEnumerable<TEntity> entities) 
+            => _dbSet.UpdateRange(entities);
+
+
+
+         
+        public IQueryable<TEntity> Where(Expression<Func<TEntity, bool>> expression) 
+            => _dbSet.Where(expression);
+        
+
+
+
+        public async Task<int> CountAsync(Expression<Func<TEntity, bool>> expression) 
+            => await _dbSet.CountAsync(expression);
+        
+        
     }
 }

@@ -7,6 +7,7 @@ using Core.Utilities.FileHelper;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
+using Entities.Dtos;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
@@ -26,7 +27,7 @@ namespace Business.Concrete
         }
 
         [ValidationAspect(typeof(ProductValidator))]
-        public IResult Add(IFormFile file, Product product)
+        public async Task<IResult> Add(IFormFile file, ProductForCreateDto dto)
         {
             var result = FileHelper.Upload(file, ImagePaths.ImagePath);
 
@@ -35,9 +36,15 @@ namespace Business.Concrete
                 return result;
             }
 
-            product.ImagePath = result.Data;
+            Product product = new Product
+            {
+                Name = dto.ProductName,
+                Price = dto.Price,
+                MealCategoryId = dto.MealCategoryId,
+                ImagePath = result.Data
+            };
 
-            _productDal.Add(product);
+            await _productDal.AddAsync(product);
             return new SuccessResult(ProductMessages.ProductAdded);
         }
 
@@ -50,36 +57,43 @@ namespace Business.Concrete
                 return result;
             }
 
-            _productDal.Delete(product);
+            _productDal.Remove(product);
             return new SuccessResult(ProductMessages.ProductDeleted);
         }
 
-        public IDataResult<Product> Get(int id)
+        public async Task<IDataResult<Product?>> Get(int id)
         {
-            return new SuccessDataResult<Product>(_productDal.Get(p => p.Id == id), ProductMessages.ProductWasBrought);
+            return new SuccessDataResult<Product?>(await _productDal.GetAsync(p => p.Id == id), ProductMessages.ProductWasBrought);
         }
 
-        public IDataResult<List<Product>> GetAll()
+        public async Task<IDataResult<List<Product>>> GetAll()
         {
-            return new SuccessDataResult<List<Product>>(_productDal.GetAll(), ProductMessages.ProductsListed);
+            return new SuccessDataResult<List<Product>>(await _productDal.GetAllAsync(), ProductMessages.ProductsListed);
         }
 
-        public IDataResult<List<Product>> GetProductsByMealCategoryId(int id)
+        public async Task<IDataResult<List<Product>>> GetProductsByMealCategoryId(int id)
         {
-            return new SuccessDataResult<List<Product>>(_productDal.GetAll(p => p.MealCategoryId == id), ProductMessages.ProductsListed);
+            return new SuccessDataResult<List<Product>>(await _productDal.GetAllAsync(p => p.MealCategoryId == id), ProductMessages.ProductsListed);
         }
 
         [ValidationAspect(typeof(ProductValidator))]
-        public IResult Update(IFormFile file, Product product)
+        public IResult Update(IFormFile file, ProductForUpdateDto dto)
         {
-            var result = FileHelper.Update(file, product.ImagePath, ImagePaths.ImagePath);
+            var result = FileHelper.Update(file, dto.ImagePath, ImagePaths.ImagePath);
 
             if (!result.Success)
             {
                 return result;
             }
 
-            product.ImagePath = result.Data;
+            Product product = new()
+            {
+                MealCategoryId = dto.MealCategoryId,
+                Name = dto.ProductName,
+                ImagePath = result.Data,
+                Price = dto.Price,
+            };
+
 
             _productDal.Update(product);
             return new SuccessResult(ProductMessages.ProductUpdated);

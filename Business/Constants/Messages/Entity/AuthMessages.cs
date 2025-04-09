@@ -6,14 +6,13 @@ using System.Threading.Tasks;
 
 namespace Business.Constants.Messages.Entity
 {
-    public static class AuthMessages
+    public class AuthMessages
     {
-        public static string UserRegistered = "Kullanıcı başarıyla kaydedildi.";
-        public static string UserNotFound = "Kullanıcı bulunamadı";
-        public static string PasswordError = "Şifre hatalı";
-        public static string SuccessfulLogin = "Sisteme giriş başarılı";
-        public static string UserAlreadyExists = "Böyle bir kullanıcı zaten var";
-        public static string AccessTokenCreated = "Access token başarıyla oluşturuldu";
-
+        public const string UserRegistered = "Kullanıcı başarıyla kaydedildi.";
+        public const string UserNotFound = "Kullanıcı bulunamadı";
+        public const string PasswordError = "Şifre hatalı";
+        public const string SuccessfulLogin = "Sisteme Giriş Başarılı";
+        public const string UserAlreadyExists = "Böyle bir kullanıcı zaten var";
+        public const string AccessTokenCreated = "Access token başarıyla oluşturuldu";
     }
 }

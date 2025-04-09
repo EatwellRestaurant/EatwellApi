@@ -17,9 +17,9 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost]
-        public IActionResult Add(Country country)
+        public async Task<IActionResult> Add(Country country)
         {
-            var result = _countryService.Add(country);
+            var result = await _countryService.Add(country);
             if (result.Success)
             {
                 return Ok(result);
@@ -50,9 +50,9 @@ namespace WebAPI.Controllers
         }
 
         [HttpGet]
-        public IActionResult Get(int id)
+        public async Task<IActionResult> Get(int id)
         {
-            var result = _countryService.Get(id);
+            var result = await _countryService.Get(id);
             if (result.Success)
             {
                 return Ok(result);
@@ -61,9 +61,9 @@ namespace WebAPI.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetAll()
+        public async Task<IActionResult> GetAll()
         {
-            var result = _countryService.GetAll();
+            var result = await _countryService.GetAll();
             if (result.Success)
             {
                 return Ok(result);

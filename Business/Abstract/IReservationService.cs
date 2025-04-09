@@ -10,9 +10,9 @@ namespace Business.Abstract
 {
     public interface IReservationService
     {
-        IDataResult<List<Reservation>> GetAll();
-        IDataResult<Reservation> Get(int id);
-        IResult Add(Reservation reservation);
+        Task<IDataResult<List<Reservation>>> GetAll();
+        Task<IDataResult<Reservation?>> Get(int id);
+        Task<IResult> Add(Reservation reservation);
         IResult Delete(Reservation reservation);
         IResult Update(Reservation reservation);
     }

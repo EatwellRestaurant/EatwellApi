@@ -1,16 +1,23 @@
-﻿using Business.Abstract;
+﻿using BCrypt.Net;
+using Business.Abstract;
 using Business.Constants.Messages.Entity;
 using Business.ValidationRules.FluentValidation;
 using Core.Aspects.Autofac.Validation;
-using Core.Entities.Concrete;
+using Core.Entities.Abstract;
+using Core.Exceptions.User;
+using Core.ResponseModels;
 using Core.Utilities.Results;
 using Core.Utilities.Security;
 using Core.Utilities.Security.Hashing;
 using Core.Utilities.Security.JWT;
+using Entities.Concrete;
 using Entities.Dtos;
+using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Authentication;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -18,65 +25,60 @@ namespace Business.Concrete
 {
     public class AuthManager : IAuthService
     {
-        private IUserService _userService;
-        private ITokenHelper _tokenHelper;
+        readonly IUserService _userService;
+        readonly IUnitOfWork _unitOfWork;
 
-        public AuthManager(IUserService userService, ITokenHelper tokenHelper)
+        public AuthManager(IUserService userService, IUnitOfWork unitOfWork)
         {
             _userService = userService;
-            _tokenHelper = tokenHelper;
+            _unitOfWork = unitOfWork;
         }
 
+
+
         [ValidationAspect(typeof(UserForRegisterDtoValidator))]
-        public IDataResult<User> Register(UserForRegisterDto userForRegisterDto, string password)
+        public async Task<CreateSuccessResponse> Register(UserForRegisterDto dto)
         {
-            byte[] passwordHash, passwordSalt;
-            HashingHelper.CreatePasswordHash(password, out passwordHash, out passwordSalt);
-            var user = new User
-            {
-                Email = userForRegisterDto.Email,
-                FirstName = userForRegisterDto.FirstName,
-                LastName = userForRegisterDto.LastName,
-                Phone = userForRegisterDto.Phone,
-                PasswordHash = passwordHash,
-                PasswordSalt = passwordSalt
+            await _userService.CheckIfUserEMail(dto.Email);
+
+            User user = new()
+            { 
+                Email = dto.Email,
+                FirstName = dto.FirstName,
+                LastName = dto.LastName,
+                Phone = dto.Phone,
+                Password = BCrypt.Net.BCrypt.HashPassword(dto.Password),
             };
-            _userService.Add(user);
-            return new SuccessDataResult<User>(user, AuthMessages.UserRegistered);
+
+            user.UserOperationClaims.Add(new UserOperationClaim { OperationClaimId = 2 });
+
+            await _userService.Add(user);
+            await _unitOfWork.SaveChangesAsync();
+
+            return new CreateSuccessResponse(AuthMessages.UserRegistered);
         }
+
 
 
         [ValidationAspect(typeof(UserForLoginDtoValidator))]
-        public IDataResult<User> Login(UserForLoginDto userForLoginDto)
+        public async Task<DataResponse<AccessToken>> Login(UserForLoginDto dto)
         {
-            var userToCheck = _userService.GetByMail(userForLoginDto.Email).Data;
-            if (userToCheck == null)
-            {
-                return new ErrorDataResult<User>(AuthMessages.UserNotFound);
-            }
+            User? user = await _userService
+                .Where(u => u.Email == dto.Email && !u.IsDeleted)
+                .SingleOrDefaultAsync();
 
-            if (!HashingHelper.VerifyPasswordHash(userForLoginDto.Password, userToCheck.PasswordHash, userToCheck.PasswordSalt))
-            {
-                return new ErrorDataResult<User>(AuthMessages.PasswordError);
-            }
 
-            return new SuccessDataResult<User>(userToCheck, AuthMessages.SuccessfulLogin);
+            if (user == null || !BCrypt.Net.BCrypt.Verify(dto.Password, user.Password))
+                throw new InvalidCredentialsException();
+
+
+            DataResponse<AccessToken> dataResponse = await _userService.CreateAccessToken(user);
+
+
+            return new DataResponse<AccessToken>(dataResponse.Data, AuthMessages.SuccessfulLogin);
         }
 
-        public IResult UserExists(string email)
-        {
-            if (_userService.GetByMail(email).Data != null)
-            {
-                return new ErrorResult(AuthMessages.UserAlreadyExists);
-            }
-            return new SuccessResult();
-        }
 
-        public IDataResult<AccessToken> CreateAccessToken(User user)
-        {
-            var claims = _userService.GetClaims(user).Data;
-            var accessToken = _tokenHelper.CreateToken(user, claims);
-            return new SuccessDataResult<AccessToken>(accessToken, AuthMessages.AccessTokenCreated);
-        }
+        
     }
 }

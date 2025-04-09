@@ -19,5 +19,11 @@ namespace Entities.Concrete
         public string ReservationTime { get; set; } 
         public int PersonCount { get; set; }
         public string? Note { get; set; }
+
+
+
+        public Branch Branch { get; set; }
+
+
     }
 }

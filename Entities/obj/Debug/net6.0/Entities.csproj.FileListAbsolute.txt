@@ -28,3 +28,19 @@ C:\Users\HP\Desktop\GitHub\Backend\- Organizasyon\RestaurantProject\Entities\obj
 C:\Users\HP\Desktop\GitHub\Backend\- Organizasyon\RestaurantProject\Entities\obj\Debug\net6.0\refint\Entities.dll
 C:\Users\HP\Desktop\GitHub\Backend\- Organizasyon\RestaurantProject\Entities\obj\Debug\net6.0\Entities.pdb
 C:\Users\HP\Desktop\GitHub\Backend\- Organizasyon\RestaurantProject\Entities\obj\Debug\net6.0\ref\Entities.dll
+C:\Users\burcu\OneDrive\Desktop\Github\EatwellRestaurantApi\Entities\bin\Debug\net6.0\Entities.deps.json
+C:\Users\burcu\OneDrive\Desktop\Github\EatwellRestaurantApi\Entities\bin\Debug\net6.0\Entities.dll
+C:\Users\burcu\OneDrive\Desktop\Github\EatwellRestaurantApi\Entities\bin\Debug\net6.0\Entities.pdb
+C:\Users\burcu\OneDrive\Desktop\Github\EatwellRestaurantApi\Entities\bin\Debug\net6.0\Core.dll
+C:\Users\burcu\OneDrive\Desktop\Github\EatwellRestaurantApi\Entities\bin\Debug\net6.0\Core.pdb
+C:\Users\burcu\OneDrive\Desktop\Github\EatwellRestaurantApi\Entities\obj\Debug\net6.0\Entities.csproj.AssemblyReference.cache
+C:\Users\burcu\OneDrive\Desktop\Github\EatwellRestaurantApi\Entities\obj\Debug\net6.0\Entities.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\burcu\OneDrive\Desktop\Github\EatwellRestaurantApi\Entities\obj\Debug\net6.0\Entities.AssemblyInfoInputs.cache
+C:\Users\burcu\OneDrive\Desktop\Github\EatwellRestaurantApi\Entities\obj\Debug\net6.0\Entities.AssemblyInfo.cs
+C:\Users\burcu\OneDrive\Desktop\Github\EatwellRestaurantApi\Entities\obj\Debug\net6.0\Entities.csproj.CoreCompileInputs.cache
+C:\Users\burcu\OneDrive\Desktop\Github\EatwellRestaurantApi\Entities\obj\Debug\net6.0\Entities.sourcelink.json
+C:\Users\burcu\OneDrive\Desktop\Github\EatwellRestaurantApi\Entities\obj\Debug\net6.0\Entities.csproj.Up2Date
+C:\Users\burcu\OneDrive\Desktop\Github\EatwellRestaurantApi\Entities\obj\Debug\net6.0\Entities.dll
+C:\Users\burcu\OneDrive\Desktop\Github\EatwellRestaurantApi\Entities\obj\Debug\net6.0\refint\Entities.dll
+C:\Users\burcu\OneDrive\Desktop\Github\EatwellRestaurantApi\Entities\obj\Debug\net6.0\Entities.pdb
+C:\Users\burcu\OneDrive\Desktop\Github\EatwellRestaurantApi\Entities\obj\Debug\net6.0\ref\Entities.dll

@@ -11,7 +11,7 @@ namespace DataAccess.Abstract
 {
     public interface IEvaluationDal : IEntityRepository<Evaluation>
     {
-        List<EvaluationDetailDto> GetEvaluationDetails();
-        EvaluationDetailDto GetEvaluationDetail(int evaluationId);
+        //List<EvaluationDetailDto> GetEvaluationDetails();
+        //EvaluationDetailDto GetEvaluationDetail(int evaluationId);
     }
 }

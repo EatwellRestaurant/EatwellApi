@@ -16,10 +16,12 @@ namespace WebAPI.Controllers
             _mealCategoryService = mealCategoryService;
         }
 
-        [HttpPut]
-        public IActionResult Add([FromForm(Name = "Image")] IFormFile file, [FromForm] MealCategory mealCategory)
+        [HttpPost]
+        public async Task<IActionResult> Add([FromForm(Name = "Image")] IFormFile file, [FromForm] string mealCategoryName)
         {
-            var result = _mealCategoryService.Add(file, mealCategory);
+            MealCategory mealCategory = new() { Name = mealCategoryName };
+
+            var result = await _mealCategoryService.Add(file, mealCategory);
             if (result.Success)
             {
                 return Ok(result);
@@ -38,9 +40,11 @@ namespace WebAPI.Controllers
             return BadRequest(result);
         }
 
-        [HttpPost]
-        public IActionResult Update([FromForm(Name = "Image")] IFormFile file,[FromForm] MealCategory mealCategory)
+        [HttpPut]
+        public IActionResult Update([FromForm(Name = "Image")] IFormFile file,[FromForm] string mealCategoryName)
         {
+            MealCategory mealCategory = new() { Name = mealCategoryName };
+            
             var result = _mealCategoryService.Update(file, mealCategory);
             if (result.Success)
             {
@@ -50,9 +54,9 @@ namespace WebAPI.Controllers
         }
 
         [HttpGet]
-        public IActionResult Get(int id)
+        public async Task<IActionResult> Get(int id)
         {
-            var result = _mealCategoryService.Get(id);
+            var result = await _mealCategoryService.Get(id);
             if (result.Success)
             {
                 return Ok(result);
@@ -61,9 +65,9 @@ namespace WebAPI.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetAll()
+        public async Task<IActionResult> GetAll()
         {
-            var result = _mealCategoryService.GetAll();
+            var result = await _mealCategoryService.GetAll();
             if (result.Success)
             {
                 return Ok(result);

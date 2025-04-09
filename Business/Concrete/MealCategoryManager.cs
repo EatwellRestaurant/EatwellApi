@@ -23,7 +23,7 @@ namespace Business.Concrete
             _mealCategoryDal = mealCategoryDal;
         }
 
-        public IResult Add(IFormFile file, MealCategory mealCategory)
+        public async Task<IResult> Add(IFormFile file, MealCategory mealCategory)
         {
             var result = FileHelper.Upload(file, ImagePaths.ImagePath);
 
@@ -34,24 +34,24 @@ namespace Business.Concrete
 
             mealCategory.ImagePath = result.Data;
 
-            _mealCategoryDal.Add(mealCategory);
+            await _mealCategoryDal.AddAsync(mealCategory);
             return new SuccessResult(MealCategoryMessages.MealCategoryAdded);
         }
 
         public IResult Delete(MealCategory mealCategory)
         {
-            _mealCategoryDal.Delete(mealCategory);
+            _mealCategoryDal.Remove(mealCategory);
             return new SuccessResult(MealCategoryMessages.MealCategoryDeleted);
         }
 
-        public IDataResult<MealCategory> Get(int id)
+        public async Task<IDataResult<MealCategory?>> Get(int id)
         {
-            return new SuccessDataResult<MealCategory>(_mealCategoryDal.Get(m => m.Id == id), MealCategoryMessages.MealCategoryWasBrought);
+            return new SuccessDataResult<MealCategory?>(await _mealCategoryDal.GetAsync(m => m.Id == id), MealCategoryMessages.MealCategoryWasBrought);
         }
 
-        public IDataResult<List<MealCategory>> GetAll()
+        public async Task<IDataResult<List<MealCategory>>> GetAll()
         {
-            return new SuccessDataResult<List<MealCategory>>(_mealCategoryDal.GetAll(), MealCategoryMessages.MealCategoriesListed);
+            return new SuccessDataResult<List<MealCategory>>(await _mealCategoryDal.GetAllAsync(), MealCategoryMessages.MealCategoriesListed);
         }
 
         public IResult Update(IFormFile file, MealCategory mealCategory)

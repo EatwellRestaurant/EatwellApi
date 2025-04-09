@@ -11,5 +11,8 @@ namespace DataAccess.Concrete.EntityFramework
 {
     public class EfReservationDal : EfEntityRepositoryBase<Reservation, RestaurantContext>, IReservationDal
     {
+        public EfReservationDal(RestaurantContext context) : base(context)
+        {
+        }
     }
 }

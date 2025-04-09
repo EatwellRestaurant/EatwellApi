@@ -11,5 +11,8 @@ namespace DataAccess.Concrete.EntityFramework
 {
     public class EfMealCategoryDal : EfEntityRepositoryBase<MealCategory, RestaurantContext>, IMealCategoryDal
     {
+        public EfMealCategoryDal(RestaurantContext context) : base(context)
+        {
+        }
     }
 }

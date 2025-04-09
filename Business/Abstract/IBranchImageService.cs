@@ -11,9 +11,9 @@ namespace Business.Abstract
 {
     public interface IBranchImageService
     {
-        IDataResult<List<BranchImage>> GetAll();
-        IDataResult<BranchImage> Get(int id);
-        IResult Add(IFormFile file, BranchImage branchImage);
+        Task<IDataResult<List<BranchImage>>> GetAll();
+        Task<IDataResult<BranchImage?>> Get(int id);
+        Task<IResult> Add(IFormFile file, BranchImage branchImage);
         IResult Delete(BranchImage branchImage);
         IResult Update(IFormFile file, BranchImage branchImage);
     }

@@ -9,7 +9,10 @@ using System.Threading.Tasks;
 
 namespace DataAccess.Concrete.EntityFramework
 {
-    public class EfProductDal : EfEntityRepositoryBase<Product, RestaurantContext>, IProductDal 
+    public class EfProductDal : EfEntityRepositoryBase<Product, RestaurantContext>, IProductDal
     {
+        public EfProductDal(RestaurantContext context) : base(context)
+        {
+        }
     }
 }

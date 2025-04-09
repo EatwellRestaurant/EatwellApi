@@ -24,7 +24,7 @@ namespace Business.Concrete
             _branchEmployeeDal = branchEmployeeDal;
         }
 
-        public IResult Add(IFormFile file, BranchEmployee branchEmployee)
+        public async Task<IResult> Add(IFormFile file, BranchEmployee branchEmployee)
         {
             var result = BusinessRules.Run(CheckIfFileEnter(file));
 
@@ -39,7 +39,7 @@ namespace Business.Concrete
                 branchEmployee.ImagePath = resultOfUpload.Data;
             }
 
-            _branchEmployeeDal.Add(branchEmployee);
+            await _branchEmployeeDal.AddAsync(branchEmployee);
             return new SuccessResult(BranchEmployeeMessages.BranchEmployeeAdded);
         }
 
@@ -57,25 +57,25 @@ namespace Business.Concrete
                 }
             }
         
-            _branchEmployeeDal.Delete(branchEmployee);
+            _branchEmployeeDal.Remove(branchEmployee);
             return new SuccessResult(BranchEmployeeMessages.BranchEmployeeDeleted);
         }
 
-        public IDataResult<BranchEmployee> Get(int id)
+        public async Task<IDataResult<BranchEmployee?>> Get(int id)
         {
-            return new SuccessDataResult<BranchEmployee>(_branchEmployeeDal.Get(b => b.Id == id), 
+            return new SuccessDataResult<BranchEmployee?>(await _branchEmployeeDal.GetAsync(b => b.Id == id), 
                 BranchEmployeeMessages.BranchEmployeeWasBrought);
         }
 
-        public IDataResult<List<BranchEmployee>> GetAll()
+        public async Task<IDataResult<List<BranchEmployee>>> GetAll()
         {
-            return new SuccessDataResult<List<BranchEmployee>>(_branchEmployeeDal.GetAll(),
+            return new SuccessDataResult<List<BranchEmployee>>(await _branchEmployeeDal.GetAllAsync(),
                 BranchEmployeeMessages.BranchEmployeesListed);
         }
 
-        public IResult Update(IFormFile file, BranchEmployee branchEmployee)
+        public async Task<IResult> Update(IFormFile file, BranchEmployee branchEmployee)
         {
-            var employee = _branchEmployeeDal.Get(b => b.Id == branchEmployee.Id);
+            var employee = await _branchEmployeeDal.GetAsync(b => b.Id == branchEmployee.Id);
 
             if (CheckIfFileEnter(file).Success)
             {

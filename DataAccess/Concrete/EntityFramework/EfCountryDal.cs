@@ -12,5 +12,8 @@ namespace DataAccess.Concrete.EntityFramework
 {
     public class EfCountryDal : EfEntityRepositoryBase<Country, RestaurantContext>, ICountryDal
     {
+        public EfCountryDal(RestaurantContext context) : base(context)
+        {
+        }
     }
 }

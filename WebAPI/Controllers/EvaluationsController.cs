@@ -17,9 +17,9 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost]
-        public IActionResult Add(Evaluation evaluation)
+        public async Task<IActionResult> Add(Evaluation evaluation)
         {
-            var result = _evaluationService.Add(evaluation);
+            var result = await _evaluationService.Add(evaluation);
             if (result.Success)
             {
                 return Ok(result);
@@ -38,26 +38,26 @@ namespace WebAPI.Controllers
             return BadRequest(result);
         }
 
-        [HttpGet]
-        public IActionResult GetEvaluationDetail(int evaluationId)
-        {
-            var result = _evaluationService.GetEvaluationDetail(evaluationId);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-            return BadRequest(result);
-        }
+        //[HttpGet]
+        //public IActionResult GetEvaluationDetail(int evaluationId)
+        //{
+        //    var result = _evaluationService.GetEvaluationDetail(evaluationId);
+        //    if (result.Success)
+        //    {
+        //        return Ok(result);
+        //    }
+        //    return BadRequest(result);
+        //}
 
-        [HttpGet]
-        public IActionResult GetEvaluationDetails()
-        {
-            var result = _evaluationService.GetEvaluationDetails();
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-            return BadRequest(result);
-        }
+        //[HttpGet]
+        //public IActionResult GetEvaluationDetails()
+        //{
+        //    var result = _evaluationService.GetEvaluationDetails();
+        //    if (result.Success)
+        //    {
+        //        return Ok(result);
+        //    }
+        //    return BadRequest(result);
+        //}
     }
 }

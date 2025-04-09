@@ -17,9 +17,9 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost]
-        public IActionResult Add(Branch branch)
+        public async Task<IActionResult> Add(Branch branch)
         {
-            var result = _branchService.Add(branch);
+            var result = await _branchService.Add(branch);
             if (result.Success)
             {
                 return Ok(result);
@@ -50,9 +50,9 @@ namespace WebAPI.Controllers
         }
 
         [HttpGet]
-        public IActionResult Get(int id)
+        public async Task<IActionResult> Get(int id)
         {
-            var result = _branchService.Get(id);
+            var result = await _branchService.Get(id);
             if (result.Success)
             {
                 return Ok(result);
@@ -61,9 +61,9 @@ namespace WebAPI.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetAll()
+        public async Task<IActionResult> GetAll()
         {
-            var result = _branchService.GetAll();
+            var result = await _branchService.GetAll();
             if (result.Success)
             {
                 return Ok(result);

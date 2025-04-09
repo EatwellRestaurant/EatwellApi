@@ -17,9 +17,9 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost]
-        public IActionResult Add(City city)
+        public async Task<IActionResult> Add(City city)
         {
-            var result = _cityService.Add(city);
+            var result = await _cityService.Add(city);
             if (result.Success)
             {
                 return Ok(result);
@@ -50,9 +50,9 @@ namespace WebAPI.Controllers
         }
 
         [HttpGet]
-        public IActionResult Get(int id)
+        public async Task<IActionResult> Get(int id)
         {
-            var result = _cityService.Get(id);
+            var result = await _cityService.Get(id);
             if (result.Success)
             {
                 return Ok(result);
@@ -61,9 +61,9 @@ namespace WebAPI.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetAll()
+        public async Task<IActionResult> GetAll()
         {
-            var result = _cityService.GetAll();
+            var result = await _cityService.GetAll();
             if (result.Success)
             {
                 return Ok(result);

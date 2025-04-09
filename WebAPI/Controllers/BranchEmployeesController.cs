@@ -17,9 +17,9 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost]
-        public IActionResult Add([FromForm(Name = "Image")] IFormFile file, [FromForm] BranchEmployee branchEmployee)
+        public async Task<IActionResult> Add([FromForm(Name = "Image")] IFormFile file, [FromForm] BranchEmployee branchEmployee)
         {
-            var result = _branchEmployeeService.Add(file, branchEmployee);
+            var result = await _branchEmployeeService.Add(file, branchEmployee);
             if (result.Success)
             {
                 return Ok(result);
@@ -39,9 +39,9 @@ namespace WebAPI.Controllers
         }
 
         [HttpPut]
-        public IActionResult Update([FromForm(Name = "Image")] IFormFile file, [FromForm] BranchEmployee branchEmployee)
+        public async Task<IActionResult> Update([FromForm(Name = "Image")] IFormFile file, [FromForm] BranchEmployee branchEmployee)
         {
-            var result = _branchEmployeeService.Update(file, branchEmployee);
+            var result = await _branchEmployeeService.Update(file, branchEmployee);
             if (result.Success)
             {
                 return Ok(result);
@@ -50,9 +50,9 @@ namespace WebAPI.Controllers
         }
 
         [HttpGet]
-        public IActionResult Get(int id)
+        public async Task<IActionResult> Get(int id)
         {
-            var result = _branchEmployeeService.Get(id);
+            var result = await _branchEmployeeService.Get(id);
             if (result.Success)
             {
                 return Ok(result);
@@ -61,9 +61,9 @@ namespace WebAPI.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetAll()
+        public async Task<IActionResult> GetAll()
         {
-            var result = _branchEmployeeService.GetAll();
+            var result = await _branchEmployeeService.GetAll();
             if (result.Success)
             {
                 return Ok(result);

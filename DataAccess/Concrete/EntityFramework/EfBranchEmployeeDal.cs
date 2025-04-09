@@ -11,5 +11,8 @@ namespace DataAccess.Concrete.EntityFramework
 {
     public class EfBranchEmployeeDal : EfEntityRepositoryBase<BranchEmployee, RestaurantContext>, IBranchEmployeeDal
     {
+        public EfBranchEmployeeDal(RestaurantContext context) : base(context)
+        {
+        }
     }
 }

@@ -1,20 +1,24 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\HP\\Desktop\\GitHub\\Backend\\- Organizasyon\\RestaurantProject\\Entities\\Entities.csproj": {}
+    "C:\\Users\\burcu\\OneDrive\\Desktop\\Github\\EatwellRestaurantApi\\Entities\\Entities.csproj": {}
   },
   "projects": {
-    "C:\\Users\\HP\\Desktop\\GitHub\\Backend\\- Organizasyon\\RestaurantProject\\Core\\Core.csproj": {
+    "C:\\Users\\burcu\\OneDrive\\Desktop\\Github\\EatwellRestaurantApi\\Core\\Core.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\HP\\Desktop\\GitHub\\Backend\\- Organizasyon\\RestaurantProject\\Core\\Core.csproj",
+        "projectUniqueName": "C:\\Users\\burcu\\OneDrive\\Desktop\\Github\\EatwellRestaurantApi\\Core\\Core.csproj",
         "projectName": "Core",
-        "projectPath": "C:\\Users\\HP\\Desktop\\GitHub\\Backend\\- Organizasyon\\RestaurantProject\\Core\\Core.csproj",
-        "packagesPath": "C:\\Users\\HP\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\HP\\Desktop\\GitHub\\Backend\\- Organizasyon\\RestaurantProject\\Core\\obj\\",
+        "projectPath": "C:\\Users\\burcu\\OneDrive\\Desktop\\Github\\EatwellRestaurantApi\\Core\\Core.csproj",
+        "packagesPath": "C:\\Users\\burcu\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\burcu\\OneDrive\\Desktop\\Github\\EatwellRestaurantApi\\Core\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
         "configFilePaths": [
-          "C:\\Users\\HP\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\burcu\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -22,6 +26,7 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -34,6 +39,11 @@
           "warnAsError": [
             "NU1605"
           ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
         }
       },
       "frameworks": {
@@ -42,7 +52,7 @@
           "dependencies": {
             "Autofac": {
               "target": "Package",
-              "version": "[6.5.0, )"
+              "version": "[8.0.0, )"
             },
             "Autofac.Extras.DynamicProxy": {
               "target": "Package",
@@ -54,7 +64,7 @@
             },
             "Microsoft.AspNetCore.Http": {
               "target": "Package",
-              "version": "[2.2.2, )"
+              "version": "[2.3.0, )"
             },
             "Microsoft.EntityFrameworkCore": {
               "target": "Package",
@@ -70,15 +80,15 @@
             },
             "Microsoft.Extensions.DependencyInjection.Abstractions": {
               "target": "Package",
-              "version": "[7.0.0, )"
+              "version": "[8.0.0, )"
             },
             "Microsoft.IdentityModel.Tokens": {
               "target": "Package",
-              "version": "[6.27.0, )"
+              "version": "[8.0.0, )"
             },
             "System.IdentityModel.Tokens.Jwt": {
               "target": "Package",
-              "version": "[6.27.0, )"
+              "version": "[8.0.0, )"
             }
           },
           "imports": [
@@ -87,7 +97,8 @@
             "net47",
             "net471",
             "net472",
-            "net48"
+            "net48",
+            "net481"
           ],
           "assetTargetFallback": true,
           "warn": true,
@@ -96,21 +107,25 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.203\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.200\\RuntimeIdentifierGraph.json"
         }
       }
     },
-    "C:\\Users\\HP\\Desktop\\GitHub\\Backend\\- Organizasyon\\RestaurantProject\\Entities\\Entities.csproj": {
+    "C:\\Users\\burcu\\OneDrive\\Desktop\\Github\\EatwellRestaurantApi\\Entities\\Entities.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\HP\\Desktop\\GitHub\\Backend\\- Organizasyon\\RestaurantProject\\Entities\\Entities.csproj",
+        "projectUniqueName": "C:\\Users\\burcu\\OneDrive\\Desktop\\Github\\EatwellRestaurantApi\\Entities\\Entities.csproj",
         "projectName": "Entities",
-        "projectPath": "C:\\Users\\HP\\Desktop\\GitHub\\Backend\\- Organizasyon\\RestaurantProject\\Entities\\Entities.csproj",
-        "packagesPath": "C:\\Users\\HP\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\HP\\Desktop\\GitHub\\Backend\\- Organizasyon\\RestaurantProject\\Entities\\obj\\",
+        "projectPath": "C:\\Users\\burcu\\OneDrive\\Desktop\\Github\\EatwellRestaurantApi\\Entities\\Entities.csproj",
+        "packagesPath": "C:\\Users\\burcu\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\burcu\\OneDrive\\Desktop\\Github\\EatwellRestaurantApi\\Entities\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
         "configFilePaths": [
-          "C:\\Users\\HP\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\burcu\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -118,14 +133,15 @@
         ],
         "sources": {
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "C:\\Program Files\\dotnet\\library-packs": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "net6.0": {
             "targetAlias": "net6.0",
             "projectReferences": {
-              "C:\\Users\\HP\\Desktop\\GitHub\\Backend\\- Organizasyon\\RestaurantProject\\Core\\Core.csproj": {
-                "projectPath": "C:\\Users\\HP\\Desktop\\GitHub\\Backend\\- Organizasyon\\RestaurantProject\\Core\\Core.csproj"
+              "C:\\Users\\burcu\\OneDrive\\Desktop\\Github\\EatwellRestaurantApi\\Core\\Core.csproj": {
+                "projectPath": "C:\\Users\\burcu\\OneDrive\\Desktop\\Github\\EatwellRestaurantApi\\Core\\Core.csproj"
               }
             }
           }
@@ -134,6 +150,11 @@
           "warnAsError": [
             "NU1605"
           ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
         }
       },
       "frameworks": {
@@ -145,7 +166,8 @@
             "net47",
             "net471",
             "net472",
-            "net48"
+            "net48",
+            "net481"
           ],
           "assetTargetFallback": true,
           "warn": true,
@@ -154,7 +176,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.203\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.200\\RuntimeIdentifierGraph.json"
         }
       }
     }
