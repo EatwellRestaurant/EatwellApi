@@ -2,6 +2,7 @@
 using Core.Utilities.Results;
 using Core.Utilities.Security;
 using Entities.Concrete;
+using Entities.Dtos;
 using Service.Abstract;
 using System;
 using System.Collections.Generic;
@@ -13,6 +14,8 @@ namespace Business.Abstract
 {
     public interface IUserService : IService<User>
     {
+        Task<DataResponse<List<UserListDto>>> GetUsers();
+
         Task Add(User user);
 
         Task CheckIfUserEMail(string email); 

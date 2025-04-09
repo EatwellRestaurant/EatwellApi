@@ -19,6 +19,8 @@ namespace Core.DataAccess
 
         Task<List<T>> GetAllAsync(Expression<Func<T, bool>>? expression = null);
 
+        IQueryable<T> GetAll(Expression<Func<T, bool>>? expression = null);
+
         Task<T?> GetByIdAsync(int id);
 
         Task<T?> GetAsync(Expression<Func<T, bool>> filter);

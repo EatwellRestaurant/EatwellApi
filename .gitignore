@@ -6,6 +6,16 @@
 **/bin/
 **/obj/
 
+# .NET build output
+**/bin/Debug/
+**/bin/Release/
+**/obj/Debug/
+**/obj/Release/
+
+# .NET 6.0-specific
+**/bin/Debug/net6.0/
+**/obj/Debug/net6.0/
+
 
 # Common node modules locations
 /node_modules

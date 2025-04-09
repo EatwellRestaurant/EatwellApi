@@ -8,8 +8,9 @@ namespace Business.Constants.Messages
 {
     public class CommonMessages
     {
-        public const string EntityAdded = "Kayıt Başarılı";
-        public const string EntityDeleted = "Veri Başarılı Bir Şekilde Silindi";
-        public const string EntityUpdated = "Veri Başarılı Bir Şekilde Güncellendi";
-    } 
+        public const string EntityAdded = "Kayıt başarılı.";
+        public const string EntityDeleted = "Veri başarılı bir şekilde silindi.";
+        public const string EntityUpdated = "Veri başarılı bir şekilde güncellendi.";
+        public const string EntityListed = "Veriler başarılı bir şekilde listelendi.";
+    }  
 }

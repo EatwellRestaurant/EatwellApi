@@ -1,6 +1,8 @@
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
+using AutoMapper;
 using Business.DependencyResolvers.Autofac;
+using Business.Mapping;
 using Core.Middlewares;
 using Core.Utilities.IoC;
 using Core.Utilities.Security.Encryption;
@@ -25,6 +27,14 @@ builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory())
 
 
 // Add services to the container.
+
+builder.Services.AddAutoMapper(typeof(MapProfile));
+builder.Services.AddScoped(provider => new MapperConfiguration(cfg =>
+{
+    cfg.AddProfile(new MapProfile());
+})
+.CreateMapper());
+
 
 builder.Services.AddHttpContextAccessor();
 

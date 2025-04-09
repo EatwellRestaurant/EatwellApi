@@ -46,7 +46,6 @@ namespace Business.Concrete
                 Email = dto.Email,
                 FirstName = dto.FirstName,
                 LastName = dto.LastName,
-                Phone = dto.Phone,
                 Password = BCrypt.Net.BCrypt.HashPassword(dto.Password),
             };
 

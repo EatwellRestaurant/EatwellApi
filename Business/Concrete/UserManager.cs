@@ -1,4 +1,6 @@
-﻿using Business.Abstract;
+﻿using AutoMapper;
+using Business.Abstract;
+using Business.Constants.Messages;
 using Business.Constants.Messages.Entity;
 using Core.Exceptions.General;
 using Core.Exceptions.User;
@@ -7,6 +9,7 @@ using Core.Utilities.Results;
 using Core.Utilities.Security;
 using DataAccess.Abstract;
 using Entities.Concrete;
+using Entities.Dtos;
 using Microsoft.EntityFrameworkCore;
 using Service.Concrete;
 
@@ -17,13 +20,22 @@ namespace Business.Concrete
         readonly IUserDal _userDal;
         readonly IOperationClaimService _operationClaimService;
         readonly ITokenHelper _tokenHelper;
+        readonly IMapper _mapper;
 
-        public UserManager(IUserDal userDal, ITokenHelper tokenHelper, IOperationClaimService operationClaimService) : base(userDal)
+        public UserManager(
+            IUserDal userDal, 
+            ITokenHelper tokenHelper, 
+            IOperationClaimService operationClaimService, 
+            IMapper mapper) 
+            : base(userDal)
         {
             _userDal = userDal;
             _tokenHelper = tokenHelper;
             _operationClaimService = operationClaimService;
+            _mapper = mapper;
         }
+
+
 
 
         public async Task<DataResponse<AccessToken>> CreateAccessToken(User user)
@@ -38,6 +50,16 @@ namespace Business.Concrete
             return new DataResponse<AccessToken>(_tokenHelper.CreateToken(user, claims.Data));
         }
 
+
+
+        public async Task<DataResponse<List<UserListDto>>> GetUsers() 
+            => new DataResponse<List<UserListDto>>(_mapper.Map<List<UserListDto>>
+                (await _userDal
+                .GetAll() 
+                .OrderByDescending(u => u.CreateDate)
+                .ToListAsync()), 
+                CommonMessages.EntityListed);
+        
 
 
 
