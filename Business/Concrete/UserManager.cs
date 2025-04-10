@@ -2,11 +2,11 @@
 using Business.Abstract;
 using Business.Constants.Messages;
 using Business.Constants.Messages.Entity;
+using Business.Security;
 using Core.Exceptions.General;
 using Core.Exceptions.User;
 using Core.ResponseModels;
 using Core.Utilities.Results;
-using Core.Utilities.Security;
 using DataAccess.Abstract;
 using Entities.Concrete;
 using Entities.Dtos;

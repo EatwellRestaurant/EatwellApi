@@ -1,6 +1,6 @@
-﻿using Core.ResponseModels;
+﻿using Business.Security;
+using Core.ResponseModels;
 using Core.Utilities.Results;
-using Core.Utilities.Security;
 using Entities.Concrete;
 using Entities.Dtos;
 using Service.Abstract;

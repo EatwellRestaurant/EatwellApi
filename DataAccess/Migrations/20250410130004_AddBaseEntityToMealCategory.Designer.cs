@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(RestaurantContext))]
-    [Migration("20250406074519_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20250410130004_AddBaseEntityToMealCategory")]
+    partial class AddBaseEntityToMealCategory
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -36,7 +36,7 @@ namespace DataAccess.Migrations
                     b.Property<DateTime>("CreateDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2025, 4, 6, 10, 45, 19, 514, DateTimeKind.Local).AddTicks(6505));
+                        .HasDefaultValue(new DateTime(2025, 4, 10, 16, 0, 4, 448, DateTimeKind.Local).AddTicks(8988));
 
                     b.Property<DateTime?>("DeleteDate")
                         .HasColumnType("datetime2");
@@ -727,26 +727,6 @@ namespace DataAccess.Migrations
                     b.ToTable("Evaluations");
                 });
 
-            modelBuilder.Entity("Entities.Concrete.MealCategory", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("ImagePath")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("MealCategories");
-                });
-
             modelBuilder.Entity("Entities.Concrete.OperationClaim", b =>
                 {
                     b.Property<int>("Id")
@@ -876,6 +856,20 @@ namespace DataAccess.Migrations
                     b.ToTable("UserOperationClaims");
                 });
 
+            modelBuilder.Entity("Entities.Concrete.MealCategory", b =>
+                {
+                    b.HasBaseType("Entities.Concrete.BaseEntity");
+
+                    b.Property<string>("ImagePath")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.ToTable("MealCategories");
+                });
+
             modelBuilder.Entity("Entities.Concrete.User", b =>
                 {
                     b.HasBaseType("Entities.Concrete.BaseEntity");
@@ -893,10 +887,6 @@ namespace DataAccess.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Password")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Phone")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
@@ -1018,14 +1008,14 @@ namespace DataAccess.Migrations
                     b.Navigation("Cities");
                 });
 
-            modelBuilder.Entity("Entities.Concrete.MealCategory", b =>
-                {
-                    b.Navigation("Products");
-                });
-
             modelBuilder.Entity("Entities.Concrete.OperationClaim", b =>
                 {
                     b.Navigation("UserOperationClaims");
+                });
+
+            modelBuilder.Entity("Entities.Concrete.MealCategory", b =>
+                {
+                    b.Navigation("Products");
                 });
 
             modelBuilder.Entity("Entities.Concrete.User", b =>

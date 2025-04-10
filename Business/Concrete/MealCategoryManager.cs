@@ -5,6 +5,7 @@ using Core.Utilities.FileHelper;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
+using Entities.Dtos.MealCategory;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
@@ -17,24 +18,25 @@ namespace Business.Concrete
     public class MealCategoryManager : IMealCategoryService
     {
         private IMealCategoryDal _mealCategoryDal;
+        readonly IFileHelper _fileHelper;
 
-        public MealCategoryManager(IMealCategoryDal mealCategoryDal)
+        public MealCategoryManager(IMealCategoryDal mealCategoryDal, IFileHelper fileHelper)
         {
             _mealCategoryDal = mealCategoryDal;
+            _fileHelper = fileHelper;
         }
 
-        public async Task<IResult> Add(IFormFile file, MealCategory mealCategory)
+        public async Task<IResult> Add(MealCategoryUpsertDto upsertDto)
         {
-            var result = FileHelper.Upload(file, ImagePaths.ImagePath);
-
-            if (!result.Success)
+            var resim = _fileHelper.Upload(upsertDto.Image).Data;
+            MealCategory mealCategory = new()
             {
-                return result;
-            }
-
-            mealCategory.ImagePath = result.Data;
+                Name = upsertDto.Name,
+                ImagePath = resim
+            };
 
             await _mealCategoryDal.AddAsync(mealCategory);
+         
             return new SuccessResult(MealCategoryMessages.MealCategoryAdded);
         }
 
@@ -56,7 +58,7 @@ namespace Business.Concrete
 
         public IResult Update(IFormFile file, MealCategory mealCategory)
         {
-            var result = FileHelper.Update(file, mealCategory.ImagePath, ImagePaths.ImagePath);
+            var result = _fileHelper.Update(file, mealCategory.ImagePath, ImagePaths.ImagePath);
 
             if (!result.Success)
             {

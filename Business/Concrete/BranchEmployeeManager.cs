@@ -18,10 +18,12 @@ namespace Business.Concrete
     public class BranchEmployeeManager : IBranchEmployeeService
     {
         private IBranchEmployeeDal _branchEmployeeDal;
+        readonly IFileHelper _fileHelper;
 
-        public BranchEmployeeManager(IBranchEmployeeDal branchEmployeeDal)
+        public BranchEmployeeManager(IBranchEmployeeDal branchEmployeeDal, IFileHelper fileHelper)
         {
             _branchEmployeeDal = branchEmployeeDal;
+            _fileHelper = fileHelper;
         }
 
         public async Task<IResult> Add(IFormFile file, BranchEmployee branchEmployee)
@@ -30,7 +32,7 @@ namespace Business.Concrete
 
             if (result.Success)
             {
-                var resultOfUpload = FileHelper.Upload(file, ImagePaths.ImagePath);
+                var resultOfUpload = _fileHelper.Upload(file);
 
                 if (!resultOfUpload.Success)
                 {
@@ -49,7 +51,7 @@ namespace Business.Concrete
 
             if (result.Success) 
             { 
-                var resultOfDelete = FileHelper.Delete(branchEmployee.ImagePath);
+                var resultOfDelete = _fileHelper.Delete(branchEmployee.ImagePath);
 
                 if (!resultOfDelete.Success)
                 {
@@ -81,7 +83,7 @@ namespace Business.Concrete
             {
                 if (CheckIfImagePathIsEmpty(employee.ImagePath).Success)
                 {
-                    var resultOfUpdate = FileHelper.Update(file, employee.ImagePath, ImagePaths.ImagePath);
+                    var resultOfUpdate = _fileHelper.Update(file, employee.ImagePath, ImagePaths.ImagePath);
 
                     if (!resultOfUpdate.Success)
                     {
@@ -91,7 +93,7 @@ namespace Business.Concrete
                 }
                 else
                 {
-                    var resultOfAdd = FileHelper.Upload(file, ImagePaths.ImagePath);
+                    var resultOfAdd = _fileHelper.Upload(file);
 
                     if (!resultOfAdd.Success)
                     {

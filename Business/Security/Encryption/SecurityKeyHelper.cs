@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Core.Utilities.Security.Encryption
+namespace Business.Security.Encryption
 {
     //Şifreleme sistemlerinde bizim her şeyi byte array formatında oluşturmamız gerekir.
     //Yani bir string ile key oluşturamıyoruz.

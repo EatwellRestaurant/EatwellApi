@@ -1,5 +1,6 @@
 ﻿using Business.Abstract;
 using Entities.Concrete;
+using Entities.Dtos.MealCategory;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -16,18 +17,11 @@ namespace WebAPI.Controllers
             _mealCategoryService = mealCategoryService;
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Add([FromForm(Name = "Image")] IFormFile file, [FromForm] string mealCategoryName)
-        {
-            MealCategory mealCategory = new() { Name = mealCategoryName };
 
-            var result = await _mealCategoryService.Add(file, mealCategory);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-            return BadRequest(result);
-        }
+        [HttpPost]
+        public async Task<IActionResult> Add([FromForm] MealCategoryUpsertDto upsertDto) 
+            => Ok(await _mealCategoryService.Add(upsertDto));
+        
 
         [HttpDelete]
         public IActionResult Delete(MealCategory mealCategory)

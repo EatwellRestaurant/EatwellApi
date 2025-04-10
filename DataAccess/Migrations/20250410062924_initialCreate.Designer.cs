@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(RestaurantContext))]
-    [Migration("20250409190003_RemovePhoneFromUsers")]
-    partial class RemovePhoneFromUsers
+    [Migration("20250410062924_initialCreate")]
+    partial class initialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -36,7 +36,7 @@ namespace DataAccess.Migrations
                     b.Property<DateTime>("CreateDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2025, 4, 9, 22, 0, 3, 647, DateTimeKind.Local).AddTicks(157));
+                        .HasDefaultValue(new DateTime(2025, 4, 10, 9, 29, 24, 411, DateTimeKind.Local).AddTicks(4675));
 
                     b.Property<DateTime?>("DeleteDate")
                         .HasColumnType("datetime2");

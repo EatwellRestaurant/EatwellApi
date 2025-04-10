@@ -1,25 +1,13 @@
-﻿using BCrypt.Net;
-using Business.Abstract;
+﻿using Business.Abstract;
 using Business.Constants.Messages.Entity;
+using Business.Security;
 using Business.ValidationRules.FluentValidation;
 using Core.Aspects.Autofac.Validation;
-using Core.Entities.Abstract;
 using Core.Exceptions.User;
 using Core.ResponseModels;
-using Core.Utilities.Results;
-using Core.Utilities.Security;
-using Core.Utilities.Security.Hashing;
-using Core.Utilities.Security.JWT;
 using Entities.Concrete;
 using Entities.Dtos;
-using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Authentication;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Business.Concrete
 {

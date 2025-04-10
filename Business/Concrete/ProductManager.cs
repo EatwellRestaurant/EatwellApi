@@ -20,16 +20,18 @@ namespace Business.Concrete
     public class ProductManager : IProductService
     {
         private IProductDal _productDal;
+        readonly IFileHelper _fileHelper;
 
-        public ProductManager(IProductDal productDal)
+        public ProductManager(IProductDal productDal, IFileHelper fileHelper)
         {
             _productDal = productDal;
+            _fileHelper = fileHelper;
         }
 
         [ValidationAspect(typeof(ProductValidator))]
         public async Task<IResult> Add(IFormFile file, ProductForCreateDto dto)
         {
-            var result = FileHelper.Upload(file, ImagePaths.ImagePath);
+            var result = _fileHelper.Upload(file);
 
             if (!result.Success)
             {
@@ -50,7 +52,7 @@ namespace Business.Concrete
 
         public IResult Delete(Product product)
         {
-            var result = FileHelper.Delete(product.ImagePath);
+            var result = _fileHelper.Delete(product.ImagePath);
 
             if (!result.Success)
             {
@@ -79,7 +81,7 @@ namespace Business.Concrete
         [ValidationAspect(typeof(ProductValidator))]
         public IResult Update(IFormFile file, ProductForUpdateDto dto)
         {
-            var result = FileHelper.Update(file, dto.ImagePath, ImagePaths.ImagePath);
+            var result = _fileHelper.Update(file, dto.ImagePath, ImagePaths.ImagePath);
 
             if (!result.Success)
             {

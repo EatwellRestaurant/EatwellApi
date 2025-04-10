@@ -17,15 +17,17 @@ namespace Business.Concrete
     public class BranchImageManager : IBranchImageService
     {
         private IBranchImageDal _branchImageDal;
+        readonly IFileHelper _fileHelper;
 
-        public BranchImageManager(IBranchImageDal branchImageDal)
+        public BranchImageManager(IBranchImageDal branchImageDal, IFileHelper fileHelper)
         {
             _branchImageDal = branchImageDal;
+            _fileHelper = fileHelper;
         }
 
         public async Task<IResult> Add(IFormFile file, BranchImage branchImage)
         {
-            var result = FileHelper.Upload(file, ImagePaths.ImagePath);
+            var result = _fileHelper.Upload(file);
 
             if (!result.Success)
             {
@@ -40,7 +42,7 @@ namespace Business.Concrete
 
         public IResult Delete(BranchImage branchImage)
         {
-            var result = FileHelper.Delete(branchImage.ImagePath);
+            var result = _fileHelper.Delete(branchImage.ImagePath);
 
             if (!result.Success)
             {
@@ -63,7 +65,7 @@ namespace Business.Concrete
 
         public IResult Update(IFormFile file, BranchImage branchImage)
         {
-            var result = FileHelper.Update(file, branchImage.ImagePath, ImagePaths.ImagePath);
+            var result = _fileHelper.Update(file, branchImage.ImagePath, ImagePaths.ImagePath);
 
             if (!result.Success)
             {

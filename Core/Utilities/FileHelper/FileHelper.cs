@@ -1,39 +1,62 @@
-﻿using Core.Utilities.Business;
+﻿using Core.Exceptions.File;
+using Core.Utilities.Business;
 using Core.Utilities.Results;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using FluentFTP;
+using FluentFTP.Helpers;
+using Microsoft.Extensions.Configuration;
 
 namespace Core.Utilities.FileHelper
 {
-    public class FileHelper
+    public sealed class FileHelper : IFileHelper
     {
-        public static IDataResult<string> Upload(IFormFile file, string root)
+        readonly FtpClient _ftpClient;
+        FtpSettings _ftpSettings;
+
+        public FileHelper(IConfiguration configuration)
         {
-            var result = BusinessRules.Run(CheckIfFileEnter(file),
-                CheckIfFileExtensionIsImage(Path.GetExtension(file.FileName)));
+            _ftpSettings = configuration.GetSection("FtpSettings").Get<FtpSettings>()!;
 
-            if (!result.Success)
-            {
-                return new ErrorDataResult<string>(result.Message);
-            }
-
-            string fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
-
-            var rootToUse = CheckIfDirectoryExists(root);
-
-            var imagePath = rootToUse + fileName;
-
-            CreateFile(imagePath, file);
-
-            return new SuccessDataResult<string>(data: imagePath, message: "Dosya oluşturuldu");
+            _ftpClient = new FtpClient(_ftpSettings.Host, _ftpSettings.Username, _ftpSettings.Password, 21);
+            _ftpClient.Connect();
         }
 
 
-        public static IResult Delete(string filePath)
+        public IDataResult<string> Upload(IFormFile file)
+        {
+            CheckIfFileEnter(file);
+
+            CheckIfFileExtensionIsImage(Path.GetExtension(file.FileName));
+
+            string fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
+            string uploadUrl = $"ftp://{_ftpSettings.Host}/{_ftpSettings.Path}/{fileName}";
+
+
+            using (var stream = file.OpenReadStream())
+            {
+                if (!_ftpClient.DirectoryExists(_ftpSettings.Path))
+                {
+                    _ftpClient.CreateDirectory(_ftpSettings.Path);
+                }
+
+                var success = _ftpClient.UploadFile(fileName, uploadUrl);
+
+                if (!success.IsSuccess())
+                    throw new FileUploadException();
+            }
+
+
+            return new SuccessDataResult<string>(uploadUrl, "Dosya başarıyla yüklendi");
+        }
+
+
+        public IResult Delete(string filePath)
         {
             var result = CheckIfFileExists(filePath);
 
@@ -47,7 +70,7 @@ namespace Core.Utilities.FileHelper
         }
 
 
-        public static IDataResult<string> Update(IFormFile file, string oldPath, string root)
+        public IDataResult<string> Update(IFormFile file, string oldPath, string root)
         {
             var resultOfDelete = Delete(oldPath);
 
@@ -56,7 +79,7 @@ namespace Core.Utilities.FileHelper
                 return new ErrorDataResult<string>(resultOfDelete.Message);
             }
 
-            var resultOfUpload = Upload(file, root);
+            var resultOfUpload = Upload(file);
 
             if (!resultOfUpload.Success)
             {
@@ -70,45 +93,22 @@ namespace Core.Utilities.FileHelper
 
 
 
-        //Business Rules
-        private static IResult CheckIfFileEnter(IFormFile file)
+        #region BusinessRules
+
+        private void CheckIfFileEnter(IFormFile file)
         {
             if (file.Length < 0)
-            {
-                return new ErrorResult("Dosya girilmemiş");
-            }
-            return new SuccessResult();
-        }
-         
-        private static IResult CheckIfFileExtensionIsImage(string extension)
-        {
-            if (extension == ".jpg" || extension == ".png" || extension == ".jpeg" || extension == ".webp")
-            {
-                return new SuccessResult();
-            }
-            return new ErrorResult("Dosya uzantısı geçerli değil");
+                throw new FileNotProvidedException();
         }
 
 
-        //To do: Eğer burda bir hata alırsan metodu void yap.
-        private static string CheckIfDirectoryExists(string root)
+        private void CheckIfFileExtensionIsImage(string extension)
         {
-            if (!Directory.Exists(root))
-            {
-                return Directory.CreateDirectory(root).ToString();  
-            }
-            return root;
+            if (extension != ".jpg" && extension != ".png" && extension != ".jpeg" && extension != ".webp")
+                throw new FileNotProvidedException();
         }
 
-        private static void CreateFile(string directory, IFormFile file)
-        {
-            //Yeni bir dosya oluşturulur ve eğer aynı isimde bir dosya bulunuyorsa üzerine yazılır.
-            using (FileStream fileStream = File.Create(directory))
-            {
-                file.CopyTo(fileStream); //Oluşturduğumuz dosyanın içine resmi kopyaladık.
-                fileStream.Flush(); //Tampondaki bilgilerin boşaltılmasını ve stream dosyasının güncellenmesini sağlar.
-            }
-        }
+
 
         private static IResult CheckIfFileExists(string filePath)
         {
@@ -118,5 +118,7 @@ namespace Core.Utilities.FileHelper
             }
             return new ErrorResult("Böyle bir dosya mevcut değil");
         }
+
+        #endregion
     }
 }

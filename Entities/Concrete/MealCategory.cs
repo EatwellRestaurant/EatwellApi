@@ -7,9 +7,8 @@ using System.Threading.Tasks;
 
 namespace Entities.Concrete
 {
-    public class MealCategory : IEntity
+    public class MealCategory : BaseEntity, IEntity
     {
-        public int Id { get; set; }
         public string Name { get; set; }
         public string? ImagePath { get; set; }
 

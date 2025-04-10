@@ -1,5 +1,5 @@
-﻿using Core.Extensions;
-using Core.Utilities.Security.Encryption;
+﻿using Business.Security.Encryption;
+using Core.Extensions;
 using Entities.Concrete;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
@@ -11,7 +11,7 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Core.Utilities.Security.JWT
+namespace Business.Security.JWT
 {
     public class JwtHelper : ITokenHelper
     {
@@ -19,9 +19,9 @@ namespace Core.Utilities.Security.JWT
         private TokenOptions _tokenOptions;
         private DateTime _accessTokenExpiration;
 
-        public JwtHelper(IConfiguration configuration) 
+        public JwtHelper(IConfiguration configuration)
         {
-            Configuration = configuration; 
+            Configuration = configuration;
             _tokenOptions = Configuration.GetSection("TokenOptions").Get<TokenOptions>();
         }
 

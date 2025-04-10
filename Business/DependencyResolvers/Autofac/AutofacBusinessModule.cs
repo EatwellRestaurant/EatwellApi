@@ -4,12 +4,14 @@ using AutoMapper;
 using Business.Abstract;
 using Business.Concrete;
 using Business.Mapping;
+using Business.Security;
+using Business.Security.JWT;
 using Castle.DynamicProxy;
+using Core.Utilities.FileHelper;
 using Core.Utilities.Interceptors;
-using Core.Utilities.Security;
-using Core.Utilities.Security.JWT;
 using DataAccess.Abstract;
 using DataAccess.Concrete.EntityFramework;
+using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,6 +25,7 @@ namespace Business.DependencyResolvers.Autofac
         protected override void Load(ContainerBuilder builder)
         {
             builder.RegisterType<RestaurantContext>().InstancePerLifetimeScope();
+            builder.RegisterType<FileHelper>().As<IFileHelper>().InstancePerLifetimeScope();
 
             builder.RegisterType<BranchManager>().As<IBranchService>().SingleInstance();
             builder.RegisterType<EfBranchDal>().As<IBranchDal>().SingleInstance();
