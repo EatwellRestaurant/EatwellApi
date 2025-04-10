@@ -1,5 +1,7 @@
 ﻿using Business.Abstract;
 using DataAccess.Concrete.EntityFramework;
+using Entities.Concrete;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System.Transactions;
 
@@ -20,6 +22,25 @@ namespace Business.Concrete
 
             try
             {
+                // Türkiye saatini hesapla
+                var turkeyTimeZone = TimeZoneInfo.FindSystemTimeZoneById("Turkey Standard Time");
+                var turkeyTime = TimeZoneInfo.ConvertTime(DateTime.UtcNow, turkeyTimeZone);
+
+                // ChangeTracker ile sadece BaseEntity'den türeyen entity’lerini yakalıyoruz.
+                var entries = context.ChangeTracker.Entries<BaseEntity>();
+
+                foreach (var entry in entries)
+                {
+                    if (entry.State == EntityState.Added)
+                    {
+                        entry.Entity.CreateDate = turkeyTime;
+                    }
+                    else if (entry.State == EntityState.Modified)
+                    {
+                        entry.Entity.UpdateDate = turkeyTime;
+                    }
+                }
+
                 await context.SaveChangesAsync();
 
                 await transaction.CommitAsync();

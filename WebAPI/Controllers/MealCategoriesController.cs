@@ -2,6 +2,7 @@
 using Entities.Concrete;
 using Entities.Dtos.MealCategory;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebAPI.Controllers
@@ -21,6 +22,7 @@ namespace WebAPI.Controllers
         [HttpPost]
         public async Task<IActionResult> Add([FromForm] MealCategoryUpsertDto upsertDto) 
             => Ok(await _mealCategoryService.Add(upsertDto));
+        
         
 
         [HttpDelete]

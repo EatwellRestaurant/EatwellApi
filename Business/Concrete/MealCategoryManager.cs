@@ -1,6 +1,7 @@
 ﻿using Business.Abstract;
 using Business.Constants.Messages.Entity;
 using Business.Constants.Paths;
+using Core.ResponseModels;
 using Core.Utilities.FileHelper;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
@@ -17,27 +18,29 @@ namespace Business.Concrete
 {
     public class MealCategoryManager : IMealCategoryService
     {
-        private IMealCategoryDal _mealCategoryDal;
+        readonly IMealCategoryDal _mealCategoryDal;
         readonly IFileHelper _fileHelper;
+        readonly IUnitOfWork _unitOfWork;
 
-        public MealCategoryManager(IMealCategoryDal mealCategoryDal, IFileHelper fileHelper)
+        public MealCategoryManager(IMealCategoryDal mealCategoryDal, IFileHelper fileHelper, IUnitOfWork unitOfWork)
         {
             _mealCategoryDal = mealCategoryDal;
             _fileHelper = fileHelper;
+            _unitOfWork = unitOfWork;
         }
 
-        public async Task<IResult> Add(MealCategoryUpsertDto upsertDto)
+        public async Task<CreateSuccessResponse> Add(MealCategoryUpsertDto upsertDto)
         {
-            var resim = _fileHelper.Upload(upsertDto.Image).Data;
             MealCategory mealCategory = new()
             {
                 Name = upsertDto.Name,
-                ImagePath = resim
+                ImagePath = _fileHelper.Upload(upsertDto.Image).Data
             };
 
             await _mealCategoryDal.AddAsync(mealCategory);
+            await _unitOfWork.SaveChangesAsync();
          
-            return new SuccessResult(MealCategoryMessages.MealCategoryAdded);
+            return new CreateSuccessResponse(MealCategoryMessages.MealCategoryAdded);
         }
 
         public IResult Delete(MealCategory mealCategory)

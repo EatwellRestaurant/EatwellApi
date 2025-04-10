@@ -24,6 +24,7 @@ namespace Core.Utilities.FileHelper
             _ftpSettings = configuration.GetSection("FtpSettings").Get<FtpSettings>()!;
 
             _ftpClient = new FtpClient(_ftpSettings.Host, _ftpSettings.Username, _ftpSettings.Password, 21);
+
             _ftpClient.Connect();
         }
 
@@ -34,25 +35,25 @@ namespace Core.Utilities.FileHelper
 
             CheckIfFileExtensionIsImage(Path.GetExtension(file.FileName));
 
-            string fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
-            string uploadUrl = $"ftp://{_ftpSettings.Host}/{_ftpSettings.Path}/{fileName}";
+            string tempFilePath = Path.Combine(Path.GetTempPath(), file.FileName);
 
-
-            using (var stream = file.OpenReadStream())
+            using (var stream = new FileStream(tempFilePath, FileMode.Create))
             {
-                if (!_ftpClient.DirectoryExists(_ftpSettings.Path))
-                {
-                    _ftpClient.CreateDirectory(_ftpSettings.Path);
-                }
-
-                var success = _ftpClient.UploadFile(fileName, uploadUrl);
-
-                if (!success.IsSuccess())
-                    throw new FileUploadException();
+                file.CopyTo(stream);
             }
 
+            string fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
+            string uploadUrl = $"{_ftpSettings.Path}/{fileName}";
 
-            return new SuccessDataResult<string>(uploadUrl, "Dosya başarıyla yüklendi");
+            var success = _ftpClient.UploadFile(tempFilePath, uploadUrl);
+
+            File.Delete(tempFilePath);
+
+            if (success != FtpStatus.Success)
+                throw new FileUploadException();
+
+
+            return new SuccessDataResult<string>(data: uploadUrl);
         }
 
 
