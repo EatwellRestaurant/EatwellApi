@@ -23,15 +23,7 @@ namespace Business.ValidationRules.FluentValidation
                 .Matches(new Regex(@"\w+\.com$"))
                 .WithMessage("Lütfen geçerli bir e-posta adresi giriniz!");
 
-            
 
-            RuleFor(u => u.Phone)
-                .Cascade(CascadeMode.Stop)
-                .NotEmpty()
-                .WithMessage("Lütfen telefon numaranızı giriniz!")
-                .Matches(new Regex(@"\+90 \d{3} \d{3} \d{2} \d{2}"))
-                .WithMessage("Lütfen geçerli bir telefon numarası giriniz!");
-            
 
             RuleFor(u => u.Password)
                 .Cascade(CascadeMode.Stop)
@@ -40,13 +32,13 @@ namespace Business.ValidationRules.FluentValidation
                 .MinimumLength(8)
                 .WithMessage("Şifrenizin uzunluğu en az 8 karakter olmalıdır!")
                 .MaximumLength(16)
-                .WithMessage("Şifrenizin uzunluğu en fazla 16 karakter olmalıdır!")
-                .Matches(@"[A-Z]+")
-                .WithMessage("Şifreniz en az bir büyük harf içermelidir!")
-                .Matches(@"[a-z]+")
-                .WithMessage("Şifreniz en az bir küçük harf içermelidir!")
-                .Matches(@"[0-9]+")
-                .WithMessage("Şifreniz en az bir sayı içermelidir!");
+                .WithMessage("Şifrenizin uzunluğu en fazla 16 karakter olmalıdır!");
+                //.Matches(@"[A-Z]+")
+                //.WithMessage("Şifreniz en az bir büyük harf içermelidir!")
+                //.Matches(@"[a-z]+")
+                //.WithMessage("Şifreniz en az bir küçük harf içermelidir!")
+                //.Matches(@"[0-9]+")
+                //.WithMessage("Şifreniz en az bir sayı içermelidir!");
         }
     }
 }

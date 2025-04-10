@@ -7,15 +7,13 @@ namespace DataAccess.Concrete.EntityFramework
 {
     public class RestaurantContext : DbContext
     {
+
+        public RestaurantContext(DbContextOptions<RestaurantContext> options) : base(options) { }
+
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            IConfigurationRoot configuration = new ConfigurationBuilder()
-                .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("appsettings.Development.json")
-                .Build();
-
-
-            optionsBuilder.UseSqlServer(configuration.GetConnectionString("SqlConnection"));
+            optionsBuilder.EnableSensitiveDataLogging();
         }
 
 
