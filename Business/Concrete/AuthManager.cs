@@ -6,7 +6,7 @@ using Core.Aspects.Autofac.Validation;
 using Core.Exceptions.User;
 using Core.ResponseModels;
 using Entities.Concrete;
-using Entities.Dtos;
+using Entities.Dtos.User;
 using Microsoft.EntityFrameworkCore;
 
 namespace Business.Concrete

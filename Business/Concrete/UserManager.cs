@@ -9,7 +9,7 @@ using Core.ResponseModels;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
-using Entities.Dtos;
+using Entities.Dtos.User;
 using Microsoft.EntityFrameworkCore;
 using Service.Concrete;
 

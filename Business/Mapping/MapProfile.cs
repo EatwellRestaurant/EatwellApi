@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Entities.Concrete;
-using Entities.Dtos;
+using Entities.Dtos.MealCategory;
+using Entities.Dtos.User;
 
 namespace Business.Mapping
 {
@@ -12,6 +13,9 @@ namespace Business.Mapping
 
 
             CreateMap<MealCategory, MealCategoryListDto>();
+
+
+            CreateMap<MealCategory, MealCategoryDetailDto>();
         }
     }
 }

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Entities.Dtos
+namespace Entities.Dtos.MealCategory
 {
     public class MealCategoryListDto : EntityListDtoForAdmin
     {
@@ -12,4 +12,4 @@ namespace Entities.Dtos
 
         public string ImagePath { get; set; }
     }
-} 
+}

@@ -47,16 +47,13 @@ namespace WebAPI.Controllers
             return BadRequest(result);
         }
 
+
         [HttpGet]
-        public async Task<IActionResult> Get(int id)
-        {
-            var result = await _mealCategoryService.Get(id);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-            return BadRequest(result);
-        }
+        [Authorize]
+        public async Task<IActionResult> Get(int mealCategoryId) 
+            => Ok(await _mealCategoryService.Get(mealCategoryId));
+            
+        
 
 
         [HttpGet]

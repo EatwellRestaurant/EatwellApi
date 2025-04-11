@@ -11,7 +11,6 @@ using Core.Utilities.FileHelper;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
-using Entities.Dtos;
 using Entities.Dtos.MealCategory;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
@@ -57,7 +56,7 @@ namespace Business.Concrete
             await _mealCategoryDal.AddAsync(mealCategory);
             await _unitOfWork.SaveChangesAsync();
 
-            return new CreateSuccessResponse(MealCategoryMessages.MealCategoryAdded);
+            return new CreateSuccessResponse(CommonMessages.EntityAdded);
         }
 
 
@@ -87,9 +86,15 @@ namespace Business.Concrete
         }
 
 
-        public async Task<IDataResult<MealCategory?>> Get(int id)
+        public async Task<DataResponse<MealCategoryDetailDto>> Get(int mealCategoryId)
         {
-            return new SuccessDataResult<MealCategory?>(await _mealCategoryDal.GetAsync(m => m.Id == id), MealCategoryMessages.MealCategoryWasBrought);
+            MealCategory? mealCategory = await _mealCategoryDal
+                .GetAsync(m => m.Id == mealCategoryId)
+                ?? throw new EntityNotFoundException("Menü");
+
+            return new DataResponse<MealCategoryDetailDto>
+                (_mapper.Map<MealCategoryDetailDto>(mealCategory), 
+                CommonMessages.EntityFetch);
         }
 
 

@@ -1,4 +1,4 @@
-﻿using Entities.Dtos;
+﻿using Entities.Dtos.User;
 using FluentValidation;
 using FluentValidation.Validators;
 using System;

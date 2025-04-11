@@ -1,7 +1,7 @@
 ﻿using Business.Abstract;
 using Business.Constants.Messages;
 using Core.ResponseModels;
-using Entities.Dtos;
+using Entities.Dtos.Dashboard;
 using System;
 using System.Collections.Generic;
 using System.Linq;
