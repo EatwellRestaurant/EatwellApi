@@ -14,5 +14,6 @@ namespace Business.Constants.Messages.Entity
         public const string SuccessfulLogin = "Sisteme Giriş Başarılı";
         public const string UserAlreadyExists = "Böyle bir kullanıcı zaten var";
         public const string AccessTokenCreated = "Access token başarıyla oluşturuldu";
+        public const string VerificationSuccessful = "E-posta adresiniz başarıyla doğrulandı. Şimdi hesabınıza giriş yapabilirsiniz.";
     }
 }

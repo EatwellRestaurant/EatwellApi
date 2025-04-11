@@ -14,6 +14,9 @@ namespace Business.Abstract
     public interface IAuthService
     {
         Task<CreateSuccessResponse> Register(UserForRegisterDto userForRegisterDto);
+
         Task<DataResponse<AccessToken>> Login(UserForLoginDto userForLoginDto);
+
+        Task<SuccessResponse> VerifyEmailOfUser(int userId, string verificationCode);
     }
 }

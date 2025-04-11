@@ -19,6 +19,9 @@ namespace Entities.Concrete
         public string LastName { get; set; }
         public string Password { get; set; }
         public string Email { get; set; }
+        public bool Verification { get; set; }
+        public string VerificationCode { get; set; }
+        public DateTime VerificationCodeDuration { get; set; }
 
 
 

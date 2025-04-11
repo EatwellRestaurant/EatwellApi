@@ -7,6 +7,8 @@ using Business.Mapping;
 using Business.Security;
 using Business.Security.JWT;
 using Castle.DynamicProxy;
+using Core.Utilities.Email;
+using Core.Utilities.Email.Sendinblue;
 using Core.Utilities.FileHelper;
 using Core.Utilities.Interceptors;
 using DataAccess.Abstract;
@@ -26,7 +28,8 @@ namespace Business.DependencyResolvers.Autofac
         {
             builder.RegisterType<RestaurantContext>().InstancePerLifetimeScope();
             builder.RegisterType<FileHelper>().As<IFileHelper>().InstancePerLifetimeScope();
-            builder.RegisterType<DashboardManager>().As<IDashboardService>().InstancePerLifetimeScope();
+            builder.RegisterType<DashboardManager>().As<IDashboardService>().SingleInstance();
+            builder.RegisterType<SendinblueService>().As<IEmailService>().SingleInstance();
 
             builder.RegisterType<BranchManager>().As<IBranchService>().SingleInstance();
             builder.RegisterType<EfBranchDal>().As<IBranchDal>().SingleInstance();

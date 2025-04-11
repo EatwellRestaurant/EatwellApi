@@ -26,6 +26,12 @@ namespace WebAPI.Controllers
         [HttpPost]
         public async Task<IActionResult> Register(UserForRegisterDto userForRegisterDto) 
             => Ok(await _authService.Register(userForRegisterDto));
+        
+        
+
+        [HttpPost] 
+        public async Task<IActionResult> VerifyEmailOfUser(int userId, string verificationCode) 
+            => Ok(await _authService.VerifyEmailOfUser(userId, verificationCode));
             
     }
 }
