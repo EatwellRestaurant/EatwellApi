@@ -8,6 +8,7 @@ using DataAccess.Abstract;
 using Entities.Concrete;
 using Entities.Dtos.MealCategory;
 using Microsoft.AspNetCore.Http;
+using Service.Concrete;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,13 +17,17 @@ using System.Threading.Tasks;
 
 namespace Business.Concrete
 {
-    public class MealCategoryManager : IMealCategoryService
+    public class MealCategoryManager : Manager<MealCategory>, IMealCategoryService
     {
         readonly IMealCategoryDal _mealCategoryDal;
         readonly IFileHelper _fileHelper;
         readonly IUnitOfWork _unitOfWork;
 
-        public MealCategoryManager(IMealCategoryDal mealCategoryDal, IFileHelper fileHelper, IUnitOfWork unitOfWork)
+        public MealCategoryManager(
+            IMealCategoryDal mealCategoryDal, 
+            IFileHelper fileHelper, 
+            IUnitOfWork unitOfWork)
+            : base(mealCategoryDal)
         {
             _mealCategoryDal = mealCategoryDal;
             _fileHelper = fileHelper;

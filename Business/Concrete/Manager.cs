@@ -37,9 +37,15 @@ namespace Service.Concrete
 
 
 
+         
+        public async Task<List<TEntity>> GetAllAsync(Expression<Func<TEntity, bool>>? expression = null)
+            => await _repository.GetAllAsync(expression);
 
-        public async Task<List<TEntity>> GetAll()
-            => await _repository.GetAllAsync();
+
+
+
+        public IQueryable<TEntity> GetAll(Expression<Func<TEntity, bool>>? expression = null)
+            => _repository.GetAll(expression);
 
 
 
@@ -55,6 +61,12 @@ namespace Service.Concrete
 
             return new DataResponse<TEntity>(result);
         }
+
+
+
+
+        public Task<TEntity?> GetAsync(Expression<Func<TEntity, bool>> filter)
+            => _repository.GetAsync(filter);
 
 
 
@@ -89,9 +101,9 @@ namespace Service.Concrete
 
 
 
-        public async Task<int> CountAsync(Expression<Func<TEntity, bool>> expression) 
+        public async Task<int> CountAsync(Expression<Func<TEntity, bool>>? expression = null) 
             => await _repository.CountAsync(expression);
 
-
+        
     }
 }

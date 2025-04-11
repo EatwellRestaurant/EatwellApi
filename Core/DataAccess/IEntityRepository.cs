@@ -35,6 +35,6 @@ namespace Core.DataAccess
 
         IQueryable<T> Where(Expression<Func<T, bool>> expression);
 
-        Task<int> CountAsync(Expression<Func<T, bool>> expression);
+        Task<int> CountAsync(Expression<Func<T, bool>>? expression = null);
     }
 }

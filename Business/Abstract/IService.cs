@@ -8,13 +8,17 @@ namespace Service.Abstract
     public interface IService<TEntity> where TEntity : class, IEntity, new()
     {
         Task<DataResponse<TEntity>> GetByIdAsync(int id, string entityName);
-        
+
+        Task<TEntity?> GetAsync(Expression<Func<TEntity, bool>> filter);
+
         IQueryable<TEntity> Where(Expression<Func<TEntity, bool>> expression);
         
-        Task<int> CountAsync(Expression<Func<TEntity, bool>> expression);
+        Task<int> CountAsync(Expression<Func<TEntity, bool>>? expression = null);
 
-        Task<List<TEntity>> GetAll();
-         
+        Task<List<TEntity>> GetAllAsync(Expression<Func<TEntity, bool>>? expression = null);
+
+        IQueryable<TEntity> GetAll(Expression<Func<TEntity, bool>>? expression = null);
+
         Task<bool> AnyAsync(Expression<Func<TEntity, bool>> expression);
         
         Task AddAsync(TEntity entity);

@@ -89,8 +89,8 @@ namespace Core.DataAccess.EntityFramework
 
 
 
-        public async Task<int> CountAsync(Expression<Func<TEntity, bool>> expression) 
-            => await _dbSet.CountAsync(expression);
+        public async Task<int> CountAsync(Expression<Func<TEntity, bool>>? expression = null) 
+            => expression != null ? await _dbSet.CountAsync(expression) : await _dbSet.CountAsync();
         
         
     }
