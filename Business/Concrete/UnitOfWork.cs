@@ -32,13 +32,7 @@ namespace Business.Concrete
                 foreach (var entry in entries)
                 {
                     if (entry.State == EntityState.Added)
-                    {
                         entry.Entity.CreateDate = turkeyTime;
-                    }
-                    else if (entry.State == EntityState.Modified)
-                    {
-                        entry.Entity.UpdateDate = turkeyTime;
-                    }
                 }
 
                 await context.SaveChangesAsync();

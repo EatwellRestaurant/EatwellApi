@@ -28,15 +28,11 @@ namespace WebAPI.Controllers
         
 
         [HttpDelete]
-        public IActionResult Delete(MealCategory mealCategory)
-        {
-            var result = _mealCategoryService.Delete(mealCategory);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-            return BadRequest(result);
-        }
+        [Authorize]
+        public async Task<IActionResult> SetDeleteOrRestore(int mealCategoryId) 
+            => Ok(await _mealCategoryService.SetDeleteOrRestore(mealCategoryId));
+        
+
 
         [HttpPut]
         public IActionResult Update([FromForm(Name = "Image")] IFormFile file,[FromForm] string mealCategoryName)
@@ -62,15 +58,10 @@ namespace WebAPI.Controllers
             return BadRequest(result);
         }
 
+
         [HttpGet]
-        public async Task<IActionResult> GetAll()
-        {
-            var result = await _mealCategoryService.GetAll();
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-            return BadRequest(result);
-        }
+        [Authorize]
+        public async Task<IActionResult> GetAllForAdmin() 
+            => Ok(await _mealCategoryService.GetAllForAdmin());
     }
 }

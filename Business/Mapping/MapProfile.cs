@@ -9,6 +9,9 @@ namespace Business.Mapping
         public MapProfile()
         {
             CreateMap<User, UserListDto>();
+
+
+            CreateMap<MealCategory, MealCategoryListDto>();
         }
     }
 }

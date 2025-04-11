@@ -10,6 +10,7 @@ namespace Business.Constants.Messages
     {
         public const string EntityAdded = "Kayıt başarılı.";
         public const string EntityDeleted = "Veri başarılı bir şekilde silindi.";
+        public const string EntityRestored = "Veri başarılı bir şekilde geri alındı.";
         public const string EntityUpdated = "Veri başarılı bir şekilde güncellendi.";
         public const string EntityListed = "Veriler başarılı bir şekilde listelendi.";
     }  

@@ -10,7 +10,7 @@ namespace Entities.Concrete
     public class MealCategory : BaseEntity, IEntity
     {
         public string Name { get; set; }
-        public string? ImagePath { get; set; }
+        public string ImagePath { get; set; }
 
 
 

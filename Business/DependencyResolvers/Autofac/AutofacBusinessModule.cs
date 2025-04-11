@@ -26,6 +26,7 @@ namespace Business.DependencyResolvers.Autofac
         {
             builder.RegisterType<RestaurantContext>().InstancePerLifetimeScope();
             builder.RegisterType<FileHelper>().As<IFileHelper>().InstancePerLifetimeScope();
+            builder.RegisterType<DashboardManager>().As<IDashboardService>().InstancePerLifetimeScope();
 
             builder.RegisterType<BranchManager>().As<IBranchService>().SingleInstance();
             builder.RegisterType<EfBranchDal>().As<IBranchDal>().SingleInstance();
