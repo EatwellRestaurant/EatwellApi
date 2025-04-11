@@ -14,9 +14,9 @@ namespace Business.Abstract
 {
     public interface IUserService : IService<User>
     {
-        Task<DataResponse<List<UserListDto>>> GetUsers();
+        Task<DataResponse<List<UserListDto>>> GetAll();
 
-        Task Add(User user);
+        Task<DataResponse<UserDetailDto>> Get(int userId);
 
         Task CheckIfUserEMail(string email); 
 

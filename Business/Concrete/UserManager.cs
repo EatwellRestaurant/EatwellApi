@@ -52,22 +52,27 @@ namespace Business.Concrete
 
 
 
-        public async Task<DataResponse<List<UserListDto>>> GetUsers() 
+        public async Task<DataResponse<List<UserListDto>>> GetAll() 
             => new DataResponse<List<UserListDto>>(_mapper.Map<List<UserListDto>>
                 (await _userDal
                 .GetAll() 
                 .OrderByDescending(u => u.CreateDate)
                 .ToListAsync()), 
                 CommonMessages.EntityListed);
-        
 
 
 
-        public async Task Add(User user)
+        public async Task<DataResponse<UserDetailDto>> Get(int userId)
         {
-            await _userDal.AddAsync(user);
-        }
+            User? user = await _userDal
+                .GetAsync(u => u.Id == userId)
+                ?? throw new EntityNotFoundException("Kullanıcı");
 
+
+            return new DataResponse<UserDetailDto>
+                (_mapper.Map<UserDetailDto>(user), 
+                CommonMessages.EntityFetch);
+        }
 
 
         public async Task CheckIfUserEMail(string email)

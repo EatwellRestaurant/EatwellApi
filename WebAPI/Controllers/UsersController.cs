@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace WebAPI.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[action]")]
     [ApiController]
     public class UsersController : ControllerBase
     {
@@ -20,7 +20,14 @@ namespace WebAPI.Controllers
 
         [HttpGet]
         [Authorize]
-        public async Task<IActionResult> GetUsers() 
-            => Ok(await _userService.GetUsers());
+        public async Task<IActionResult> GetAll() 
+            => Ok(await _userService.GetAll());
+        
+        
+        
+        [HttpGet]
+        [Authorize] 
+        public async Task<IActionResult> Get(int userId) 
+            => Ok(await _userService.Get(userId));
     }
 }

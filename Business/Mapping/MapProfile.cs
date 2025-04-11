@@ -12,6 +12,9 @@ namespace Business.Mapping
             CreateMap<User, UserListDto>();
 
 
+            CreateMap<User, UserDetailDto>();
+
+
             CreateMap<MealCategory, MealCategoryListDto>();
 
 

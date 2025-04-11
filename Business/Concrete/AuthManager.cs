@@ -50,7 +50,7 @@ namespace Business.Concrete
 
             user.UserOperationClaims.Add(new UserOperationClaim { OperationClaimId = 2 });
 
-            await _userService.Add(user);
+            await _userService.AddAsync(user);
             await _emailService.SendEmailAsync(user.Email, user.FirstName, user.VerificationCode);
             await _unitOfWork.SaveChangesAsync();
 
