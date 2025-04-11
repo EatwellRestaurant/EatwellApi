@@ -83,7 +83,7 @@ namespace Business.Concrete
             {
                 if (CheckIfImagePathIsEmpty(employee.ImagePath).Success)
                 {
-                    var resultOfUpdate = _fileHelper.Update(file, employee.ImagePath, ImagePaths.ImagePath);
+                    var resultOfUpdate = _fileHelper.Update(file, employee.ImagePath);
 
                     if (!resultOfUpdate.Success)
                     {

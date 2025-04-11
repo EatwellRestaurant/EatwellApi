@@ -35,17 +35,10 @@ namespace WebAPI.Controllers
 
 
         [HttpPut]
-        public IActionResult Update([FromForm(Name = "Image")] IFormFile file,[FromForm] string mealCategoryName)
-        {
-            MealCategory mealCategory = new() { Name = mealCategoryName };
-            
-            var result = _mealCategoryService.Update(file, mealCategory);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-            return BadRequest(result);
-        }
+        [Authorize]
+        public async Task<IActionResult> Update(int mealCategoryId, [FromForm] MealCategoryUpsertDto upsertDto) 
+            => Ok(await _mealCategoryService.Update(mealCategoryId, upsertDto));
+        
 
 
         [HttpGet]

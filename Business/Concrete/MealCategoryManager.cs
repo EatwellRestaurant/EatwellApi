@@ -1,25 +1,16 @@
 ﻿using AutoMapper;
 using Business.Abstract;
 using Business.Constants.Messages;
-using Business.Constants.Messages.Entity;
-using Business.Constants.Paths;
 using Business.ValidationRules.FluentValidation;
 using Core.Aspects.Autofac.Validation;
 using Core.Exceptions.General;
 using Core.ResponseModels;
 using Core.Utilities.FileHelper;
-using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
 using Entities.Dtos.MealCategory;
-using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Service.Concrete;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Business.Concrete
 {
@@ -105,19 +96,19 @@ namespace Business.Concrete
                 CommonMessages.EntityListed);
 
 
-        public IResult Update(IFormFile file, MealCategory mealCategory)
+        [ValidationAspect(typeof(MealCategoryUpsertDtoValidator))]
+        public async Task<UpdateSuccessResponse> Update(int mealCategoryId, MealCategoryUpsertDto upsertDto)
         {
-            var result = _fileHelper.Update(file, mealCategory.ImagePath, ImagePaths.ImagePath);
+            MealCategory mealCategory = await GetByIdMealCategoryForDeleteAndUpdate(mealCategoryId);
 
-            if (!result.Success)
-            {
-                return result;
-            }
-
-            mealCategory.ImagePath = result.Data;
+            mealCategory.UpdateDate = DateTime.Now;
+            mealCategory.Name = upsertDto.Name;
+            mealCategory.ImagePath = _fileHelper.Update(upsertDto.Image, mealCategory.ImagePath).Data;
 
             _mealCategoryDal.Update(mealCategory);
-            return new SuccessResult(MealCategoryMessages.MealCategoryUpdated);
+            await _unitOfWork.SaveChangesAsync();
+            
+            return new UpdateSuccessResponse(CommonMessages.EntityUpdated);
         }
 
 

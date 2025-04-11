@@ -65,7 +65,7 @@ namespace Business.Concrete
 
         public IResult Update(IFormFile file, BranchImage branchImage)
         {
-            var result = _fileHelper.Update(file, branchImage.ImagePath, ImagePaths.ImagePath);
+            var result = _fileHelper.Update(file, branchImage.ImagePath);
 
             if (!result.Success)
             {

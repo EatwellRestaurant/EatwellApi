@@ -19,8 +19,8 @@ namespace Business.Abstract
         Task<DataResponse<MealCategoryDetailDto>> Get(int mealCategoryId);
         
         Task<CreateSuccessResponse> Add(MealCategoryUpsertDto upsertDto);
-        
-        IResult Update(IFormFile file, MealCategory mealCategory);
+
+        Task<UpdateSuccessResponse> Update(int mealCategoryId, MealCategoryUpsertDto upsertDto);
         
         Task<DeleteSuccessResponse> SetDeleteOrRestore(int mealCategoryId);
     }

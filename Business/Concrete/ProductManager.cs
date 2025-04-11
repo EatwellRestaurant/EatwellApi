@@ -81,7 +81,7 @@ namespace Business.Concrete
         [ValidationAspect(typeof(ProductValidator))]
         public IResult Update(IFormFile file, ProductForUpdateDto dto)
         {
-            var result = _fileHelper.Update(file, dto.ImagePath, ImagePaths.ImagePath);
+            var result = _fileHelper.Update(file, dto.ImagePath);
 
             if (!result.Success)
             {

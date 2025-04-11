@@ -14,6 +14,6 @@ namespace Core.Utilities.FileHelper
 
         IResult Delete(string filePath);
 
-        IDataResult<string> Update(IFormFile file, string oldPath, string root);
+        IDataResult<string> Update(IFormFile file, string oldPath);
     }
 }

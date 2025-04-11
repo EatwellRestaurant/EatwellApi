@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using FluentFTP;
 using FluentFTP.Helpers;
 using Microsoft.Extensions.Configuration;
+using Core.Exceptions.General;
 
 namespace Core.Utilities.FileHelper
 {
@@ -59,35 +60,21 @@ namespace Core.Utilities.FileHelper
 
         public IResult Delete(string filePath)
         {
-            var result = CheckIfFileExists(filePath);
+            if (!_ftpClient.FileExists(filePath))
+                throw new EntityNotFoundException("Görsel");
+            
 
-            if (!result.Success)
-            {
-                return result;
-            }
+            _ftpClient.DeleteFile(filePath);
 
-            File.Delete(filePath);
-            return new SuccessResult("Dosya silindi");
+            return new SuccessResult("Dosya silindi.");
         }
 
 
-        public IDataResult<string> Update(IFormFile file, string oldPath, string root)
+        public IDataResult<string> Update(IFormFile file, string oldPath)
         {
-            var resultOfDelete = Delete(oldPath);
-
-            if (!resultOfDelete.Success)
-            {
-                return new ErrorDataResult<string>(resultOfDelete.Message);
-            }
-
-            var resultOfUpload = Upload(file);
-
-            if (!resultOfUpload.Success)
-            {
-                return resultOfUpload;
-            }
-
-            return new SuccessDataResult<string>(resultOfUpload.Data, "Dosya güncellendi");
+            Delete(oldPath);
+            
+            return new SuccessDataResult<string>(Upload(file).Data, "Dosya güncellendi.");
         }
 
 
@@ -109,16 +96,6 @@ namespace Core.Utilities.FileHelper
                 throw new FileNotProvidedException();
         }
 
-
-
-        private static IResult CheckIfFileExists(string filePath)
-        {
-            if (File.Exists(filePath))
-            {
-                return new SuccessResult();
-            }
-            return new ErrorResult("Böyle bir dosya mevcut değil");
-        }
 
         #endregion
     }
