@@ -9,6 +9,11 @@ namespace Business.Mapping
     {
         public MapProfile()
         {
+            CreateMap<UserUpdateDto, User>()
+                .ForMember(dest => dest.Password, opt => opt.Ignore())
+                .ForMember(dest => dest.UpdateDate, opt => opt.MapFrom(src => DateTime.Now));
+
+
             CreateMap<User, UserListDto>();
 
 

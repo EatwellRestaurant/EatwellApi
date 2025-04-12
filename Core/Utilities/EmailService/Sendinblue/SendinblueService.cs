@@ -14,14 +14,14 @@ namespace Core.Utilities.Email.Sendinblue
 {
     public class SendinblueService : IEmailService
     {
-        SendinblueSettings _brevoSettings;
+        SendinblueSettings _sendinblueSettings;
 
 
         public SendinblueService(IConfiguration configuration)
         {
-            _brevoSettings = configuration.GetSection("BrevoSettings").Get<SendinblueSettings>()!;
+            _sendinblueSettings = configuration.GetSection("SendinblueSettings").Get<SendinblueSettings>()!;
 
-            Configuration.Default.ApiKey.Add("api-key", _brevoSettings.ApiKey);
+            Configuration.Default.ApiKey.Add("api-key", _sendinblueSettings.ApiKey);
         }
 
 
@@ -29,8 +29,8 @@ namespace Core.Utilities.Email.Sendinblue
         {
             SendSmtpEmailSender sender = new()
             {
-                Name = _brevoSettings.SenderName,
-                Email = _brevoSettings.SenderEmail
+                Name = _sendinblueSettings.SenderName,
+                Email = _sendinblueSettings.SenderEmail
             };
 
 

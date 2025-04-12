@@ -3,6 +3,9 @@ using Business.Abstract;
 using Business.Constants.Messages;
 using Business.Constants.Messages.Entity;
 using Business.Security;
+using Business.ValidationRules.FluentValidation.User;
+using Core.Aspects.Autofac.Validation;
+using Core.Entities.Abstract;
 using Core.Exceptions.General;
 using Core.Exceptions.User;
 using Core.ResponseModels;
@@ -21,18 +24,21 @@ namespace Business.Concrete
         readonly IOperationClaimService _operationClaimService;
         readonly ITokenHelper _tokenHelper;
         readonly IMapper _mapper;
+        readonly IUnitOfWork _unitOfWork;
 
         public UserManager(
-            IUserDal userDal, 
-            ITokenHelper tokenHelper, 
-            IOperationClaimService operationClaimService, 
-            IMapper mapper) 
+            IUserDal userDal,
+            ITokenHelper tokenHelper,
+            IOperationClaimService operationClaimService,
+            IMapper mapper,
+            IUnitOfWork unitOfWork)
             : base(userDal)
         {
             _userDal = userDal;
             _tokenHelper = tokenHelper;
             _operationClaimService = operationClaimService;
             _mapper = mapper;
+            _unitOfWork = unitOfWork;
         }
 
 
@@ -75,6 +81,25 @@ namespace Business.Concrete
         }
 
 
+
+        [ValidationAspect(typeof(UserUpdateDtoValidator))]
+        public async Task<UpdateSuccessResponse> Update(int userId, UserUpdateDto updateDto)
+        {
+            User user = await GetByIdUser(userId);
+
+            if (!BCrypt.Net.BCrypt.Verify(updateDto.Password, user.Password))
+                throw new InvalidPasswordException();
+
+            _mapper.Map(updateDto, user);
+
+            _userDal.Update(user);
+            await _unitOfWork.SaveChangesAsync();
+
+            return new UpdateSuccessResponse(CommonMessages.EntityUpdated);
+        }
+
+
+
         public async Task CheckIfUserEMail(string email)
         {
             if (await _userDal.AnyAsync(u => u.Email == email && !u.IsDeleted))
@@ -83,30 +108,21 @@ namespace Business.Concrete
 
 
 
-        public async Task<User> GetUserByEmail(string email)
-        {
-            User? user = await _userDal.Where(u => u.Email == email && !u.IsDeleted)
-                .Select(u => new User
-                {
-                    Password = u.Password
-                })
-                .SingleOrDefaultAsync();
-
-
-            if (user == null)
-                throw new InvalidCredentialsException();
-
-
-            return user;
-        }
-
-
 
 
 
         #region BusinessRules
 
-        
+        private async Task<User> GetByIdUser(int userId)
+        {
+            User? user = await _userDal
+                .GetAsync(u => u.Id == userId && !u.IsDeleted)
+                ?? throw new EntityNotFoundException("Kullanıcı");
+
+            return user;
+        }
+
+
         #endregion
     }
 }

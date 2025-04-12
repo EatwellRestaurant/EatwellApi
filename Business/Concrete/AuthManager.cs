@@ -1,7 +1,7 @@
 ﻿using Business.Abstract;
 using Business.Constants.Messages.Entity;
 using Business.Security;
-using Business.ValidationRules.FluentValidation;
+using Business.ValidationRules.FluentValidation.User;
 using Core.Aspects.Autofac.Validation;
 using Core.Entities.Abstract;
 using Core.Exceptions.General;

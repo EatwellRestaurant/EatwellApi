@@ -7,7 +7,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-namespace Business.ValidationRules.FluentValidation
+namespace Business.ValidationRules.FluentValidation.User
 {
     public class UserForLoginDtoValidator : AbstractValidator<UserForLoginDto>
     {
@@ -16,8 +16,8 @@ namespace Business.ValidationRules.FluentValidation
             RuleFor(u => u.Email)
                 .NotEmpty()
                 .WithMessage("Lütfen e-posta adresinizi giriniz!");
-            
-            
+
+
             RuleFor(u => u.Password)
                 .NotEmpty()
                 .WithMessage("Lütfen şifrenizi giriniz!");

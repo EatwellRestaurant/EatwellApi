@@ -18,9 +18,9 @@ namespace Business.Abstract
 
         Task<DataResponse<UserDetailDto>> Get(int userId);
 
-        Task CheckIfUserEMail(string email); 
+        Task CheckIfUserEMail(string email);
 
-        Task<User> GetUserByEmail(string email);
+        Task<UpdateSuccessResponse> Update(int userId, UserUpdateDto upsertDto);
 
         Task<DataResponse<AccessToken>> CreateAccessToken(User user);
     }
