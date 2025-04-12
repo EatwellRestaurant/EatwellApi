@@ -99,6 +99,30 @@ namespace Business.Concrete
         }
 
 
+         
+        [ValidationAspect(typeof(UserPasswordUpdateDtoValidator))]
+        public async Task<UpdateSuccessResponse> UpdatePassword(int userId, UserPasswordUpdateDto updateDto)
+        {
+            User user = await GetByIdUser(userId);
+
+            if (!BCrypt.Net.BCrypt.Verify(updateDto.OldPassword, user.Password))
+                throw new InvalidPasswordException();
+
+
+            if (updateDto.NewPassword != updateDto.NewPasswordAgain)
+                throw new NewPasswordMismatchException();
+
+
+            user.Password = BCrypt.Net.BCrypt.HashPassword(updateDto.NewPassword);
+            user.UpdateDate = DateTime.Now;
+
+            _userDal.Update(user);
+            await _unitOfWork.SaveChangesAsync();
+
+            return new UpdateSuccessResponse(CommonMessages.EntityUpdated);
+        }
+
+
 
         public async Task CheckIfUserEMail(string email)
         {

@@ -22,6 +22,8 @@ namespace Business.Abstract
 
         Task<UpdateSuccessResponse> Update(int userId, UserUpdateDto upsertDto);
 
+        Task<UpdateSuccessResponse> UpdatePassword(int userId, UserPasswordUpdateDto updateDto);
+
         Task<DataResponse<AccessToken>> CreateAccessToken(User user);
     }
 }

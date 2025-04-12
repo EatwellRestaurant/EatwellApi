@@ -30,7 +30,7 @@ namespace Business.ValidationRules.FluentValidation.User
 
             RuleFor(u => u.Password)
                 .NotEmpty()
-                .WithMessage("Lütfen şifrenizi giriniz!");
+                .WithMessage("Lütfen mevcut şifrenizi giriniz!");
         }
     }
 }

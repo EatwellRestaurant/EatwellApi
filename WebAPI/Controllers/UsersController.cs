@@ -3,6 +3,7 @@ using Entities.Dtos.User;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace WebAPI.Controllers
 {
@@ -35,7 +36,22 @@ namespace WebAPI.Controllers
         
         [HttpPut] 
         [Authorize] 
-        public async Task<IActionResult> Update(int userId, UserUpdateDto updateDto) 
-            => Ok(await _userService.Update(userId, updateDto));
+        public async Task<IActionResult> Update(UserUpdateDto updateDto)
+        {
+            int userId = Convert.ToInt32(HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier));
+
+            return Ok(await _userService.Update(userId, updateDto));
+        }
+        
+        
+        
+        [HttpPut] 
+        [Authorize]  
+        public async Task<IActionResult> UpdatePassword(UserPasswordUpdateDto updateDto)
+        {
+            int userId = Convert.ToInt32(HttpContext.User.FindFirstValue(ClaimTypes.NameIdentifier));
+
+            return Ok(await _userService.UpdatePassword(userId, updateDto));
+        }
     }
 }
