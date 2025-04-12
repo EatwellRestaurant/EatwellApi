@@ -30,8 +30,14 @@ namespace WebAPI.Controllers
         
 
         [HttpPost] 
-        public async Task<IActionResult> VerifyEmailOfUser(int userId, string verificationCode) 
-            => Ok(await _authService.VerifyEmailOfUser(userId, verificationCode));
+        public async Task<IActionResult> VerifyEmailOfUser(int userId, VerificationCodeDto codeDto) 
+            => Ok(await _authService.VerifyEmailOfUser(userId, codeDto));
+        
+        
+
+        [HttpPost] 
+        public async Task<IActionResult> SendEmailAsync(int userId) 
+            => Ok(await _authService.SendEmailAsync(userId));
             
     }
 }

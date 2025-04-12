@@ -12,7 +12,7 @@ namespace Core.Exceptions.User
         /// <summary>
         /// Girdiğiniz doğrulama kodu hatalı veya süresi dolmuş. Lütfen tekrar deneyin.
         /// </summary>
-        public InvalidVerificationCodeException() : base("Girdiğiniz doğrulama kodu hatalı veya süresi dolmuş. Lütfen tekrar deneyin.")
+        public InvalidVerificationCodeException() : base("Girdiğiniz doğrulama kodu hatalı veya süresi dolmuş. Lütfen tekrar deneyin veya yeni bir kod isteyin.")
         {
         }
     }

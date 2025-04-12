@@ -123,6 +123,23 @@ namespace Business.Concrete
         }
 
 
+        public async Task<DeleteSuccessResponse> Delete(int userId, UserDeleteDto deleteDto)
+        {
+            User user = await GetByIdUser(userId);
+
+            if (!BCrypt.Net.BCrypt.Verify(deleteDto.Password, user.Password))
+                throw new InvalidPasswordException();
+
+            user.IsDeleted = true;
+            user.DeleteDate = DateTime.Now;
+
+            _userDal.Update(user);
+            await _unitOfWork.SaveChangesAsync();
+
+            return new DeleteSuccessResponse(CommonMessages.EntityDeleted);
+        }
+
+
 
         public async Task CheckIfUserEMail(string email)
         {

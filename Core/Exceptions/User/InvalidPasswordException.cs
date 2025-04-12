@@ -10,9 +10,9 @@ namespace Core.Exceptions.User
     public class InvalidPasswordException : BadRequestBaseException
     {
         /// <summary>
-        /// Girmiş olduğunuz mevcut şifreniz hatalı. Lütfen tekrar deneyin.
+        /// Mevcut şifreniz hatalı. Lütfen tekrar deneyin.
         /// </summary>
-        public InvalidPasswordException() : base("Girmiş olduğunuz mevcut şifreniz hatalı. Lütfen tekrar deneyin.")
+        public InvalidPasswordException() : base("Mevcut şifreniz hatalı. Lütfen tekrar deneyin.")
         {
         }
     }

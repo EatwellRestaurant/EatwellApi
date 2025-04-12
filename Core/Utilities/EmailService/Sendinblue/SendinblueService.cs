@@ -46,14 +46,20 @@ namespace Core.Utilities.Email.Sendinblue
                 To = toList,
                 Subject = "EATWELL - Hesap Doğrulama Kodu",
                 HtmlContent = $@"<html>
-                                    <body>
-                                        <h1>Merhaba {toName},</h1>
-                                        <p>Hesabınızı doğrulamak için aşağıdaki doğrulama kodunu kullanabilirsin:</p>
-                                        <h2 style=""color: #28a745; font-size: 24px; font-weight: bold;"">{code}</h2>
-                                        <p>Bu kodu ilgili alana girerek hesabını doğrulayabilirsin. Kod yalnızca 3 dakika geçerli olacaktır.</p>
-                                        <p>Eğer bu işlemi siz yapmadıysan, bu e-postayı göz ardı edebilirsin.</p>
-                                        <p>Teşekkürler./p>
-                                        <p>EATWELL Ekibi</p>
+                                    <body style=""font-family: Arial, sans-serif; background-color: #f9f9f9; padding: 20px; color: #333;"">
+                                        <div style=""max-width: 600px; margin: auto; background-color: #ffffff; padding: 30px; border-radius: 8px; box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);"">
+                                            <h1 style=""color: #28a745;"">Merhaba {toName},</h1>
+                                            <p>Hesabını güvence altına almak için aşağıdaki doğrulama kodunu kullanabilirsin:</p>
+                                            <p style=""margin: 20px 0; text-align: center;"">
+                                                <span style=""display: inline-block; background-color: #eaf9f0; color: #28a745; font-size: 24px; font-weight: bold; padding: 12px 24px; border-radius: 6px;"">{code}</span>
+                                            </p>
+                                            <p>Lütfen bu kodu ilgili alana girerek hesabını doğrula. Güvenliğin için, kod yalnızca <strong>3 dakika</strong> boyunca geçerli olacaktır.</p>
+                                            <p>Eğer bu işlemi sen başlatmadıysan, bu e-postayı görmezden gelebilirsin. Herhangi bir işlem yapılmayacaktır.</p>
+                                            <p>Teşekkürler</p>
+                                            <p><strong>EATWELL Ekibi</strong></p>
+                                            <hr style=""margin-top: 30px; border: none; border-top: 1px solid #eee;"" />
+                                            <p style=""font-size: 12px; color: #777; text-align: center;"">Bu e-posta otomatik olarak gönderilmiştir, lütfen yanıtlamayın.</p>
+                                        </div>
                                     </body>
                                 </html>"
             };

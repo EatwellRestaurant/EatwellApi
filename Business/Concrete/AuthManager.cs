@@ -35,8 +35,6 @@ namespace Business.Concrete
         {
             await _userService.CheckIfUserEMail(dto.Email);
 
-            Random random = new();
-
             User user = new()
             { 
                 Email = dto.Email,
@@ -44,7 +42,7 @@ namespace Business.Concrete
                 LastName = dto.LastName,
                 Password = BCrypt.Net.BCrypt.HashPassword(dto.Password),
                 Verification = false,
-                VerificationCode = random.Next(10000, 99999).ToString(),
+                VerificationCode = new Random().Next(10000, 99999).ToString(),
                 VerificationCodeDuration = DateTime.Now.AddMinutes(3),
             };
 
@@ -54,7 +52,7 @@ namespace Business.Concrete
             await _emailService.SendEmailAsync(user.Email, user.FirstName, user.VerificationCode);
             await _unitOfWork.SaveChangesAsync();
 
-            return new CreateSuccessResponse(AuthMessages.UserRegistered);
+            return new CreateSuccessResponse(AuthMessages.UserRegistered, user.Id);
         }
 
 
@@ -83,7 +81,7 @@ namespace Business.Concrete
 
 
 
-        public async Task<SuccessResponse> VerifyEmailOfUser(int userId, string verificationCode)
+        public async Task<SuccessResponse> VerifyEmailOfUser(int userId, VerificationCodeDto codeDto)
         {
             User? user = await _userService
                 .Where(u => u.Id == userId && !u.IsDeleted)
@@ -94,7 +92,7 @@ namespace Business.Concrete
                 throw new EntityNotFoundException("Kullanıcı");
 
 
-            if (user.VerificationCode != verificationCode || DateTime.Now > user.VerificationCodeDuration)
+            if (user.VerificationCode != codeDto.VerificationCode || DateTime.Now > user.VerificationCodeDuration)
                 throw new InvalidVerificationCodeException();
 
             user.Verification = true;
@@ -105,5 +103,23 @@ namespace Business.Concrete
             return new SuccessResponse(AuthMessages.VerificationSuccessful, StatusCodes.Status200OK);
         }
         
+
+
+        public async Task<SuccessResponse> SendEmailAsync(int userId)
+        {
+            User user = await _userService
+                .GetAsync(u => u.Id == userId && !u.IsDeleted)
+                ?? throw new EntityNotFoundException("Kullanıcı");
+
+
+            user.VerificationCode = new Random().Next(10000, 99999).ToString();
+            user.VerificationCodeDuration = DateTime.Now.AddMinutes(3);
+
+            _userService.Update(user);
+            await _emailService.SendEmailAsync(user.Email, user.FirstName, user.VerificationCode);
+            await _unitOfWork.SaveChangesAsync();
+
+            return new SuccessResponse(AuthMessages.SuccessfulSendedVerificationCode, StatusCodes.Status200OK);
+        }
     }
 }

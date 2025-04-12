@@ -17,6 +17,8 @@ namespace Business.Abstract
 
         Task<DataResponse<AccessToken>> Login(UserForLoginDto userForLoginDto);
 
-        Task<SuccessResponse> VerifyEmailOfUser(int userId, string verificationCode);
+        Task<SuccessResponse> VerifyEmailOfUser(int userId, VerificationCodeDto codeDto);
+
+        Task<SuccessResponse> SendEmailAsync(int userId);
     }
 }
