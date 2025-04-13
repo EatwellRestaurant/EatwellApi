@@ -1,12 +1,19 @@
-﻿using Business.Abstract;
+﻿using AutoMapper;
+using Business.Abstract;
 using Business.BusinessAspects.Autofac;
+using Business.Constants.Messages;
 using Business.Constants.Messages.Entity;
 using Business.ValidationRules.FluentValidation;
 using Core.Aspects.Autofac.Validation;
+using Core.ResponseModels;
 using Core.Utilities.Business;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
+using DataAccess.Concrete.EntityFramework;
 using Entities.Concrete;
+using Entities.Dtos.Branch;
+using Entities.Dtos.MealCategory;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,11 +24,15 @@ namespace Business.Concrete
 {
     public class BranchManager : IBranchService
     {
-        private IBranchDal _branchDal;
-        public BranchManager(IBranchDal branchDal)
+        readonly IBranchDal _branchDal;
+        readonly IMapper _mapper;
+
+        public BranchManager(IBranchDal branchDal, IMapper mapper)
         {
             _branchDal = branchDal;
+            _mapper = mapper;
         }
+
 
 
         [SecuredOperation("admin")]
@@ -56,11 +67,15 @@ namespace Business.Concrete
             return new SuccessDataResult<Branch?>(await _branchDal.GetAsync(b => b.Id == id), BranchMessages.BranchWasBrought);
         }
 
-
-        public async Task<IDataResult<List<Branch>>> GetAll()
-        {
-            return new SuccessDataResult<List<Branch>>(await _branchDal.GetAllAsync(), BranchMessages.BranchesListed);
-        }
+         
+        [SecuredOperation("admin")]
+        public async Task<DataResponse<List<AdminBranchListDto>>> GetAllForAdmin()
+        => new DataResponse<List<AdminBranchListDto>>(_mapper.Map<List<AdminBranchListDto>>
+                (await _branchDal
+                .GetAllQueryable()
+                .OrderByDescending(m => m.CreateDate)
+                .ToListAsync()),
+                CommonMessages.EntityListed);
 
 
         [SecuredOperation("admin")]

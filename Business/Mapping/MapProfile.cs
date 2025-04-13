@@ -46,6 +46,9 @@ namespace Business.Mapping
 
 
             CreateMap<Branch, BranchDto>();
+
+
+            CreateMap<Branch, AdminBranchListDto>();
         }
     }
 }

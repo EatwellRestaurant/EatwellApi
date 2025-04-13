@@ -9,7 +9,7 @@ namespace WebAPI.Controllers
     [ApiController]
     public class BranchsController : ControllerBase
     {
-        private IBranchService _branchService;
+        readonly IBranchService _branchService;
 
         public BranchsController(IBranchService branchService)
         {
@@ -60,15 +60,9 @@ namespace WebAPI.Controllers
             return BadRequest(result);
         }
 
-        [HttpGet]
-        public async Task<IActionResult> GetAll()
-        {
-            var result = await _branchService.GetAll();
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-            return BadRequest(result);
-        }
+
+        [HttpGet] 
+        public async Task<IActionResult> GetAllForAdmin() 
+            => Ok(await _branchService.GetAllForAdmin());
     }
 }
