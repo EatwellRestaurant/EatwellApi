@@ -11,6 +11,7 @@ using Entities.Concrete;
 using Entities.Dtos.City;
 using Entities.Dtos.Country;
 using Microsoft.EntityFrameworkCore;
+using Service.Concrete;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.Metrics;
@@ -20,12 +21,12 @@ using System.Threading.Tasks;
 
 namespace Business.Concrete
 {
-    public class CityManager : ICityService
+    public class CityManager : Manager<City>, ICityService
     {
         readonly ICityDal _cityDal;
         readonly IMapper _mapper;
 
-        public CityManager(ICityDal cityDal, IMapper mapper)
+        public CityManager(ICityDal cityDal, IMapper mapper) : base(cityDal) 
         {
             _cityDal = cityDal;
             _mapper = mapper;

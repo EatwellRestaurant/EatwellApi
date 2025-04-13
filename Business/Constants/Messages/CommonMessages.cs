@@ -17,7 +17,7 @@ namespace Business.Constants.Messages
         public const string EntityUpdated = "Veri başarılı bir şekilde güncellendi.";
         
         public const string EntityListed = "Veriler başarılı bir şekilde listelendi.";
-        
+
         public const string EntityFetch = "Veri başarılı bir şekilde getirildi.";
     }  
 } 

@@ -1,5 +1,6 @@
 ﻿using Business.Abstract;
 using Entities.Concrete;
+using Entities.Dtos.Branch;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -16,16 +17,11 @@ namespace WebAPI.Controllers
             _branchService = branchService;
         }
 
+
         [HttpPost]
-        public async Task<IActionResult> Add(Branch branch)
-        {
-            var result = await _branchService.Add(branch);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-            return BadRequest(result);
-        }
+        public async Task<IActionResult> Add(BranchUpsertDto upsertDto) 
+            => Ok(await _branchService.Add(upsertDto));
+
 
         [HttpDelete]
         public IActionResult Delete(Branch branch)
