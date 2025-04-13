@@ -21,36 +21,31 @@ namespace WebAPI.Controllers
 
 
         [HttpPost]
-        [Authorize]
         public async Task<IActionResult> Add([FromForm] MealCategoryUpsertDto upsertDto) 
             => Ok(await _mealCategoryService.Add(upsertDto));
         
         
 
         [HttpDelete]
-        [Authorize]
         public async Task<IActionResult> SetDeleteOrRestore(int mealCategoryId) 
             => Ok(await _mealCategoryService.SetDeleteOrRestore(mealCategoryId));
         
 
 
         [HttpPut]
-        [Authorize]
         public async Task<IActionResult> Update(int mealCategoryId, [FromForm] MealCategoryUpsertDto upsertDto) 
             => Ok(await _mealCategoryService.Update(mealCategoryId, upsertDto));
         
 
 
         [HttpGet]
-        [Authorize]
-        public async Task<IActionResult> Get(int mealCategoryId) 
-            => Ok(await _mealCategoryService.Get(mealCategoryId));
-            
+        public async Task<IActionResult> GetForAdmin(int mealCategoryId) 
+            => Ok(await _mealCategoryService.GetForAdmin(mealCategoryId));
+             
         
 
 
         [HttpGet]
-        [Authorize]
         public async Task<IActionResult> GetAllForAdmin() 
             => Ok(await _mealCategoryService.GetAllForAdmin());
     }

@@ -8,29 +8,26 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Business.BusinessAspects.Autofac
 {
-    //JWT için aspect
     public class SecuredOperation : MethodInterception
     {
-        private string[] _roles;
+        List<string> _roles;
         private IHttpContextAccessor _httpContextAccessor;
 
         public SecuredOperation(string roles)
         {
-            _roles = roles.Split(',');
+            _roles = roles.Split(',').Select(role => role.Trim()).ToList();
             _httpContextAccessor = ServiceTool.ServiceProvider.GetService<IHttpContextAccessor>();
 
         }
 
         protected override void OnBefore(IInvocation invocation)
         {
-            var roleClaims = _httpContextAccessor.HttpContext.User.ClaimRoles();
-            foreach (var role in _roles)
-            {
-                if (roleClaims.Contains(role))
-                {
-                    return;
-                }
-            }
+            List<string> roleClaims = _httpContextAccessor.HttpContext.User.ClaimRoles();
+
+
+            if (_roles.Any(r => roleClaims.Select(r => r.ToLower()).Contains(r.ToLower())))
+                return;
+
             throw new ForbiddenException();
         }
     }

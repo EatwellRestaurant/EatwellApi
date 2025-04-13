@@ -16,7 +16,7 @@ namespace Business.Abstract
     {
         Task<DataResponse<List<MealCategoryListDto>>> GetAllForAdmin();
 
-        Task<DataResponse<MealCategoryDetailDto>> Get(int mealCategoryId);
+        Task<DataResponse<MealCategoryDetailDto>> GetForAdmin(int mealCategoryId);
         
         Task<CreateSuccessResponse> Add(MealCategoryUpsertDto upsertDto);
 

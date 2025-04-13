@@ -7,11 +7,11 @@ namespace WebAPI.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class DashboardController : ControllerBase
+    public class DashboardsController : ControllerBase
     {
         readonly IDashboardService _dashboardService;
 
-        public DashboardController(IDashboardService dashboardService)
+        public DashboardsController(IDashboardService dashboardService)
         {
             _dashboardService = dashboardService;
         }
@@ -19,7 +19,6 @@ namespace WebAPI.Controllers
 
 
         [HttpGet]
-        [Authorize] 
         public async Task<IActionResult> GetStatistics() 
             => Ok(await _dashboardService.GetStatistics());
         

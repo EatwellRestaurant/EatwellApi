@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Business.Abstract;
+using Business.BusinessAspects.Autofac;
 using Business.Constants.Messages;
 using Business.ValidationRules.FluentValidation;
 using Core.Aspects.Autofac.Validation;
@@ -35,7 +36,8 @@ namespace Business.Concrete
         }
 
 
-        [ValidationAspect(typeof(MealCategoryUpsertDtoValidator))]
+        [SecuredOperation("admin", Priority = 1)]
+        [ValidationAspect(typeof(MealCategoryUpsertDtoValidator), Priority = 2)]
         public async Task<CreateSuccessResponse> Add(MealCategoryUpsertDto upsertDto)
         {
             MealCategory mealCategory = new()
@@ -51,6 +53,8 @@ namespace Business.Concrete
         }
 
 
+
+        [SecuredOperation("admin")]
         public async Task<DeleteSuccessResponse> SetDeleteOrRestore(int mealCategoryId)
         {
             MealCategory mealCategory = await GetByIdMealCategoryForDeleteAndUpdate(mealCategoryId);
@@ -77,7 +81,9 @@ namespace Business.Concrete
         }
 
 
-        public async Task<DataResponse<MealCategoryDetailDto>> Get(int mealCategoryId)
+
+        [SecuredOperation("admin")]
+        public async Task<DataResponse<MealCategoryDetailDto>> GetForAdmin(int mealCategoryId)
         {
             MealCategory? mealCategory = await _mealCategoryDal
                 .GetAsync(m => m.Id == mealCategoryId)
@@ -89,6 +95,8 @@ namespace Business.Concrete
         }
 
 
+
+        [SecuredOperation("admin")]
         public async Task<DataResponse<List<MealCategoryListDto>>> GetAllForAdmin()
             => new DataResponse<List<MealCategoryListDto>>(_mapper.Map<List<MealCategoryListDto>>
                 (await _mealCategoryDal
@@ -98,7 +106,9 @@ namespace Business.Concrete
                 CommonMessages.EntityListed);
 
 
-        [ValidationAspect(typeof(MealCategoryUpsertDtoValidator))]
+
+        [SecuredOperation("admin", Priority = 1)]
+        [ValidationAspect(typeof(MealCategoryUpsertDtoValidator), Priority = 2)]
         public async Task<UpdateSuccessResponse> Update(int mealCategoryId, MealCategoryUpsertDto upsertDto)
         {
             MealCategory mealCategory = await GetByIdMealCategoryForDeleteAndUpdate(mealCategoryId);

@@ -15,8 +15,7 @@ namespace DataAccess.Configurations
         {
             builder.HasData(
                 new OperationClaim { Id = 1, Name = "Admin" },
-                new OperationClaim { Id = 2, Name = "Kullanıcı" }
-                );
+                new OperationClaim { Id = 2, Name = "User" });
         }
     }
 }

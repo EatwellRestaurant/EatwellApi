@@ -25,7 +25,6 @@ namespace WebAPI.Controllers
         
         
         [HttpGet] 
-        [Authorize]
         public async Task<IActionResult> GetForAdmin(int countryId) 
             => Ok(await _countryService.GetForAdmin(countryId));
             
@@ -38,14 +37,12 @@ namespace WebAPI.Controllers
         
 
         [HttpGet]
-        [Authorize]
         public async Task<IActionResult> GetAllForAdmin() 
             => Ok(await _countryService.GetAllForAdmin());
         
         
         
         [HttpPut]
-        [Authorize]
         public async Task<IActionResult> SetActive(ActivateCountryIdsDto countryIdsDtos) 
             => Ok(await _countryService.SetActive(countryIdsDtos));
         

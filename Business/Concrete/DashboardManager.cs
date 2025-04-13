@@ -1,4 +1,5 @@
 ﻿using Business.Abstract;
+using Business.BusinessAspects.Autofac;
 using Business.Constants.Messages;
 using Core.ResponseModels;
 using Entities.Dtos.Dashboard;
@@ -22,7 +23,7 @@ namespace Business.Concrete
         }
 
 
-
+        [SecuredOperation("admin")]
         public async Task<DataResponse<DashboardStatisticsDto>> GetStatistics()
         {
             DashboardStatisticsDto statisticsDto = new()

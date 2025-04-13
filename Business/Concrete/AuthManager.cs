@@ -1,4 +1,5 @@
 ﻿using Business.Abstract;
+using Business.BusinessAspects.Autofac;
 using Business.Constants.Messages.Entity;
 using Business.Security;
 using Business.ValidationRules.FluentValidation.User;
@@ -102,7 +103,6 @@ namespace Business.Concrete
 
             return new SuccessResponse(AuthMessages.VerificationSuccessful, StatusCodes.Status200OK);
         }
-        
 
 
         public async Task<SuccessResponse> SendEmailAsync(int userId)

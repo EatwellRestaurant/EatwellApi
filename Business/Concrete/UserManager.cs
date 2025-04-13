@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Business.Abstract;
+using Business.BusinessAspects.Autofac;
 using Business.Constants.Messages;
 using Business.Constants.Messages.Entity;
 using Business.Security;
@@ -58,6 +59,7 @@ namespace Business.Concrete
 
 
 
+        [SecuredOperation("admin")]
         public async Task<DataResponse<List<UserListDto>>> GetAll() 
             => new DataResponse<List<UserListDto>>(_mapper.Map<List<UserListDto>>
                 (await _userDal
@@ -68,6 +70,7 @@ namespace Business.Concrete
 
 
 
+        [SecuredOperation("admin")]
         public async Task<DataResponse<UserDetailDto>> Get(int userId)
         {
             User? user = await _userDal
@@ -82,7 +85,8 @@ namespace Business.Concrete
 
 
 
-        [ValidationAspect(typeof(UserUpdateDtoValidator))]
+        [SecuredOperation("user", Priority = 1)]
+        [ValidationAspect(typeof(UserUpdateDtoValidator), Priority = 2)]
         public async Task<UpdateSuccessResponse> Update(int userId, UserUpdateDto updateDto)
         {
             User user = await GetByIdUser(userId);
@@ -100,7 +104,8 @@ namespace Business.Concrete
 
 
          
-        [ValidationAspect(typeof(UserPasswordUpdateDtoValidator))]
+        [SecuredOperation("user", Priority = 1)]
+        [ValidationAspect(typeof(UserPasswordUpdateDtoValidator), Priority = 2)]
         public async Task<UpdateSuccessResponse> UpdatePassword(int userId, UserPasswordUpdateDto updateDto)
         {
             User user = await GetByIdUser(userId);
@@ -123,6 +128,8 @@ namespace Business.Concrete
         }
 
 
+
+        [SecuredOperation("user")]
         public async Task<DeleteSuccessResponse> Delete(int userId, UserDeleteDto deleteDto)
         {
             User user = await GetByIdUser(userId);

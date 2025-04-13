@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Business.Abstract;
+using Business.BusinessAspects.Autofac;
 using Business.Constants.Messages;
 using Business.Constants.Messages.Entity;
 using Core.Exceptions.Country;
@@ -45,8 +46,9 @@ namespace Business.Concrete
 
             return new DataResponse<CountryDto>(_mapper.Map<CountryDto>(country), CommonMessages.EntityFetch);
         }
-        
-        
+
+
+        [SecuredOperation("admin")]
         public async Task<DataResponse<CountryDto>> GetForAdmin(int countryId)
         {
             Country country = await _countryDal
@@ -61,6 +63,7 @@ namespace Business.Concrete
 
 
 
+        [SecuredOperation("admin")]
         public async Task<DataResponse<List<AdminCountryListDto>>> GetAllForAdmin() 
             => new DataResponse<List<AdminCountryListDto>>(_mapper.Map<List<AdminCountryListDto>>
                 (await _countryDal
@@ -77,6 +80,7 @@ namespace Business.Concrete
 
 
 
+        [SecuredOperation("admin")]
         public async Task<SuccessResponse> SetActive(ActivateCountryIdsDto countryIdsDto)
         {
             List<Country> countries = await _countryDal
