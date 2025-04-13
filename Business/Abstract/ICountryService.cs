@@ -1,5 +1,7 @@
-﻿using Core.Utilities.Results;
+﻿using Core.ResponseModels;
+using Core.Utilities.Results;
 using Entities.Concrete;
+using Entities.Dtos.Country;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,10 +12,14 @@ namespace Business.Abstract
 {
     public interface ICountryService
     {
-        Task<IDataResult<List<Country>>> GetAll();
-        Task<IDataResult<Country?>> Get(int id);
-        Task<IResult> Add(Country country);
-        IResult Delete(Country country);
-        IResult Update(Country country);
+        Task<DataResponse<List<AdminCountryListDto>>> GetAllForAdmin();
+
+        Task<DataResponse<List<CountryDto>>> GetAll();
+
+        Task<DataResponse<CountryDto>> Get(int countryId);
+
+        Task<DataResponse<CountryDto>> GetForAdmin(int countryId);
+
+        Task<SuccessResponse> SetActive(ActivateCountryIdsDto countryIdsDto);
     }
 }

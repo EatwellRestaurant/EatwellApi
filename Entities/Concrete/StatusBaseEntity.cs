@@ -7,11 +7,10 @@ using System.Threading.Tasks;
 
 namespace Entities.Concrete
 {
-    public class Country : StatusBaseEntity
+    public abstract class StatusBaseEntity : IEntity
     {
-        public string Name { get; set; }
-
-
-        public ICollection<City> Cities { get; set; }
+        public int Id { get; set; }
+        public bool IsActive { get; set; } 
+        public DateTime? DeactivationDate { get; set; } 
     }
 }

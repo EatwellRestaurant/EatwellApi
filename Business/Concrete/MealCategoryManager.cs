@@ -92,7 +92,7 @@ namespace Business.Concrete
         public async Task<DataResponse<List<MealCategoryListDto>>> GetAllForAdmin()
             => new DataResponse<List<MealCategoryListDto>>(_mapper.Map<List<MealCategoryListDto>>
                 (await _mealCategoryDal
-                .GetAll()
+                .GetAllQueryable()
                 .OrderByDescending(m => m.CreateDate)
                 .ToListAsync()), 
                 CommonMessages.EntityListed);

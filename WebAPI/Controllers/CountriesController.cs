@@ -1,6 +1,6 @@
 ﻿using Business.Abstract;
-using Entities.Concrete;
-using Microsoft.AspNetCore.Http;
+using Entities.Dtos.Country;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebAPI.Controllers
@@ -9,66 +9,45 @@ namespace WebAPI.Controllers
     [ApiController]
     public class CountriesController : ControllerBase
     {
-        private ICountryService _countryService;
+        readonly ICountryService _countryService;
 
         public CountriesController(ICountryService countryService)
         {
             _countryService = countryService;
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Add(Country country)
-        {
-            var result = await _countryService.Add(country);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-            return BadRequest(result);
-        }
 
-        [HttpDelete]
-        public IActionResult Delete(Country country)
-        {
-            var result = _countryService.Delete(country);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-            return BadRequest(result);
-        }
 
+        [HttpGet]
+        public async Task<IActionResult> Get(int countryId) 
+            => Ok(await _countryService.Get(countryId));
+        
+        
+        
+        [HttpGet] 
+        [Authorize]
+        public async Task<IActionResult> GetForAdmin(int countryId) 
+            => Ok(await _countryService.GetForAdmin(countryId));
+            
+
+
+        [HttpGet]
+        public async Task<IActionResult> GetAll() 
+            => Ok(await _countryService.GetAll());
+        
+        
+
+        [HttpGet]
+        [Authorize]
+        public async Task<IActionResult> GetAllForAdmin() 
+            => Ok(await _countryService.GetAllForAdmin());
+        
+        
+        
         [HttpPut]
-        public IActionResult Update(Country country)
-        {
-            var result = _countryService.Update(country);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-            return BadRequest(result);
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> Get(int id)
-        {
-            var result = await _countryService.Get(id);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-            return BadRequest(result);
-        }
-
-        [HttpGet]
-        public async Task<IActionResult> GetAll()
-        {
-            var result = await _countryService.GetAll();
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-            return BadRequest(result);
-        }
+        [Authorize]
+        public async Task<IActionResult> SetActive(ActivateCountryIdsDto countryIdsDtos) 
+            => Ok(await _countryService.SetActive(countryIdsDtos));
+        
     }
 }

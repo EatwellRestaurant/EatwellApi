@@ -42,8 +42,13 @@ namespace Core.DataAccess.EntityFramework
 
 
 
-        public IQueryable<TEntity> GetAll(Expression<Func<TEntity, bool>>? expression = null)
+        public IQueryable<TEntity> GetAllQueryable(Expression<Func<TEntity, bool>>? expression = null)
             => expression == null ? _dbSet.AsNoTracking() : _dbSet.Where(expression).AsNoTracking();
+
+
+
+        public async Task<List<TEntity>> GetAllList(Expression<Func<TEntity, bool>>? expression = null)
+            => expression == null ? await _dbSet.ToListAsync() : await _dbSet.Where(expression).ToListAsync();
 
 
 

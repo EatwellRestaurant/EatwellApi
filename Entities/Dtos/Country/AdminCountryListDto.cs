@@ -5,13 +5,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Entities.Concrete
+namespace Entities.Dtos.Country
 {
-    public class Country : StatusBaseEntity
+    public class AdminCountryListDto : AdminStatusBaseEntityListDto
     {
         public string Name { get; set; }
-
-
-        public ICollection<City> Cities { get; set; }
     }
 }

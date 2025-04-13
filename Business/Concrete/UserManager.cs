@@ -61,7 +61,7 @@ namespace Business.Concrete
         public async Task<DataResponse<List<UserListDto>>> GetAll() 
             => new DataResponse<List<UserListDto>>(_mapper.Map<List<UserListDto>>
                 (await _userDal
-                .GetAll() 
+                .GetAllQueryable() 
                 .OrderByDescending(u => u.CreateDate)
                 .ToListAsync()), 
                 CommonMessages.EntityListed);

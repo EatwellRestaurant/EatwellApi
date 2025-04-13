@@ -1,5 +1,7 @@
 ﻿using AutoMapper;
 using Entities.Concrete;
+using Entities.Dtos.City;
+using Entities.Dtos.Country;
 using Entities.Dtos.MealCategory;
 using Entities.Dtos.User;
 
@@ -24,6 +26,15 @@ namespace Business.Mapping
 
 
             CreateMap<MealCategory, MealCategoryDetailDto>();
+
+
+            CreateMap<Country, AdminCountryListDto>();
+
+
+            CreateMap<Country, CountryDto>();
+
+            
+            CreateMap<City, CityDto>();
         }
     }
 }

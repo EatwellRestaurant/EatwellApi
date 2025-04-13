@@ -44,8 +44,13 @@ namespace Service.Concrete
 
 
 
-        public IQueryable<TEntity> GetAll(Expression<Func<TEntity, bool>>? expression = null)
-            => _repository.GetAll(expression);
+        public IQueryable<TEntity> GetAllQueryable(Expression<Func<TEntity, bool>>? expression = null)
+            => _repository.GetAllQueryable(expression);
+        
+        
+        
+        public async Task<List<TEntity>> GetAllList(Expression<Func<TEntity, bool>>? expression = null)
+            => await _repository.GetAllList(expression);
 
 
 

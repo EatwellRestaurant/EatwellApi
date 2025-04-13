@@ -17,7 +17,9 @@ namespace Service.Abstract
 
         Task<List<TEntity>> GetAllAsync(Expression<Func<TEntity, bool>>? expression = null);
 
-        IQueryable<TEntity> GetAll(Expression<Func<TEntity, bool>>? expression = null);
+        IQueryable<TEntity> GetAllQueryable(Expression<Func<TEntity, bool>>? expression = null);
+
+        Task<List<TEntity>> GetAllList(Expression<Func<TEntity, bool>>? expression = null);
 
         Task<bool> AnyAsync(Expression<Func<TEntity, bool>> expression);
         
