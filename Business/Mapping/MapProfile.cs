@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Entities.Concrete;
+using Entities.Dtos.Branch;
 using Entities.Dtos.City;
 using Entities.Dtos.Country;
 using Entities.Dtos.MealCategory;
@@ -35,6 +36,16 @@ namespace Business.Mapping
 
             
             CreateMap<City, CityDto>();
+
+
+            CreateMap<City, CityWithBranchesDto>();
+
+
+            CreateMap<City, CityWithBranchCountDto>()
+                .ForMember(dest => dest.BranchCount, opt => opt.MapFrom(src => src.Branches.Count));
+
+
+            CreateMap<Branch, BranchDto>();
         }
     }
 }

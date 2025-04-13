@@ -1,5 +1,7 @@
-﻿using Core.Utilities.Results;
+﻿using Core.ResponseModels;
+using Core.Utilities.Results;
 using Entities.Concrete;
+using Entities.Dtos.City;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,10 +12,7 @@ namespace Business.Abstract
 {
     public interface ICityService
     {
-        Task<IDataResult<List<City>>> GetAll();
-        Task<IDataResult<City?>> Get(int id);
-        Task<IResult> Add(City city);
-        IResult Delete(City city);
-        IResult Update(City city);
+        Task<DataResponse<List<CityWithBranchCountDto>>> GetAll();
+        Task<DataResponse<CityWithBranchesDto>> Get(int cityId);
     }
 }
