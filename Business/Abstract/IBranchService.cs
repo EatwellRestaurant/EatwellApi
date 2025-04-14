@@ -13,9 +13,13 @@ namespace Business.Abstract
     public interface IBranchService
     {
         Task<DataResponse<List<AdminBranchListDto>>> GetAllForAdmin();
-        Task<IDataResult<Branch?>> Get(int id);
+       
+        Task<DataResponse<BranchDetailDto>> GetForAdmin(int branchId);
+        
         Task<CreateSuccessResponse> Add(BranchUpsertDto upsertDto);
+        
         IResult Delete(Branch branch);
-        IResult Update(Branch branch);
+        
+        Task<UpdateSuccessResponse> Update(int branchId, BranchUpsertDto upsertDto);
     }
 }

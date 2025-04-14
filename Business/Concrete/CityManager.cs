@@ -38,6 +38,7 @@ namespace Business.Concrete
             City city = await _cityDal
                 .Where(c => c.Id == cityId)
                 .Include(c => c.Branches)
+                .AsNoTracking()
                 .SingleOrDefaultAsync()
                 ?? throw new EntityNotFoundException("Şehir");
 
@@ -51,6 +52,7 @@ namespace Business.Concrete
                 (await _cityDal
                 .GetAllQueryable()
                 .Include(c => c.Branches)
+                .AsNoTracking()
                 .ToListAsync()),
                 CommonMessages.EntityListed);
 

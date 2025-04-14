@@ -55,7 +55,7 @@ namespace Service.Concrete
 
 
 
-        public async Task<DataResponse<TEntity>> GetByIdAsync(int id, string entityName)
+        public async Task<TEntity> GetByIdAsync(int id, string entityName)
         {
             TEntity? result = await _repository.GetByIdAsync(id);
 
@@ -64,7 +64,7 @@ namespace Service.Concrete
                 throw new EntityNotFoundException($"{entityName}");
 
 
-            return new DataResponse<TEntity>(result);
+            return result;
         }
 
 
@@ -72,6 +72,12 @@ namespace Service.Concrete
 
         public Task<TEntity?> GetAsync(Expression<Func<TEntity, bool>> filter)
             => _repository.GetAsync(filter);
+        
+        
+        
+         
+        public Task<TEntity?> GetAsNoTrackingAsync(Expression<Func<TEntity, bool>> filter)
+            => _repository.GetAsNoTrackingAsync(filter);
 
 
 

@@ -9,8 +9,10 @@ using Core.Exceptions.General;
 using Core.ResponseModels;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
+using DataAccess.Concrete.EntityFramework;
 using Entities.Concrete;
 using Entities.Dtos.Branch;
+using Entities.Dtos.MealCategory;
 using Microsoft.EntityFrameworkCore;
 
 namespace Business.Concrete
@@ -58,11 +60,23 @@ namespace Business.Concrete
         }
 
 
+
         [SecuredOperation("admin")]
-        public async Task<IDataResult<Branch?>> Get(int id)
+        public async Task<DataResponse<BranchDetailDto>> GetForAdmin(int branchId)
         {
-            return new SuccessDataResult<Branch?>(await _branchDal.GetAsync(b => b.Id == id), BranchMessages.BranchWasBrought);
+            Branch? branch = await _branchDal
+                .Where(b => b.Id == branchId)
+                .Include(b => b.City)
+                .AsNoTracking()
+                .SingleOrDefaultAsync()
+                ?? throw new EntityNotFoundException("Şube");
+
+
+            return new DataResponse<BranchDetailDto>
+                           (_mapper.Map<BranchDetailDto>(branch),
+                           CommonMessages.EntityFetch);
         }
+
 
 
         [SecuredOperation("admin")]
@@ -71,17 +85,38 @@ namespace Business.Concrete
                 (await _branchDal
                 .GetAllQueryable()
                 .Include(b => b.City)
-                .OrderByDescending(m => m.CreateDate)
+                .AsNoTracking()
+                .OrderByDescending(b => b.CreateDate)
                 .ToListAsync()),
                 CommonMessages.EntityListed);
 
 
-        [SecuredOperation("admin")]
-        [ValidationAspect(typeof(BranchUpsertDtoValidator))]
-        public IResult Update(Branch branch)
+
+        [SecuredOperation("admin", Priority = 1)]
+        [ValidationAspect(typeof(BranchUpsertDtoValidator), Priority = 2)]
+        public async Task<UpdateSuccessResponse> Update(int branchId, BranchUpsertDto upsertDto)
         {
+            Branch branch = await GetByIdBranchForDeleteAndUpdate(branchId);
+
+            if (branch.CityId != upsertDto.CityId)
+                await CheckIfCityIdExists(upsertDto.CityId);
+
+
+            if (branch.Name != upsertDto.Name) 
+                await CheckIfBranchNameExists(upsertDto.Name, branchId);
+
+
+            if (branch.Address != upsertDto.Address) 
+                await CheckIfBranchAddressExists(upsertDto.Address, branchId);
+
+
+            _mapper.Map(upsertDto, branch);
+            branch.UpdateDate = DateTime.Now;
+
             _branchDal.Update(branch);
-            return new SuccessResult(BranchMessages.BranchUpdated);
+            await _unitOfWork.SaveChangesAsync();
+
+            return new UpdateSuccessResponse(BranchMessages.BranchUpdated);
         }
 
 
@@ -97,17 +132,29 @@ namespace Business.Concrete
         }
         
         
-        private async Task CheckIfBranchNameExists(string branchName)
+        private async Task CheckIfBranchNameExists(string branchName, int? branchId = null)
         {
-            if (await _branchDal.AnyAsync(b => b.Name == branchName && !b.IsDeleted))
+            if (await _branchDal.AnyAsync(b => b.Name == branchName && !b.IsDeleted && branchId.HasValue && b.Id != branchId))
                 throw new EntityAlreadyExistsException("şube ismi");
         }
 
 
-        private async Task CheckIfBranchAddressExists(string branchAddress)
+        private async Task CheckIfBranchAddressExists(string branchAddress, int? branchId = null)
         {
-            if (await _branchDal.AnyAsync(b => b.Address == branchAddress && !b.IsDeleted))
+            if (await _branchDal.AnyAsync(b => b.Address == branchAddress && !b.IsDeleted && branchId.HasValue && b.Id != branchId))
                 throw new EntityAlreadyExistsException("adres");
+        }
+
+
+        private async Task<Branch> GetByIdBranchForDeleteAndUpdate(int branchId)
+        {
+            Branch? branch = await _branchDal
+                .Where(m => m.Id == branchId)
+                .SingleOrDefaultAsync()
+                ?? throw new EntityNotFoundException("Şube");
+
+
+            return branch;
         }
 
         #endregion

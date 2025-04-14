@@ -53,6 +53,10 @@ namespace Business.Mapping
             
             
             CreateMap<BranchUpsertDto, Branch>();
+
+
+            CreateMap<Branch, BranchDetailDto>()
+                .ForMember(dest => dest.CityName, opt => opt.MapFrom(src => src.City.Name));
         }
     }
 }

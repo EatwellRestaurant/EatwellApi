@@ -11,10 +11,9 @@ namespace Core.DataAccess.EntityFramework
 
         readonly DbSet<TEntity> _dbSet;
 
-        public EfEntityRepositoryBase(TContext context)
-        {
-            _dbSet = context.Set<TEntity>();
-        }
+        public EfEntityRepositoryBase(TContext context) 
+            => _dbSet = context.Set<TEntity>();
+        
 
 
 
@@ -42,13 +41,16 @@ namespace Core.DataAccess.EntityFramework
 
 
 
+
         public IQueryable<TEntity> GetAllQueryable(Expression<Func<TEntity, bool>>? expression = null)
             => expression == null ? _dbSet.AsNoTracking() : _dbSet.Where(expression).AsNoTracking();
 
 
 
+
         public async Task<List<TEntity>> GetAllList(Expression<Func<TEntity, bool>>? expression = null)
             => expression == null ? await _dbSet.ToListAsync() : await _dbSet.Where(expression).ToListAsync();
+
 
 
 
@@ -60,6 +62,12 @@ namespace Core.DataAccess.EntityFramework
 
         public async Task<TEntity?> GetAsync(Expression<Func<TEntity, bool>> filter) 
             => await _dbSet.SingleOrDefaultAsync(filter);
+        
+        
+         
+        
+        public async Task<TEntity?> GetAsNoTrackingAsync(Expression<Func<TEntity, bool>> filter) 
+            => await _dbSet.AsNoTracking().SingleOrDefaultAsync(filter);
 
 
 

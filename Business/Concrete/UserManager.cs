@@ -74,7 +74,7 @@ namespace Business.Concrete
         public async Task<DataResponse<UserDetailDto>> Get(int userId)
         {
             User? user = await _userDal
-                .GetAsync(u => u.Id == userId)
+                .GetAsNoTrackingAsync(u => u.Id == userId)
                 ?? throw new EntityNotFoundException("Kullanıcı");
 
 

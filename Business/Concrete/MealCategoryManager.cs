@@ -86,7 +86,7 @@ namespace Business.Concrete
         public async Task<DataResponse<MealCategoryDetailDto>> GetForAdmin(int mealCategoryId)
         {
             MealCategory? mealCategory = await _mealCategoryDal
-                .GetAsync(m => m.Id == mealCategoryId)
+                .GetAsNoTrackingAsync(m => m.Id == mealCategoryId)
                 ?? throw new EntityNotFoundException("Menü");
 
             return new DataResponse<MealCategoryDetailDto>

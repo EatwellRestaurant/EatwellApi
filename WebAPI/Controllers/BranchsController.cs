@@ -23,6 +23,7 @@ namespace WebAPI.Controllers
             => Ok(await _branchService.Add(upsertDto));
 
 
+
         [HttpDelete]
         public IActionResult Delete(Branch branch)
         {
@@ -34,27 +35,18 @@ namespace WebAPI.Controllers
             return BadRequest(result);
         }
 
+
+
         [HttpPut]
-        public IActionResult Update(Branch branch)
-        {
-            var result = _branchService.Update(branch);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-            return BadRequest(result);
-        }
+        public async Task<IActionResult> Update(int branchId, BranchUpsertDto upsertDto) 
+            => Ok(await _branchService.Update(branchId, upsertDto));
+
+
 
         [HttpGet]
-        public async Task<IActionResult> Get(int id)
-        {
-            var result = await _branchService.Get(id);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-            return BadRequest(result);
-        }
+        public async Task<IActionResult> GetForAdmin(int branchId) 
+            => Ok(await _branchService.GetForAdmin(branchId));
+
 
 
         [HttpGet] 

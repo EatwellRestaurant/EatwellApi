@@ -43,8 +43,8 @@ namespace WebAPI.Controllers
         
         
         [HttpPut]
-        public async Task<IActionResult> SetActive(ActivateCountryIdsDto countryIdsDtos) 
-            => Ok(await _countryService.SetActive(countryIdsDtos));
+        public async Task<IActionResult> SetActiveOrPassive(ActivateCountryIdsDto countryIdsDtos) 
+            => Ok(await _countryService.SetActiveOrPassive(countryIdsDtos));
         
     }
 }

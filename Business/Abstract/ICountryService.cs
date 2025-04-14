@@ -20,6 +20,6 @@ namespace Business.Abstract
 
         Task<DataResponse<CountryDto>> GetForAdmin(int countryId);
 
-        Task<SuccessResponse> SetActive(ActivateCountryIdsDto countryIdsDto);
+        Task<SuccessResponse> SetActiveOrPassive(ActivateCountryIdsDto countryIdsDto);
     }
 }

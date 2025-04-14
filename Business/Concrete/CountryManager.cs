@@ -40,6 +40,7 @@ namespace Business.Concrete
             Country country = await _countryDal
                 .Where(c => c.Id == countryId && c.IsActive)
                 .Include(c => c.Cities)
+                .AsNoTracking()
                 .SingleOrDefaultAsync()
                 ?? throw new EntityNotFoundException("Ülke");
 
@@ -54,6 +55,7 @@ namespace Business.Concrete
             Country country = await _countryDal
                 .Where(c => c.Id == countryId)
                 .Include(c => c.Cities)
+                .AsNoTracking()
                 .SingleOrDefaultAsync()
                 ?? throw new EntityNotFoundException("Ülke");
 
@@ -81,7 +83,7 @@ namespace Business.Concrete
 
 
         [SecuredOperation("admin")]
-        public async Task<SuccessResponse> SetActive(ActivateCountryIdsDto countryIdsDto)
+        public async Task<SuccessResponse> SetActiveOrPassive(ActivateCountryIdsDto countryIdsDto)
         {
             List<Country> countries = await _countryDal
                 .GetAllList();

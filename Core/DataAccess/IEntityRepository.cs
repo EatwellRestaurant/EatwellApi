@@ -27,6 +27,8 @@ namespace Core.DataAccess
 
         Task<T?> GetAsync(Expression<Func<T, bool>> filter);
 
+        Task<T?> GetAsNoTrackingAsync(Expression<Func<T, bool>> filter);
+
         void Remove(T entity);
 
         void RemoveRange(IEnumerable<T> entities);

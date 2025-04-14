@@ -7,9 +7,11 @@ namespace Service.Abstract
 {
     public interface IService<TEntity> where TEntity : class, IEntity, new()
     {
-        Task<DataResponse<TEntity>> GetByIdAsync(int id, string entityName);
+        Task<TEntity> GetByIdAsync(int id, string entityName);
 
         Task<TEntity?> GetAsync(Expression<Func<TEntity, bool>> filter);
+
+        Task<TEntity?> GetAsNoTrackingAsync(Expression<Func<TEntity, bool>> filter);
 
         IQueryable<TEntity> Where(Expression<Func<TEntity, bool>> expression);
         
