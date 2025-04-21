@@ -12,10 +12,9 @@ namespace WebAPI.Controllers
     {
         readonly IBranchService _branchService;
 
-        public BranchsController(IBranchService branchService)
-        {
-            _branchService = branchService;
-        }
+        public BranchsController(IBranchService branchService) 
+            => _branchService = branchService;
+        
 
 
         [HttpPost]
@@ -25,15 +24,8 @@ namespace WebAPI.Controllers
 
 
         [HttpDelete]
-        public IActionResult Delete(Branch branch)
-        {
-            var result = _branchService.Delete(branch);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-            return BadRequest(result);
-        }
+        public async Task<IActionResult> Delete(int branchId) 
+            => Ok(await _branchService.Delete(branchId));
 
 
 

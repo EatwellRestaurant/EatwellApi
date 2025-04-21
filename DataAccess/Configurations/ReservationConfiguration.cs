@@ -13,6 +13,11 @@ namespace DataAccess.Configurations
     {
         public void Configure(EntityTypeBuilder<Reservation> builder)
         {
+            builder.Property(r => r.FirstName).HasMaxLength(50);
+            builder.Property(r => r.LastName).HasMaxLength(50);
+            builder.Property(r => r.Email).HasMaxLength(254);
+            builder.Property(r => r.Phone).HasMaxLength(14);
+
             builder.HasOne(r => r.Branch).WithMany(b => b.Reservations).HasForeignKey(r => r.BranchId);
         }
     }

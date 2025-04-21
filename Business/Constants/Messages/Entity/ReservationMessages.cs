@@ -8,12 +8,12 @@ namespace Business.Constants.Messages.Entity
 {
     public static class ReservationMessages
     {
-        public static string ReservationAdded = "Rezervasyon Eklendi";
-        public static string ReservationDeleted = "Rezervasyon Silindi";
-        public static string ReservationUpdated = "Rezervasyon Güncellendi";
-        public static string ReservationWasBrought = "Rezervasyon Getirildi";
-        public static string ReservationsListed = "Rezervasyonlar Listelendi";
-        public static string ReservationExists = "Bu saatte başka bir rezervasyon var";
+        public const string ReservationAdded = "Rezervasyonunuz başarıyla oluşturuldu";
+        public const string ReservationDeleted = "Rezervasyon Silindi";
+        public const string ReservationUpdated = "Rezervasyon Güncellendi";
+        public const string ReservationWasBrought = "Rezervasyon Getirildi";
+        public const string ReservationsListed = "Rezervasyonlar Listelendi";
+        public const string ReservationExists = "Bu saatte başka bir rezervasyon var";
 
     }
 }

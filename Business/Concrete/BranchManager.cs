@@ -5,6 +5,7 @@ using Business.Constants.Messages;
 using Business.Constants.Messages.Entity;
 using Business.ValidationRules.FluentValidation;
 using Core.Aspects.Autofac.Validation;
+using Core.Exceptions.Branch;
 using Core.Exceptions.General;
 using Core.ResponseModels;
 using Core.Utilities.Results;
@@ -53,10 +54,34 @@ namespace Business.Concrete
 
 
         [SecuredOperation("admin")]
-        public IResult Delete(Branch branch)
+        public async Task<DeleteSuccessResponse> Delete(int branchId)
         {
-            _branchDal.Remove(branch);
-            return new SuccessResult(BranchMessages.BranchDeleted);
+            // Oluşturduğumuz sorguda rezervasyonların saat dilimini de dikkate alıyoruz ve
+            // DateTime.Now, runtime değeri olduğu için doğrudan sorguya dahil edilirse,
+            // EF Core tarafından doğru bir şekilde SQL sorgusuna dönüştürülemez. Çünkü değeri sürekli değişiyor.
+            // Bunun yerine DateTime.Now değerini bir değişkene atayıp, 
+            // sorguya sabit bir değer olarak dahil ettik. Ve bu, sorgunun doğru çalışmasını sağladı.
+
+            var now = DateTime.Now; 
+
+            Branch? branch = await _branchDal
+                .Where(b => b.Id == branchId)
+                .Include(b => b.Reservations
+                    .Where(r => r.ReservationDate >= now && !r.IsDeleted))
+                .SingleOrDefaultAsync()
+                ?? throw new EntityNotFoundException("Şube");
+
+
+            if (branch.Reservations.Any())
+                throw new BranchHasReservationsException();
+
+            branch.DeleteDate = DateTime.Now;
+            branch.IsDeleted = true;
+
+            _branchDal.Update(branch);
+            await _unitOfWork.SaveChangesAsync();
+
+            return new DeleteSuccessResponse(CommonMessages.EntityDeleted);
         }
 
 
@@ -96,7 +121,11 @@ namespace Business.Concrete
         [ValidationAspect(typeof(BranchUpsertDtoValidator), Priority = 2)]
         public async Task<UpdateSuccessResponse> Update(int branchId, BranchUpsertDto upsertDto)
         {
-            Branch branch = await GetByIdBranchForDeleteAndUpdate(branchId);
+            Branch? branch = await _branchDal
+                .Where(b => b.Id == branchId)
+                .SingleOrDefaultAsync()
+                ?? throw new EntityNotFoundException("Şube");
+
 
             if (branch.CityId != upsertDto.CityId)
                 await CheckIfCityIdExists(upsertDto.CityId);
@@ -143,18 +172,6 @@ namespace Business.Concrete
         {
             if (await _branchDal.AnyAsync(b => b.Address == branchAddress && !b.IsDeleted && branchId.HasValue && b.Id != branchId))
                 throw new EntityAlreadyExistsException("adres");
-        }
-
-
-        private async Task<Branch> GetByIdBranchForDeleteAndUpdate(int branchId)
-        {
-            Branch? branch = await _branchDal
-                .Where(m => m.Id == branchId)
-                .SingleOrDefaultAsync()
-                ?? throw new EntityNotFoundException("Şube");
-
-
-            return branch;
         }
 
         #endregion

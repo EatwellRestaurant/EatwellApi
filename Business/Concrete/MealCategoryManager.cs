@@ -2,6 +2,7 @@
 using Business.Abstract;
 using Business.BusinessAspects.Autofac;
 using Business.Constants.Messages;
+using Business.Constants.Messages.Entity;
 using Business.ValidationRules.FluentValidation;
 using Core.Aspects.Autofac.Validation;
 using Core.Exceptions.General;
@@ -65,13 +66,13 @@ namespace Business.Concrete
             if (mealCategory.IsDeleted)
             {
                 mealCategory.DeleteDate = DateTime.Now;
-                responseMessage = CommonMessages.EntityDeleted;
+                responseMessage = MealCategoryMessages.MealCategoryDeactivated;
             }
             else
             {
                 mealCategory.DeleteDate = null;
                 mealCategory.UpdateDate = DateTime.Now;
-                responseMessage = CommonMessages.EntityRestored;
+                responseMessage = MealCategoryMessages.MealCategoryActivated;
             }
 
             _mealCategoryDal.Update(mealCategory);

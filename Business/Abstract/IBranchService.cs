@@ -17,8 +17,8 @@ namespace Business.Abstract
         Task<DataResponse<BranchDetailDto>> GetForAdmin(int branchId);
         
         Task<CreateSuccessResponse> Add(BranchUpsertDto upsertDto);
-        
-        IResult Delete(Branch branch);
+
+        Task<DeleteSuccessResponse> Delete(int branchId);
         
         Task<UpdateSuccessResponse> Update(int branchId, BranchUpsertDto upsertDto);
     }

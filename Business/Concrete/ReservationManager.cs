@@ -1,11 +1,17 @@
-﻿using Business.Abstract;
+﻿using AutoMapper;
+using Business.Abstract;
+using Business.Constants.Messages;
 using Business.Constants.Messages.Entity;
 using Business.ValidationRules.FluentValidation;
 using Core.Aspects.Autofac.Validation;
+using Core.Exceptions.Reservation;
+using Core.ResponseModels;
 using Core.Utilities.Business;
+using Core.Utilities.Email;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
+using Entities.Dtos.Reservation;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,27 +22,28 @@ namespace Business.Concrete
 {
     public class ReservationManager : IReservationService
     {
-        private IReservationDal _reservationDal;
+        readonly IReservationDal _reservationDal;
+        readonly IMapper _mapper;
+        readonly IUnitOfWork _unitOfWork;
 
-        public ReservationManager(IReservationDal reservationDal)
+        public ReservationManager(IReservationDal reservationDal, IMapper mapper, IUnitOfWork unitOfWork)
         {
             _reservationDal = reservationDal;
+            _mapper = mapper;
+            _unitOfWork = unitOfWork;
         }
 
 
-        [ValidationAspect(typeof(ReservationValidator))]
-        public async Task<IResult> Add(Reservation reservation)
+
+        [ValidationAspect(typeof(ReservationUpsertDtoValidator))]
+        public async Task<CreateSuccessResponse> Add(ReservationUpsertDto upsertDto)
         {
-            var result = BusinessRules.Run(
-                await CheckIfReservation(reservation.ReservationDate, reservation.ReservationTime));
+            await CheckIfReservation(upsertDto.ReservationDate);
+            
+            await _reservationDal.AddAsync(_mapper.Map<Reservation>(upsertDto));
+            await _unitOfWork.SaveChangesAsync();
 
-            if (!result.Success)
-            {
-                return result;
-            }
-
-            await _reservationDal.AddAsync(reservation);
-            return new SuccessResult(ReservationMessages.ReservationAdded);
+            return new CreateSuccessResponse(ReservationMessages.ReservationAdded);
         }
 
         public IResult Delete(Reservation reservation)
@@ -56,7 +63,7 @@ namespace Business.Concrete
         }
 
 
-        [ValidationAspect(typeof(ReservationValidator))]
+        [ValidationAspect(typeof(ReservationUpsertDtoValidator))]
         public IResult Update(Reservation reservation)
         {
             _reservationDal.Update(reservation);
@@ -67,21 +74,10 @@ namespace Business.Concrete
 
 
         //Business Codes
-        private async Task<IResult> CheckIfReservation(DateTime reservationDate, string reservationTime)
+        private async Task CheckIfReservation(DateTime reservationDate)
         {
-            var resultDate = await _reservationDal.GetAllAsync(r => r.ReservationDate == reservationDate);
-
-            if (resultDate.Count > 0)
-            {
-                var resultTime = await _reservationDal.AnyAsync(r => r.ReservationTime == reservationTime);
-
-                if (resultTime)
-                {
-                    return new ErrorResult(ReservationMessages.ReservationExists);
-                }
-                return new SuccessResult();
-            }
-            return new SuccessResult();
+            if (await _reservationDal.AnyAsync(r => r.ReservationDate == reservationDate && r.IsDeleted))
+                throw new ReservationAlreadyExistsException();
         }
     }
 }

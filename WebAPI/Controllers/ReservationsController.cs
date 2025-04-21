@@ -1,5 +1,6 @@
 ﻿using Business.Abstract;
 using Entities.Concrete;
+using Entities.Dtos.Reservation;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -16,16 +17,12 @@ namespace WebAPI.Controllers
             _reservationService = reservationService;
         }
 
+
         [HttpPost]
-        public async Task<IActionResult> Add(Reservation reservation)
-        {
-            var result = await _reservationService.Add(reservation);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-            return BadRequest(result);
-        }
+        public async Task<IActionResult> Add(ReservationUpsertDto upsertDto) 
+            => Ok(await _reservationService.Add(upsertDto));
+        
+        
 
         [HttpDelete]
         public IActionResult Delete(Reservation reservation)

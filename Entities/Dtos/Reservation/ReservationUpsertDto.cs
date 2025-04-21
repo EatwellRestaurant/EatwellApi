@@ -5,12 +5,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Entities.Concrete
+namespace Entities.Dtos.Reservation
 {
-    public class Reservation : BaseEntity
+    public class ReservationUpsertDto : IDto
     {
         public int BranchId { get; set; }
-        
+
         public string FirstName { get; set; }
         
         public string LastName { get; set; }
@@ -21,14 +21,8 @@ namespace Entities.Concrete
         
         public DateTime ReservationDate { get; set; }
         
-        public byte PersonCount { get; set; }
+        public int PersonCount { get; set; }
         
         public string? Note { get; set; }
-
-
-
-        public Branch Branch { get; set; }
-
-
     }
 }

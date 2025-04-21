@@ -4,6 +4,7 @@ using Entities.Dtos.Branch;
 using Entities.Dtos.City;
 using Entities.Dtos.Country;
 using Entities.Dtos.MealCategory;
+using Entities.Dtos.Reservation;
 using Entities.Dtos.User;
 
 namespace Business.Mapping
@@ -54,6 +55,7 @@ namespace Business.Mapping
             
             CreateMap<BranchUpsertDto, Branch>();
 
+            CreateMap<ReservationUpsertDto, Reservation>();
 
             CreateMap<Branch, BranchDetailDto>()
                 .ForMember(dest => dest.CityName, opt => opt.MapFrom(src => src.City.Name));

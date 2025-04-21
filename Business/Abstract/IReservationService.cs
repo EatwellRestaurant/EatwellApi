@@ -1,5 +1,7 @@
-﻿using Core.Utilities.Results;
+﻿using Core.ResponseModels;
+using Core.Utilities.Results;
 using Entities.Concrete;
+using Entities.Dtos.Reservation;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +14,7 @@ namespace Business.Abstract
     {
         Task<IDataResult<List<Reservation>>> GetAll();
         Task<IDataResult<Reservation?>> Get(int id);
-        Task<IResult> Add(Reservation reservation);
+        Task<CreateSuccessResponse> Add(ReservationUpsertDto upsertDto);
         IResult Delete(Reservation reservation);
         IResult Update(Reservation reservation);
     }
