@@ -32,8 +32,6 @@ namespace Core.Utilities.FileHelper
 
         public IDataResult<string> Upload(IFormFile file)
         {
-            CheckIfFileEnter(file);
-
             CheckIfFileExtensionIsImage(Path.GetExtension(file.FileName));
 
             string tempFilePath = Path.Combine(Path.GetTempPath(), file.FileName);
@@ -54,17 +52,19 @@ namespace Core.Utilities.FileHelper
                 throw new FileUploadException();
 
 
-            return new SuccessDataResult<string>(data: uploadUrl);
+            return new SuccessDataResult<string>(data: $"https://{uploadUrl}");
         }
 
 
         public IResult Delete(string filePath)
         {
-            if (!_ftpClient.FileExists(filePath))
+            string ftpPath = filePath.Replace("https://", "");
+
+            if (!_ftpClient.FileExists(ftpPath))
                 throw new EntityNotFoundException("Görsel");
             
 
-            _ftpClient.DeleteFile(filePath);
+            _ftpClient.DeleteFile(ftpPath);
 
             return new SuccessResult("Dosya silindi.");
         }
@@ -82,13 +82,6 @@ namespace Core.Utilities.FileHelper
 
 
         #region BusinessRules
-
-        private void CheckIfFileEnter(IFormFile file)
-        {
-            if (file.Length < 0)
-                throw new FileNotProvidedException();
-        }
-
 
         private void CheckIfFileExtensionIsImage(string extension)
         {

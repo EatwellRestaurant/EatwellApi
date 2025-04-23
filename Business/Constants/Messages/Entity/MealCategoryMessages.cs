@@ -18,8 +18,8 @@ namespace Business.Constants.Messages.Entity
         
         public const string MealCategoryWasBrought = "Yemek Kategorisi Getirildi";
 
-        public const string MealCategoryActivated = "Menü başarılı bir şekilde aktif hâle getirildi.";
+        public const string MealCategoryActivated = "Menü başarılı bir şekilde aktif hale getirildi.";
 
-        public const string MealCategoryDeactivated = "Menü başarılı bir şekilde pasif hâle getirildi.";
+        public const string MealCategoryDeactivated = "Menü başarılı bir şekilde pasif hale getirildi.";
     }
 } 

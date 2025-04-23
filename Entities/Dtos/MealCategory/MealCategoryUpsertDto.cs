@@ -10,7 +10,7 @@ namespace Entities.Dtos.MealCategory
 {
     public class MealCategoryUpsertDto : IDto
     {
-        public IFormFile Image { get; set; }
+        public IFormFile? Image { get; set; }
 
         public string Name { get; set; }
     } 

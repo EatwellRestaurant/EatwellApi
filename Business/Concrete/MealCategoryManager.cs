@@ -5,12 +5,16 @@ using Business.Constants.Messages;
 using Business.Constants.Messages.Entity;
 using Business.ValidationRules.FluentValidation;
 using Core.Aspects.Autofac.Validation;
+using Core.Exceptions.File;
 using Core.Exceptions.General;
+using Core.Exceptions.MealCategory;
 using Core.ResponseModels;
 using Core.Utilities.FileHelper;
 using DataAccess.Abstract;
+using DataAccess.Concrete.EntityFramework;
 using Entities.Concrete;
 using Entities.Dtos.MealCategory;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Service.Concrete;
 
@@ -41,10 +45,14 @@ namespace Business.Concrete
         [ValidationAspect(typeof(MealCategoryUpsertDtoValidator), Priority = 2)]
         public async Task<CreateSuccessResponse> Add(MealCategoryUpsertDto upsertDto)
         {
+            await CheckIfMealCategoryNameExists(upsertDto.Name);
+
+            CheckIfFileEnter(upsertDto.Image);
+
             MealCategory mealCategory = new()
             {
                 Name = upsertDto.Name,
-                ImagePath = _fileHelper.Upload(upsertDto.Image).Data
+                ImagePath = _fileHelper.Upload(upsertDto.Image!).Data
             };
 
             await _mealCategoryDal.AddAsync(mealCategory);
@@ -60,21 +68,24 @@ namespace Business.Concrete
         {
             MealCategory mealCategory = await GetByIdMealCategoryForDeleteAndUpdate(mealCategoryId);
 
-            mealCategory.IsDeleted = !mealCategory.IsDeleted;
             string responseMessage;
 
             if (mealCategory.IsDeleted)
             {
-                mealCategory.DeleteDate = DateTime.Now;
-                responseMessage = MealCategoryMessages.MealCategoryDeactivated;
-            }
-            else
-            {
+                if (await _mealCategoryDal.Where(m => m.Name == mealCategory.Name && m.Id != mealCategoryId && !m.IsDeleted).AnyAsync())
+                    throw new CannotActivateMealCategoryException();
+
                 mealCategory.DeleteDate = null;
                 mealCategory.UpdateDate = DateTime.Now;
                 responseMessage = MealCategoryMessages.MealCategoryActivated;
             }
+            else
+            {
+                mealCategory.DeleteDate = DateTime.Now;
+                responseMessage = MealCategoryMessages.MealCategoryDeactivated;
+            }
 
+            mealCategory.IsDeleted = !mealCategory.IsDeleted;
             _mealCategoryDal.Update(mealCategory);
             await _unitOfWork.SaveChangesAsync();
 
@@ -114,9 +125,17 @@ namespace Business.Concrete
         {
             MealCategory mealCategory = await GetByIdMealCategoryForDeleteAndUpdate(mealCategoryId);
 
+            if (upsertDto.Name != mealCategory.Name)
+            {
+                await CheckIfMealCategoryNameExists(upsertDto.Name, mealCategoryId);
+                mealCategory.Name = upsertDto.Name;
+            }
+
             mealCategory.UpdateDate = DateTime.Now;
-            mealCategory.Name = upsertDto.Name;
-            mealCategory.ImagePath = _fileHelper.Update(upsertDto.Image, mealCategory.ImagePath).Data;
+
+            if (upsertDto.Image != null)
+                mealCategory.ImagePath = _fileHelper.Update(upsertDto.Image, mealCategory.ImagePath).Data;
+
 
             _mealCategoryDal.Update(mealCategory);
             await _unitOfWork.SaveChangesAsync();
@@ -141,7 +160,21 @@ namespace Business.Concrete
 
             return mealCategory;
         }
-        
+
+
+        private async Task CheckIfMealCategoryNameExists(string mealCategoryName, int? mealCategoryId = null)
+        {
+            if (await _mealCategoryDal.AnyAsync(m => m.Name == mealCategoryName && !m.IsDeleted && mealCategoryId.HasValue && m.Id != mealCategoryId))
+                throw new EntityAlreadyExistsException("menü ismi");
+        }
+
+
+        private void CheckIfFileEnter(IFormFile? file)
+        {
+            if (file == null)
+                throw new FileNotProvidedException();
+        }
+
         #endregion
     }
 }
