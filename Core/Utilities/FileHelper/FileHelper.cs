@@ -67,7 +67,11 @@ namespace Core.Utilities.FileHelper
         }
 
 
-
+        public void CheckIfFileEnter(IFormFile? file)
+        {
+            if (file == null)
+                throw new FileNotProvidedException();
+        }
 
 
         #region BusinessRules

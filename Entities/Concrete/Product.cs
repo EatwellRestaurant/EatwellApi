@@ -7,16 +7,21 @@ using System.Threading.Tasks;
 
 namespace Entities.Concrete
 {
-    public class Product : IEntity
+    public class Product : BaseEntity
     {
-        public int Id { get; set; }
-        public int? MealCategoryId { get; set; }
+        public int MealCategoryId { get; set; }
+     
         public string Name { get; set; }
-        public string? ImagePath { get; set; }
+        
+        public string ImagePath { get; set; }
+        
+        public string ImageName { get; set; }
+        
         public decimal Price { get; set; }
 
 
-         
+
+
         public MealCategory MealCategory { get; set; }
 
     }

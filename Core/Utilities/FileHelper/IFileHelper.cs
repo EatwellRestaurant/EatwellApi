@@ -15,5 +15,7 @@ namespace Core.Utilities.FileHelper
         Task Delete(string fileName);
 
         Task<ImageRespone> Update(IFormFile file, string fileName);
+
+        void CheckIfFileEnter(IFormFile? file);
     }
 }

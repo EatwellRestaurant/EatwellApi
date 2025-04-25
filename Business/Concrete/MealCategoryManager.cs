@@ -47,7 +47,7 @@ namespace Business.Concrete
         {
             await CheckIfMealCategoryNameExists(upsertDto.Name);
 
-            CheckIfFileEnter(upsertDto.Image);
+            _fileHelper.CheckIfFileEnter(upsertDto.Image);
 
             ImageRespone imageRespone = await _fileHelper.Upload(upsertDto.Image!);
 
@@ -174,13 +174,6 @@ namespace Business.Concrete
         {
             if (await _mealCategoryDal.AnyAsync(m => m.Name == mealCategoryName && !m.IsDeleted && (mealCategoryId.HasValue ? m.Id != mealCategoryId : true)))
                 throw new EntityAlreadyExistsException("menü ismi");
-        }
-
-
-        private void CheckIfFileEnter(IFormFile? file)
-        {
-            if (file == null)
-                throw new FileNotProvidedException();
         }
 
         #endregion

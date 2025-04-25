@@ -1,6 +1,8 @@
-﻿using Core.Utilities.Results;
+﻿using Core.ResponseModels;
+using Core.Utilities.Results;
 using Entities.Concrete;
 using Entities.Dtos;
+using Entities.Dtos.Product;
 using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
@@ -13,10 +15,15 @@ namespace Business.Abstract
     public interface IProductService
     {
         Task<IDataResult<List<Product>>> GetAll();
+        
         Task<IDataResult<Product?>> Get(int id);
-        Task<IResult> Add(IFormFile file, ProductForCreateDto product);
+        
+        Task<CreateSuccessResponse> Add(ProductUpsertDto upsertDto);
+        
         IResult Delete(Product product);
-        Task<IResult> Update(IFormFile file, ProductForUpdateDto dto);
+
+        Task<UpdateSuccessResponse> Update(int productId, ProductUpsertDto upsertDto);
+        
         Task<IDataResult<List<Product>>> GetProductsByMealCategoryId(int id);
     }
 }

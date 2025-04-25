@@ -157,7 +157,7 @@ namespace Business.Concrete
         private async Task CheckIfCityIdExists(int cityId)
         {
             if (!await _cityService.AnyAsync(c => c.Id == cityId))
-                throw new EntityNotFoundException("Şube");
+                throw new EntityNotFoundException("Şehir");
         }
         
         

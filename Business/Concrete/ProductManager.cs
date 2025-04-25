@@ -1,46 +1,61 @@
 ﻿using Business.Abstract;
+using Business.BusinessAspects.Autofac;
+using Business.Constants.Messages;
 using Business.Constants.Messages.Entity;
-using Business.Constants.Paths;
 using Business.ValidationRules.FluentValidation;
 using Core.Aspects.Autofac.Validation;
+using Core.Exceptions.General;
+using Core.ResponseModels;
 using Core.Utilities.FileHelper;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
-using Entities.Dtos;
-using Microsoft.AspNetCore.Http;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Entities.Dtos.Product;
+using Microsoft.EntityFrameworkCore;
 
 namespace Business.Concrete
 {
     public class ProductManager : IProductService
     {
-        private IProductDal _productDal;
+        readonly IProductDal _productDal;
         readonly IFileHelper _fileHelper;
+        readonly IUnitOfWork _unitOfWork;
+        readonly IMealCategoryService _mealCategoryService;
 
-        public ProductManager(IProductDal productDal, IFileHelper fileHelper)
+        public ProductManager(IProductDal productDal, IFileHelper fileHelper, IUnitOfWork unitOfWork, IMealCategoryService mealCategoryService)
         {
             _productDal = productDal;
             _fileHelper = fileHelper;
+            _unitOfWork = unitOfWork;
+            _mealCategoryService = mealCategoryService;
         }
 
-        [ValidationAspect(typeof(ProductValidator))]
-        public async Task<IResult> Add(IFormFile file, ProductForCreateDto dto)
+
+        [SecuredOperation("admin", Priority = 1)]
+        [ValidationAspect(typeof(ProductUpsertDtoValidator))]
+        public async Task<CreateSuccessResponse> Add(ProductUpsertDto upsertDto)
         {
-            Product product = new Product
+            await CheckIfMealCategoryIdExists(upsertDto.MealCategoryId);
+
+            await CheckIfProductNameExists(upsertDto.Name);
+
+            _fileHelper.CheckIfFileEnter(upsertDto.Image);
+
+            ImageRespone imageRespone = await _fileHelper.Upload(upsertDto.Image!);
+
+            Product product = new()
             {
-                Name = dto.ProductName,
-                Price = dto.Price,
-                MealCategoryId = dto.MealCategoryId,
-                ImagePath = _fileHelper.Upload(file).Result.Path
+                Name = upsertDto.Name,
+                Price = upsertDto.Price,
+                MealCategoryId = upsertDto.MealCategoryId,
+                ImagePath = imageRespone.Path,
+                ImageName = imageRespone.Name,
             };
 
             await _productDal.AddAsync(product);
-            return new SuccessResult(ProductMessages.ProductAdded);
+            await _unitOfWork.SaveChangesAsync();
+
+            return new CreateSuccessResponse(CommonMessages.EntityAdded);
         }
 
         public IResult Delete(Product product)
@@ -66,20 +81,71 @@ namespace Business.Concrete
             return new SuccessDataResult<List<Product>>(await _productDal.GetAllAsync(p => p.MealCategoryId == id), ProductMessages.ProductsListed);
         }
 
-        [ValidationAspect(typeof(ProductValidator))]
-        public async Task<IResult> Update(IFormFile file, ProductForUpdateDto dto)
-        {
-            Product product = new()
-            {
-                MealCategoryId = dto.MealCategoryId,
-                Name = dto.ProductName,
-                ImagePath = _fileHelper.Update(file, dto.ImagePath).Result.Path,
-                Price = dto.Price,
-            };
 
+        [SecuredOperation("admin", Priority = 1)]
+        [ValidationAspect(typeof(ProductUpsertDtoValidator))]
+        public async Task<UpdateSuccessResponse> Update(int productId, ProductUpsertDto upsertDto)
+        {
+            Product product = await GetByIdProductForDeleteAndUpdate(productId);
+
+            if (product.MealCategoryId != upsertDto.MealCategoryId) 
+            {
+                await CheckIfMealCategoryIdExists(upsertDto.MealCategoryId);
+                product.MealCategoryId = upsertDto.MealCategoryId;
+            }
+
+            if (upsertDto.Name != product.Name)
+            { 
+                await CheckIfProductNameExists(upsertDto.Name, productId);
+                product.Name = upsertDto.Name;
+            }
+
+            if (upsertDto.Image != null)
+            {
+                ImageRespone imageRespone = await _fileHelper.Update(upsertDto.Image, product.ImageName);
+
+                product.ImagePath = imageRespone.Path;
+                product.ImageName = imageRespone.Name;
+            }
+
+            product.Price = upsertDto.Price;
+            product.UpdateDate = DateTime.Now;
 
             _productDal.Update(product);
-            return new SuccessResult(ProductMessages.ProductUpdated);
+            await _unitOfWork.SaveChangesAsync();
+
+            return new UpdateSuccessResponse(CommonMessages.EntityUpdated);
         }
+
+
+
+        #region BusinessRules
+
+        private async Task CheckIfProductNameExists(string productName, int? productId = null)
+        {
+            if (await _productDal.AnyAsync(p => p.Name == productName && !p.IsDeleted && (productId.HasValue ? p.Id != productId : true)))
+                throw new EntityAlreadyExistsException("ürün ismi");
+        }
+
+
+        private async Task<Product> GetByIdProductForDeleteAndUpdate(int productId)
+        {
+            Product? product = await _productDal
+                .Where(p => p.Id == productId)
+                .SingleOrDefaultAsync()
+                ?? throw new EntityNotFoundException("Ürün");
+
+
+            return product;
+        }
+
+
+        private async Task CheckIfMealCategoryIdExists(int mealCategoryId)
+        {
+            if (!await _mealCategoryService.AnyAsync(m => m.Id == mealCategoryId && !m.IsDeleted))
+                throw new EntityNotFoundException("Menü");
+        }
+
+        #endregion
     }
 }

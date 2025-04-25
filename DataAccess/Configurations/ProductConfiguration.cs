@@ -13,7 +13,10 @@ namespace DataAccess.Configurations
     {
         public void Configure(EntityTypeBuilder<Product> builder)
         {
-            builder.HasOne(p => p.MealCategory).WithMany(m => m.Products).HasForeignKey(p => p.MealCategoryId);
+            builder.Property(p => p.Name).HasMaxLength(250);
+
+
+            builder.HasOne(p => p.MealCategory).WithMany(m => m.Products).HasForeignKey(p => p.MealCategoryId).OnDelete(DeleteBehavior.Restrict);
         }
     }
 }
