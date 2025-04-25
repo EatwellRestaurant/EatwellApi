@@ -1,80 +1,69 @@
-﻿using Core.Exceptions.File;
-using Core.Utilities.Business;
-using Core.Utilities.Results;
-using Microsoft.AspNetCore.Http;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Text;
-using System.Threading.Tasks;
-using FluentFTP;
-using FluentFTP.Helpers;
-using Microsoft.Extensions.Configuration;
+﻿using Azure.Storage.Blobs;
+using Azure.Storage.Blobs.Models;
+using Core.Exceptions.File;
 using Core.Exceptions.General;
+using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Configuration;
 
 namespace Core.Utilities.FileHelper
 {
     public sealed class FileHelper : IFileHelper
     {
-        readonly FtpClient _ftpClient;
-        FtpSettings _ftpSettings;
+        BlobStorageSettings _blobStorageSettings;
+        string imageUrl;
 
         public FileHelper(IConfiguration configuration)
         {
-            _ftpSettings = configuration.GetSection("FtpSettings").Get<FtpSettings>()!;
+            _blobStorageSettings = configuration.GetSection("BlobStorageSettings").Get<BlobStorageSettings>()!;
 
-            _ftpClient = new FtpClient(_ftpSettings.Host, _ftpSettings.Username, _ftpSettings.Password, 21);
-
-            _ftpClient.Connect();
+            imageUrl = string.Format($"https://{_blobStorageSettings.AccountName}.blob.core.windows.net/{_blobStorageSettings.ContainerName}");
         }
 
 
-        public IDataResult<string> Upload(IFormFile file)
+        public async Task<ImageRespone> Upload(IFormFile file)
         {
             CheckIfFileExtensionIsImage(Path.GetExtension(file.FileName));
 
-            string tempFilePath = Path.Combine(Path.GetTempPath(), file.FileName);
+            string fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
 
-            using (var stream = new FileStream(tempFilePath, FileMode.Create))
+            // BlobServiceClient ile Azure Blob Storage'a bağlantıyı oluşturuyoruz.
+            BlobContainerClient containerClient = GetContainerClient(fileName);
+
+            BlobClient blobClient = containerClient.GetBlobClient(fileName);
+
+            using (var stream = file.OpenReadStream())  
             {
-                file.CopyTo(stream);
+                await blobClient.UploadAsync(file.OpenReadStream(), new BlobHttpHeaders
+                {
+                    ContentType = file.ContentType
+                });
             }
 
-            string fileName = Guid.NewGuid().ToString() + Path.GetExtension(file.FileName);
-            string uploadUrl = $"{_ftpSettings.Path}/{fileName}";
-
-            var success = _ftpClient.UploadFile(tempFilePath, uploadUrl);
-
-            File.Delete(tempFilePath);
-
-            if (success != FtpStatus.Success)
-                throw new FileUploadException();
-
-
-            return new SuccessDataResult<string>(data: $"https://{uploadUrl}");
+            return new ImageRespone { Name = fileName, Path = string.Format($"{imageUrl}/{fileName}")};
         }
 
 
-        public IResult Delete(string filePath)
+        public async Task Delete(string fileName)
         {
-            string ftpPath = filePath.Replace("https://", "");
+            BlobContainerClient containerClient = GetContainerClient(fileName);
 
-            if (!_ftpClient.FileExists(ftpPath))
+            BlobClient blobClient = containerClient.GetBlobClient(fileName);
+
+            var exists = await blobClient.ExistsAsync();
+
+            if (!exists.Value)
                 throw new EntityNotFoundException("Görsel");
-            
+           
 
-            _ftpClient.DeleteFile(ftpPath);
-
-            return new SuccessResult("Dosya silindi.");
+            await blobClient.DeleteAsync();
         }
 
 
-        public IDataResult<string> Update(IFormFile file, string oldPath)
+        public async Task<ImageRespone> Update(IFormFile file, string fileName)
         {
-            Delete(oldPath);
-            
-            return new SuccessDataResult<string>(Upload(file).Data, "Dosya güncellendi.");
+            await Delete(fileName);
+
+            return await Upload(file);
         }
 
 
@@ -87,6 +76,14 @@ namespace Core.Utilities.FileHelper
         {
             if (extension != ".jpg" && extension != ".png" && extension != ".jpeg" && extension != ".webp")
                 throw new FileNotProvidedException();
+        }
+
+
+        private BlobContainerClient GetContainerClient(string fileName)
+        {
+            string containerEndpoint = string.Format($"{imageUrl}/{fileName}?{_blobStorageSettings.SasToken}");
+
+            return new BlobContainerClient(new Uri(containerEndpoint));
         }
 
 

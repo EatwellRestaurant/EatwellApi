@@ -10,10 +10,10 @@ namespace Core.Utilities.FileHelper
 {
     public interface IFileHelper
     {
-        IDataResult<string> Upload(IFormFile file);
+        Task<ImageRespone> Upload(IFormFile file);
 
-        IResult Delete(string filePath);
+        Task Delete(string fileName);
 
-        IDataResult<string> Update(IFormFile file, string oldPath);
+        Task<ImageRespone> Update(IFormFile file, string fileName);
     }
 }

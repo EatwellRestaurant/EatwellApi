@@ -42,16 +42,9 @@ namespace WebAPI.Controllers
         }
 
         [HttpPut]
-        public IActionResult Update([FromForm(Name = "Image")] IFormFile file, [FromBody] ProductForUpdateDto product)
-        {
-            var result = _productService.Update(file, product);
+        public async Task<IActionResult> Update([FromForm(Name = "Image")] IFormFile file, [FromBody] ProductForUpdateDto product) 
+            => Ok(await _productService.Update(file, product));
 
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-            return BadRequest(result);
-        }
 
         [HttpGet]
         public async Task<IActionResult> Get(int id)

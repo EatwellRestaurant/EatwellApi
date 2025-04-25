@@ -15,6 +15,6 @@ namespace Business.Abstract
         Task<IDataResult<BranchImage?>> Get(int id);
         Task<IResult> Add(IFormFile file, BranchImage branchImage);
         IResult Delete(BranchImage branchImage);
-        IResult Update(IFormFile file, BranchImage branchImage);
+        Task<IResult> Update(IFormFile file, BranchImage branchImage);
     }
 }

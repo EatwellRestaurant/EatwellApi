@@ -27,14 +27,7 @@ namespace Business.Concrete
 
         public async Task<IResult> Add(IFormFile file, BranchImage branchImage)
         {
-            var result = _fileHelper.Upload(file);
-
-            if (!result.Success)
-            {
-                return result;
-            }
-
-            branchImage.ImagePath = result.Data;
+            branchImage.ImagePath = _fileHelper.Upload(file).Result.Path;
 
             await _branchImageDal.AddAsync(branchImage);
             return new SuccessResult(BranchImageMessages.BranchImageAdded);
@@ -42,12 +35,7 @@ namespace Business.Concrete
 
         public IResult Delete(BranchImage branchImage)
         {
-            var result = _fileHelper.Delete(branchImage.ImagePath);
-
-            if (!result.Success)
-            {
-                return result;
-            }
+            _fileHelper.Delete(branchImage.ImagePath);
 
             _branchImageDal.Remove(branchImage);
             return new SuccessResult(BranchImageMessages.BranchImageDeleted);
@@ -63,16 +51,9 @@ namespace Business.Concrete
             return new SuccessDataResult<List<BranchImage>>(await _branchImageDal.GetAllAsync(), BranchImageMessages.BranchImagesListed);
         }
 
-        public IResult Update(IFormFile file, BranchImage branchImage)
+        public async Task<IResult> Update(IFormFile file, BranchImage branchImage)
         {
-            var result = _fileHelper.Update(file, branchImage.ImagePath);
-
-            if (!result.Success)
-            {
-                return result;
-            }
-
-            branchImage.ImagePath = result.Data;
+            branchImage.ImagePath = _fileHelper.Update(file, branchImage.ImagePath).Result.Path;
 
             _branchImageDal.Update(branchImage);
             return new SuccessResult(BranchImageMessages.BranchImageUpdated);

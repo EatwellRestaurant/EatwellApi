@@ -16,7 +16,7 @@ namespace Business.Abstract
         Task<IDataResult<Product?>> Get(int id);
         Task<IResult> Add(IFormFile file, ProductForCreateDto product);
         IResult Delete(Product product);
-        IResult Update(IFormFile file, ProductForUpdateDto product);
+        Task<IResult> Update(IFormFile file, ProductForUpdateDto dto);
         Task<IDataResult<List<Product>>> GetProductsByMealCategoryId(int id);
     }
 }

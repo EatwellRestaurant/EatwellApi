@@ -32,13 +32,7 @@ namespace Business.Concrete
 
             if (result.Success)
             {
-                var resultOfUpload = _fileHelper.Upload(file);
-
-                if (!resultOfUpload.Success)
-                {
-                    return result;
-                }
-                branchEmployee.ImagePath = resultOfUpload.Data;
+                branchEmployee.ImagePath = _fileHelper.Upload(file).Result.Path;
             }
 
             await _branchEmployeeDal.AddAsync(branchEmployee);
@@ -51,12 +45,7 @@ namespace Business.Concrete
 
             if (result.Success) 
             { 
-                var resultOfDelete = _fileHelper.Delete(branchEmployee.ImagePath);
-
-                if (!resultOfDelete.Success)
-                {
-                    return result;
-                }
+                _fileHelper.Delete(branchEmployee.ImagePath);
             }
         
             _branchEmployeeDal.Remove(branchEmployee);
@@ -83,23 +72,11 @@ namespace Business.Concrete
             {
                 if (CheckIfImagePathIsEmpty(employee.ImagePath).Success)
                 {
-                    var resultOfUpdate = _fileHelper.Update(file, employee.ImagePath);
-
-                    if (!resultOfUpdate.Success)
-                    {
-                        return resultOfUpdate;
-                    }
-                    branchEmployee.ImagePath = resultOfUpdate.Data;
+                    branchEmployee.ImagePath = _fileHelper.Update(file, employee.ImagePath).Result.Path;
                 }
                 else
                 {
-                    var resultOfAdd = _fileHelper.Upload(file);
-
-                    if (!resultOfAdd.Success)
-                    {
-                        return resultOfAdd;
-                    }
-                    branchEmployee.ImagePath = resultOfAdd.Data;
+                    branchEmployee.ImagePath = _fileHelper.Upload(file).Result.Path;
                 }
             }
 

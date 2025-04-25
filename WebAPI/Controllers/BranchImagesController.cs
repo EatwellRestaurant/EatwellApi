@@ -39,15 +39,9 @@ namespace WebAPI.Controllers
         }
 
         [HttpPut]
-        public IActionResult Update([FromForm(Name = "Image")]IFormFile file, [FromForm]BranchImage branchImage)
-        {
-            var result = _branchImageService.Update(file, branchImage);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-            return BadRequest(result);
-        }
+        public async Task<IActionResult> Update([FromForm(Name = "Image")]IFormFile file, [FromForm]BranchImage branchImage) 
+            => Ok(await _branchImageService.Update(file, branchImage));
+        
 
         [HttpGet]
         public async Task<IActionResult> Get(int id)

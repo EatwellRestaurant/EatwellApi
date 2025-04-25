@@ -49,10 +49,13 @@ namespace Business.Concrete
 
             CheckIfFileEnter(upsertDto.Image);
 
+            ImageRespone imageRespone = await _fileHelper.Upload(upsertDto.Image!);
+
             MealCategory mealCategory = new()
             {
                 Name = upsertDto.Name,
-                ImagePath = _fileHelper.Upload(upsertDto.Image!).Data
+                ImagePath = imageRespone.Path,
+                ImageName = imageRespone.Name,
             };
 
             await _mealCategoryDal.AddAsync(mealCategory);
@@ -134,7 +137,12 @@ namespace Business.Concrete
             mealCategory.UpdateDate = DateTime.Now;
 
             if (upsertDto.Image != null)
-                mealCategory.ImagePath = _fileHelper.Update(upsertDto.Image, mealCategory.ImagePath).Data;
+            {
+                ImageRespone imageRespone = await _fileHelper.Update(upsertDto.Image, mealCategory.ImageName);
+
+                mealCategory.ImagePath = imageRespone.Path;
+                mealCategory.ImageName = imageRespone.Name;
+            }
 
 
             _mealCategoryDal.Update(mealCategory);
@@ -164,7 +172,7 @@ namespace Business.Concrete
 
         private async Task CheckIfMealCategoryNameExists(string mealCategoryName, int? mealCategoryId = null)
         {
-            if (await _mealCategoryDal.AnyAsync(m => m.Name == mealCategoryName && !m.IsDeleted && mealCategoryId.HasValue && m.Id != mealCategoryId))
+            if (await _mealCategoryDal.AnyAsync(m => m.Name == mealCategoryName && !m.IsDeleted && (mealCategoryId.HasValue ? m.Id != mealCategoryId : true)))
                 throw new EntityAlreadyExistsException("menü ismi");
         }
 

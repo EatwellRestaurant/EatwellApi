@@ -31,19 +31,12 @@ namespace Business.Concrete
         [ValidationAspect(typeof(ProductValidator))]
         public async Task<IResult> Add(IFormFile file, ProductForCreateDto dto)
         {
-            var result = _fileHelper.Upload(file);
-
-            if (!result.Success)
-            {
-                return result;
-            }
-
             Product product = new Product
             {
                 Name = dto.ProductName,
                 Price = dto.Price,
                 MealCategoryId = dto.MealCategoryId,
-                ImagePath = result.Data
+                ImagePath = _fileHelper.Upload(file).Result.Path
             };
 
             await _productDal.AddAsync(product);
@@ -52,12 +45,7 @@ namespace Business.Concrete
 
         public IResult Delete(Product product)
         {
-            var result = _fileHelper.Delete(product.ImagePath);
-
-            if (!result.Success)
-            {
-                return result;
-            }
+            _fileHelper.Delete(product.ImagePath);
 
             _productDal.Remove(product);
             return new SuccessResult(ProductMessages.ProductDeleted);
@@ -79,20 +67,13 @@ namespace Business.Concrete
         }
 
         [ValidationAspect(typeof(ProductValidator))]
-        public IResult Update(IFormFile file, ProductForUpdateDto dto)
+        public async Task<IResult> Update(IFormFile file, ProductForUpdateDto dto)
         {
-            var result = _fileHelper.Update(file, dto.ImagePath);
-
-            if (!result.Success)
-            {
-                return result;
-            }
-
             Product product = new()
             {
                 MealCategoryId = dto.MealCategoryId,
                 Name = dto.ProductName,
-                ImagePath = result.Data,
+                ImagePath = _fileHelper.Update(file, dto.ImagePath).Result.Path,
                 Price = dto.Price,
             };
 
