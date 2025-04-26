@@ -4,10 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Entities.Dtos.MealCategory
+namespace Entities.Dtos.Product
 {
-    public class MealCategoryListDto : EntityListDtoForAdmin
+    public class ProductListDto : EntityListDtoForAdmin
     {
         public string Name { get; set; }
+
+        public decimal Price { get; set; }
     }
 }

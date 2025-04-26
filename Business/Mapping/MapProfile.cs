@@ -4,6 +4,7 @@ using Entities.Dtos.Branch;
 using Entities.Dtos.City;
 using Entities.Dtos.Country;
 using Entities.Dtos.MealCategory;
+using Entities.Dtos.Product;
 using Entities.Dtos.Reservation;
 using Entities.Dtos.User;
 
@@ -13,6 +14,9 @@ namespace Business.Mapping
     {
         public MapProfile()
         {
+
+            #region User
+
             CreateMap<UserUpdateDto, User>()
                 .ForMember(dest => dest.Password, opt => opt.Ignore())
                 .ForMember(dest => dest.UpdateDate, opt => opt.MapFrom(src => DateTime.Now));
@@ -23,19 +27,34 @@ namespace Business.Mapping
 
             CreateMap<User, UserDetailDto>();
 
+            #endregion
+
+
+
+            #region MealCategory
 
             CreateMap<MealCategory, MealCategoryListDto>();
 
 
             CreateMap<MealCategory, MealCategoryDetailDto>();
 
+            #endregion
+
+
+
+            #region Country
 
             CreateMap<Country, AdminCountryListDto>();
 
 
             CreateMap<Country, CountryDto>();
 
-            
+            #endregion
+
+
+
+            #region City
+
             CreateMap<City, CityDto>();
 
 
@@ -45,6 +64,11 @@ namespace Business.Mapping
             CreateMap<City, CityWithBranchCountDto>()
                 .ForMember(dest => dest.BranchCount, opt => opt.MapFrom(src => src.Branches.Count));
 
+            #endregion
+
+
+
+            #region Branch
 
             CreateMap<Branch, BranchDto>();
 
@@ -55,10 +79,31 @@ namespace Business.Mapping
             
             CreateMap<BranchUpsertDto, Branch>();
 
-            CreateMap<ReservationUpsertDto, Reservation>();
 
             CreateMap<Branch, BranchDetailDto>()
                 .ForMember(dest => dest.CityName, opt => opt.MapFrom(src => src.City.Name));
+
+            #endregion
+
+
+
+            #region Reservation
+
+            CreateMap<ReservationUpsertDto, Reservation>();
+
+            #endregion
+
+
+
+            #region Product
+
+            CreateMap<Product, ProductListDto>();
+
+
+            CreateMap<Product, ProductDetailDto>();
+
+            #endregion
+
         }
     }
 }

@@ -44,29 +44,18 @@ namespace WebAPI.Controllers
             => Ok(await _productService.Update(productId, upsertDto));
 
 
-        [HttpGet]
-        public async Task<IActionResult> Get(int id)
-        {
-            var result = await _productService.Get(id);
-
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-            return BadRequest(result);
-        }
 
         [HttpGet]
-        public async Task<IActionResult> GetAll()
-        {
-            var result = await _productService.GetAll();
+        public async Task<IActionResult> GetForAdmin(int productId) 
+            => Ok(await _productService.GetForAdmin(productId));
 
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-            return BadRequest(result);
-        }
+         
+
+        [HttpGet] 
+        public async Task<IActionResult> GetAllForAdminByMealCategoryId(int mealCategoryId) 
+            => Ok(await _productService.GetAllForAdminByMealCategoryId(mealCategoryId));
+
+
 
         [HttpGet] 
         public async Task<IActionResult> GetProductsByMealCategoryId(int id)

@@ -14,9 +14,9 @@ namespace Business.Abstract
 {
     public interface IProductService
     {
-        Task<IDataResult<List<Product>>> GetAll();
-        
-        Task<IDataResult<Product?>> Get(int id);
+        Task<DataResponse<List<ProductListDto>>> GetAllForAdminByMealCategoryId(int mealCategoryId);
+
+        Task<DataResponse<ProductDetailDto>> GetForAdmin(int productId);
         
         Task<CreateSuccessResponse> Add(ProductUpsertDto upsertDto);
         

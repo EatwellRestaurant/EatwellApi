@@ -1,4 +1,5 @@
-﻿using Business.Abstract;
+﻿using AutoMapper;
+using Business.Abstract;
 using Business.BusinessAspects.Autofac;
 using Business.Constants.Messages;
 using Business.Constants.Messages.Entity;
@@ -9,7 +10,9 @@ using Core.ResponseModels;
 using Core.Utilities.FileHelper;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
+using DataAccess.Concrete.EntityFramework;
 using Entities.Concrete;
+using Entities.Dtos.MealCategory;
 using Entities.Dtos.Product;
 using Microsoft.EntityFrameworkCore;
 
@@ -21,13 +24,15 @@ namespace Business.Concrete
         readonly IFileHelper _fileHelper;
         readonly IUnitOfWork _unitOfWork;
         readonly IMealCategoryService _mealCategoryService;
+        readonly IMapper _mapper;
 
-        public ProductManager(IProductDal productDal, IFileHelper fileHelper, IUnitOfWork unitOfWork, IMealCategoryService mealCategoryService)
+        public ProductManager(IProductDal productDal, IFileHelper fileHelper, IUnitOfWork unitOfWork, IMealCategoryService mealCategoryService, IMapper mapper)
         {
             _productDal = productDal;
             _fileHelper = fileHelper;
             _unitOfWork = unitOfWork;
             _mealCategoryService = mealCategoryService;
+            _mapper = mapper;
         }
 
 
@@ -66,15 +71,36 @@ namespace Business.Concrete
             return new SuccessResult(ProductMessages.ProductDeleted);
         }
 
-        public async Task<IDataResult<Product?>> Get(int id)
+
+        [SecuredOperation("admin", Priority = 1)]
+        public async Task<DataResponse<ProductDetailDto>> GetForAdmin(int productId)
         {
-            return new SuccessDataResult<Product?>(await _productDal.GetAsync(p => p.Id == id), ProductMessages.ProductWasBrought);
+            Product? product = await _productDal
+               .GetAsNoTrackingAsync(p => p.Id == productId)
+               ?? throw new EntityNotFoundException("Ürün");
+
+
+            return new DataResponse<ProductDetailDto>
+                (_mapper.Map<ProductDetailDto>(product),
+                CommonMessages.EntityFetch);
         }
 
-        public async Task<IDataResult<List<Product>>> GetAll()
+
+        [SecuredOperation("admin", Priority = 1)]
+        public async Task<DataResponse<List<ProductListDto>>> GetAllForAdminByMealCategoryId(int mealCategoryId)
         {
-            return new SuccessDataResult<List<Product>>(await _productDal.GetAllAsync(), ProductMessages.ProductsListed);
+            if (!await _mealCategoryService.AnyAsync(m => m.Id == mealCategoryId))
+                throw new EntityNotFoundException("Menü");
+
+
+            return new DataResponse<List<ProductListDto>>(_mapper.Map<List<ProductListDto>>
+                    (await _productDal
+                    .GetAllQueryable(p => p.MealCategoryId == mealCategoryId)
+                    .OrderByDescending(p => p.CreateDate)
+                    .ToListAsync()),
+                    CommonMessages.EntityListed);
         }
+
 
         public async Task<IDataResult<List<Product>>> GetProductsByMealCategoryId(int id)
         {
