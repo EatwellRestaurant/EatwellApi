@@ -13,7 +13,7 @@ namespace Business.ValidationRules.FluentValidation
     {
         public ProductUpsertDtoValidator()
         {
-            RuleFor(m => m.Name)
+            RuleFor(p => p.Name)
                 .Cascade(CascadeMode.Stop)
                 .NotEmpty()
                 .WithMessage("Lütfen ürün ismini giriniz!")

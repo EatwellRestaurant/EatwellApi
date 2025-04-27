@@ -18,11 +18,11 @@ namespace Business.Abstract
 
         Task<DataResponse<ProductDetailDto>> GetForAdmin(int productId);
         
-        Task<CreateSuccessResponse> Add(ProductUpsertDto upsertDto);
-        
+        Task<CreateSuccessResponse> Add(ProductInsertDto insertDto);
+         
         IResult Delete(Product product);
 
-        Task<UpdateSuccessResponse> Update(int productId, ProductUpsertDto upsertDto);
+        Task<UpdateSuccessResponse> Update(int productId, ProductUpdateDto updateDto);
         
         Task<IDataResult<List<Product>>> GetProductsByMealCategoryId(int id);
     }

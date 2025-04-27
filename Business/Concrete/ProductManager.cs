@@ -38,21 +38,21 @@ namespace Business.Concrete
 
         [SecuredOperation("admin", Priority = 1)]
         [ValidationAspect(typeof(ProductUpsertDtoValidator))]
-        public async Task<CreateSuccessResponse> Add(ProductUpsertDto upsertDto)
+        public async Task<CreateSuccessResponse> Add(ProductInsertDto insertDto)
         {
-            await CheckIfMealCategoryIdExists(upsertDto.MealCategoryId);
+            await CheckIfMealCategoryIdExists(insertDto.MealCategoryId);
 
-            await CheckIfProductNameExists(upsertDto.Name);
+            await CheckIfProductNameExists(insertDto.Name);
 
-            _fileHelper.CheckIfFileEnter(upsertDto.Image);
+            _fileHelper.CheckIfFileEnter(insertDto.Image);
 
-            ImageRespone imageRespone = await _fileHelper.Upload(upsertDto.Image!);
+            ImageRespone imageRespone = await _fileHelper.Upload(insertDto.Image!);
 
             Product product = new()
             {
-                Name = upsertDto.Name,
-                Price = upsertDto.Price,
-                MealCategoryId = upsertDto.MealCategoryId,
+                Name = insertDto.Name,
+                Price = insertDto.Price,
+                MealCategoryId = insertDto.MealCategoryId,
                 ImagePath = imageRespone.Path,
                 ImageName = imageRespone.Name,
             };
@@ -110,31 +110,25 @@ namespace Business.Concrete
 
         [SecuredOperation("admin", Priority = 1)]
         [ValidationAspect(typeof(ProductUpsertDtoValidator))]
-        public async Task<UpdateSuccessResponse> Update(int productId, ProductUpsertDto upsertDto)
+        public async Task<UpdateSuccessResponse> Update(int productId, ProductUpdateDto updateDto)
         {
             Product product = await GetByIdProductForDeleteAndUpdate(productId);
 
-            if (product.MealCategoryId != upsertDto.MealCategoryId) 
-            {
-                await CheckIfMealCategoryIdExists(upsertDto.MealCategoryId);
-                product.MealCategoryId = upsertDto.MealCategoryId;
-            }
-
-            if (upsertDto.Name != product.Name)
+            if (updateDto.Name != product.Name)
             { 
-                await CheckIfProductNameExists(upsertDto.Name, productId);
-                product.Name = upsertDto.Name;
+                await CheckIfProductNameExists(updateDto.Name, productId);
+                product.Name = updateDto.Name;
             }
 
-            if (upsertDto.Image != null)
+            if (updateDto.Image != null)
             {
-                ImageRespone imageRespone = await _fileHelper.Update(upsertDto.Image, product.ImageName);
+                ImageRespone imageRespone = await _fileHelper.Update(updateDto.Image, product.ImageName);
 
                 product.ImagePath = imageRespone.Path;
                 product.ImageName = imageRespone.Name;
             }
 
-            product.Price = upsertDto.Price;
+            product.Price = updateDto.Price;
             product.UpdateDate = DateTime.Now;
 
             _productDal.Update(product);

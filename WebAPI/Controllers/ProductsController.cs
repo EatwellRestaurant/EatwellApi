@@ -21,8 +21,8 @@ namespace WebAPI.Controllers
 
 
         [HttpPost]
-        public async Task<IActionResult> Add([FromForm] ProductUpsertDto upsertDto) 
-            => Ok(await _productService.Add(upsertDto));
+        public async Task<IActionResult> Add([FromForm] ProductInsertDto insertDto) 
+            => Ok(await _productService.Add(insertDto));
 
 
 
@@ -40,8 +40,8 @@ namespace WebAPI.Controllers
 
 
         [HttpPut]
-        public async Task<IActionResult> Update(int productId, [FromForm] ProductUpsertDto upsertDto) 
-            => Ok(await _productService.Update(productId, upsertDto));
+        public async Task<IActionResult> Update(int productId, [FromForm] ProductUpdateDto updateDto) 
+            => Ok(await _productService.Update(productId, updateDto));
 
 
 
