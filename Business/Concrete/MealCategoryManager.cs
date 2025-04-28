@@ -7,7 +7,6 @@ using Business.ValidationRules.FluentValidation;
 using Core.Aspects.Autofac.Validation;
 using Core.Exceptions.File;
 using Core.Exceptions.General;
-using Core.Exceptions.MealCategory;
 using Core.ResponseModels;
 using Core.Utilities.FileHelper;
 using DataAccess.Abstract;
@@ -76,15 +75,12 @@ namespace Business.Concrete
             if (mealCategory.IsDeleted)
             {
                 if (await _mealCategoryDal.Where(m => m.Name == mealCategory.Name && m.Id != mealCategoryId && !m.IsDeleted).AnyAsync())
-                    throw new CannotActivateMealCategoryException();
+                    throw new CannotActivateEntityException("menü");
 
-                mealCategory.DeleteDate = null;
-                mealCategory.UpdateDate = DateTime.Now;
                 responseMessage = MealCategoryMessages.MealCategoryActivated;
             }
             else
             {
-                mealCategory.DeleteDate = DateTime.Now;
                 responseMessage = MealCategoryMessages.MealCategoryDeactivated;
             }
 

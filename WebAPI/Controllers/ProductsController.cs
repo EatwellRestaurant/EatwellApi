@@ -13,10 +13,9 @@ namespace WebAPI.Controllers
     {
         readonly IProductService _productService;
 
-        public ProductsController(IProductService productService)
-        {
-            _productService = productService;
-        }
+        public ProductsController(IProductService productService) 
+            => _productService = productService;
+        
 
 
 
@@ -27,16 +26,9 @@ namespace WebAPI.Controllers
 
 
         [HttpDelete]
-        public IActionResult Delete(Product product)
-        {
-            var result = _productService.Delete(product);
+        public async Task<IActionResult> Delete(int productId) 
+            => Ok(await _productService.Delete(productId));
 
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-            return BadRequest(result);
-        }
 
 
         [HttpPut]
@@ -57,16 +49,8 @@ namespace WebAPI.Controllers
 
 
 
-        [HttpGet] 
-        public async Task<IActionResult> GetProductsByMealCategoryId(int id)
-        {
-            var result = await _productService.GetProductsByMealCategoryId(id);
-
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-            return BadRequest(result);
-        }
+        [HttpDelete]
+        public async Task<IActionResult> SetDeleteOrRestore(int productId)
+            => Ok(await _productService.SetDeleteOrRestore(productId));
     }
 }

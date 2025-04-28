@@ -16,7 +16,7 @@ namespace DataAccess.Configurations
             builder.HasKey(b => b.Id);
             builder.Property(b => b.Id).UseIdentityColumn();
 
-            builder.Property(b => b.IsActive).HasDefaultValue(false);
+            builder.Property(b => b.IsActive).HasDefaultValue(true);
 
             builder.UseTpcMappingStrategy();
         }

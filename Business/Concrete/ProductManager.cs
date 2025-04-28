@@ -26,7 +26,12 @@ namespace Business.Concrete
         readonly IMealCategoryService _mealCategoryService;
         readonly IMapper _mapper;
 
-        public ProductManager(IProductDal productDal, IFileHelper fileHelper, IUnitOfWork unitOfWork, IMealCategoryService mealCategoryService, IMapper mapper)
+        public ProductManager(
+            IProductDal productDal, 
+            IFileHelper fileHelper, 
+            IUnitOfWork unitOfWork, 
+            IMealCategoryService mealCategoryService, 
+            IMapper mapper)
         {
             _productDal = productDal;
             _fileHelper = fileHelper;
@@ -63,12 +68,50 @@ namespace Business.Concrete
             return new CreateSuccessResponse(CommonMessages.EntityAdded);
         }
 
-        public IResult Delete(Product product)
-        {
-            _fileHelper.Delete(product.ImagePath);
 
-            _productDal.Remove(product);
-            return new SuccessResult(ProductMessages.ProductDeleted);
+        [SecuredOperation("admin")]
+        public async Task<DeleteSuccessResponse> SetDeleteOrRestore(int productId)
+        {
+            Product product = await GetByIdProductForDeleteAndUpdate(productId);
+
+            string responseMessage;
+
+            if (!product.IsActive)
+            {
+                if (await _productDal.Where(p => p.Name == product.Name && p.Id != productId && !p.IsDeleted).AnyAsync())
+                    throw new CannotActivateEntityException("ürün");
+
+                responseMessage = ProductMessages.ProductActivated;
+            }
+            else
+            {
+                responseMessage = ProductMessages.ProductDeactivated;
+            }
+
+            product.IsActive = !product.IsActive;
+            product.DeactivationDate = DateTime.Now;
+
+            _productDal.Update(product);
+            await _unitOfWork.SaveChangesAsync();
+
+            return new DeleteSuccessResponse(responseMessage);
+        }
+
+
+        [SecuredOperation("admin", Priority = 1)]
+        public async Task<DeleteSuccessResponse> Delete(int productId)
+        {
+            Product product = await GetByIdProductForDeleteAndUpdate(productId);
+
+            await _fileHelper.Delete(product.ImageName);
+
+            product.IsDeleted = true;
+            product.DeleteDate = DateTime.Now;
+
+            _productDal.Update(product);
+            await _unitOfWork.SaveChangesAsync();
+
+            return new DeleteSuccessResponse(CommonMessages.EntityDeleted);
         }
 
 
@@ -76,7 +119,7 @@ namespace Business.Concrete
         public async Task<DataResponse<ProductDetailDto>> GetForAdmin(int productId)
         {
             Product? product = await _productDal
-               .GetAsNoTrackingAsync(p => p.Id == productId)
+               .GetAsNoTrackingAsync(p => p.Id == productId && !p.IsDeleted)
                ?? throw new EntityNotFoundException("Ürün");
 
 
@@ -95,17 +138,12 @@ namespace Business.Concrete
 
             return new DataResponse<List<ProductListDto>>(_mapper.Map<List<ProductListDto>>
                     (await _productDal
-                    .GetAllQueryable(p => p.MealCategoryId == mealCategoryId)
+                    .GetAllQueryable(p => p.MealCategoryId == mealCategoryId && !p.IsDeleted)
                     .OrderByDescending(p => p.CreateDate)
                     .ToListAsync()),
                     CommonMessages.EntityListed);
         }
 
-
-        public async Task<IDataResult<List<Product>>> GetProductsByMealCategoryId(int id)
-        {
-            return new SuccessDataResult<List<Product>>(await _productDal.GetAllAsync(p => p.MealCategoryId == id), ProductMessages.ProductsListed);
-        }
 
 
         [SecuredOperation("admin", Priority = 1)]
@@ -151,7 +189,7 @@ namespace Business.Concrete
         private async Task<Product> GetByIdProductForDeleteAndUpdate(int productId)
         {
             Product? product = await _productDal
-                .Where(p => p.Id == productId)
+                .Where(p => p.Id == productId && !p.IsDeleted)
                 .SingleOrDefaultAsync()
                 ?? throw new EntityNotFoundException("Ürün");
 

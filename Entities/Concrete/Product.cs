@@ -10,7 +10,9 @@ namespace Entities.Concrete
     public class Product : BaseEntity
     {
         public int MealCategoryId { get; set; }
-     
+
+        public bool IsActive { get; set; }
+
         public string Name { get; set; }
         
         public string ImagePath { get; set; }
@@ -19,6 +21,7 @@ namespace Entities.Concrete
         
         public decimal Price { get; set; }
 
+        public DateTime? DeactivationDate { get; set; }
 
 
 

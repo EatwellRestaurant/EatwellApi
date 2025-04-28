@@ -25,6 +25,7 @@
 
   <ItemGroup>
     <Folder Include="Entities\Concrete\" />
+    <Folder Include="Exceptions\MealCategory\" />
   </ItemGroup>
 
 

@@ -8,11 +8,8 @@ namespace Business.Constants.Messages.Entity
 {
     public static class ProductMessages
     {
-        public static string ProductAdded = "Ürün Eklendi";
-        public static string ProductDeleted = "Ürün Silindi";
-        public static string ProductUpdated = "Ürün Güncellendi";
-        public static string ProductWasBrought = "Ürün Getirildi";
-        public static string ProductsListed = "Ürünler Listelendi";
-        public static string ProductNameİnvalid = "Ürün ismi geçersiz";
+        public const string ProductActivated = "Ürün başarılı bir şekilde aktif hale getirildi.";
+
+        public const string ProductDeactivated = "Ürün başarılı bir şekilde pasif hale getirildi.";
     }
 }
