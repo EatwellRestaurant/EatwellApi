@@ -6,12 +6,8 @@ using System.Threading.Tasks;
 
 namespace Entities.Dtos.Product
 {
-    public class ProductDetailDto : EntityDetailDtoForAdmin
+    public class ProductDetailDto : ProductListDto
     {
-        public string Name { get; set; }
-
         public string ImagePath { get; set; }
-
-        public decimal Price { get; set; }
     }
 }

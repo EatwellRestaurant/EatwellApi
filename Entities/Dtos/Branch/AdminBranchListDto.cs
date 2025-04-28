@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Entities.Dtos.Branch
 {
-    public class AdminBranchListDto : EntityListDtoForAdmin
+    public class AdminBranchListDto : EntityAdminDto
     {
         public string CityName { get; set; }
         public string Name { get; set; }

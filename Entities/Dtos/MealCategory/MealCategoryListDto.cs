@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Entities.Dtos.MealCategory
 {
-    public class MealCategoryListDto : EntityListDtoForAdmin
+    public class MealCategoryListDto : EntityAdminDto
     {
         public string Name { get; set; }
     }

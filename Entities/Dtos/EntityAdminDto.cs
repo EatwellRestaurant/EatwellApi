@@ -7,10 +7,10 @@ using System.Threading.Tasks;
 
 namespace Entities.Dtos
 {
-    public class EntityListDtoForAdmin : IDto
+    public class EntityAdminDto : IDto
     {
         public int Id { get; set; }
-        public bool IsDeleted { get; set; }
+        public bool IsActive { get; set; }
         public DateTime CreateDate { get; set; }
     }
 }

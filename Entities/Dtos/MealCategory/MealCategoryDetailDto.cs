@@ -6,9 +6,8 @@ using System.Threading.Tasks;
 
 namespace Entities.Dtos.MealCategory
 {
-    public class MealCategoryDetailDto : EntityDetailDtoForAdmin
+    public class MealCategoryDetailDto : MealCategoryListDto
     {
-        public string Name { get; set; }
         public string ImagePath { get; set; }
     }
 }

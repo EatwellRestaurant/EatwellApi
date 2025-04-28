@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Entities.Dtos.Product
 {
-    public class ProductListDto : EntityListDtoForAdmin
+    public class ProductListDto : EntityAdminDto
     {
         public string Name { get; set; }
 

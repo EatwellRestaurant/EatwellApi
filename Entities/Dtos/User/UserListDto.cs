@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Entities.Dtos.User
 {
-    public class UserListDto : EntityListDtoForAdmin
+    public class UserListDto : EntityAdminDto
     {
         public string FirstName { get; set; }
         public string LastName { get; set; }

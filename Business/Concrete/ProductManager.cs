@@ -132,7 +132,7 @@ namespace Business.Concrete
         [SecuredOperation("admin", Priority = 1)]
         public async Task<DataResponse<List<ProductListDto>>> GetAllForAdminByMealCategoryId(int mealCategoryId)
         {
-            if (!await _mealCategoryService.AnyAsync(m => m.Id == mealCategoryId))
+            if (!await _mealCategoryService.AnyAsync(m => m.Id == mealCategoryId && !m.IsDeleted))
                 throw new EntityNotFoundException("Menü");
 
 

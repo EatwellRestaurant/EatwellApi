@@ -98,15 +98,31 @@ namespace Business.Concrete
         [SecuredOperation("admin", Priority = 1)]
         public async Task<DeleteSuccessResponse> Delete(int mealCategoryId)
         {
-            MealCategory mealCategory = await GetByIdMealCategoryForDeleteAndUpdate(mealCategoryId);
+            MealCategory? mealCategory = await _mealCategoryDal
+                .Where(m => m.Id == mealCategoryId && !m.IsDeleted)
+                .Include(m => m.Products)
+                .SingleOrDefaultAsync()
+                ?? throw new EntityNotFoundException("Menü");
 
-            await _fileHelper.Delete(mealCategory.ImageName);
+
+            if (mealCategory.Products.Any())
+            {
+                foreach (Product product in mealCategory.Products)
+                {
+                    product.IsDeleted = true;
+                    product.DeleteDate = DateTime.Now;
+                    
+                    await _fileHelper.Delete(product.ImageName);
+                }
+            }
 
             mealCategory.IsDeleted = true;
             mealCategory.DeleteDate = DateTime.Now;
 
             _mealCategoryDal.Update(mealCategory);
             await _unitOfWork.SaveChangesAsync();
+            
+            await _fileHelper.Delete(mealCategory.ImageName);
 
             return new DeleteSuccessResponse(CommonMessages.EntityDeleted);
         }
@@ -117,7 +133,7 @@ namespace Business.Concrete
         public async Task<DataResponse<MealCategoryDetailDto>> GetForAdmin(int mealCategoryId)
         {
             MealCategory? mealCategory = await _mealCategoryDal
-                .GetAsNoTrackingAsync(m => m.Id == mealCategoryId)
+                .GetAsNoTrackingAsync(m => m.Id == mealCategoryId && !m.IsDeleted)
                 ?? throw new EntityNotFoundException("Menü");
 
             return new DataResponse<MealCategoryDetailDto>
@@ -131,7 +147,7 @@ namespace Business.Concrete
         public async Task<DataResponse<List<MealCategoryListDto>>> GetAllForAdmin()
             => new DataResponse<List<MealCategoryListDto>>(_mapper.Map<List<MealCategoryListDto>>
                 (await _mealCategoryDal
-                .GetAllQueryable()
+                .GetAllQueryable(m => !m.IsDeleted)
                 .OrderByDescending(m => m.CreateDate)
                 .ToListAsync()), 
                 CommonMessages.EntityListed);
