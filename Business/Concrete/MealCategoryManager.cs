@@ -72,7 +72,7 @@ namespace Business.Concrete
 
             string responseMessage;
 
-            if (mealCategory.IsDeleted)
+            if (!mealCategory.IsActive)
             {
                 if (await _mealCategoryDal.Where(m => m.Name == mealCategory.Name && m.Id != mealCategoryId && !m.IsDeleted).AnyAsync())
                     throw new CannotActivateEntityException("menü");
@@ -84,11 +84,31 @@ namespace Business.Concrete
                 responseMessage = MealCategoryMessages.MealCategoryDeactivated;
             }
 
-            mealCategory.IsDeleted = !mealCategory.IsDeleted;
+            mealCategory.IsActive = !mealCategory.IsActive;
+            mealCategory.DeactivationDate = DateTime.Now;
+
             _mealCategoryDal.Update(mealCategory);
             await _unitOfWork.SaveChangesAsync();
 
             return new DeleteSuccessResponse(responseMessage);
+        }
+
+
+
+        [SecuredOperation("admin", Priority = 1)]
+        public async Task<DeleteSuccessResponse> Delete(int mealCategoryId)
+        {
+            MealCategory mealCategory = await GetByIdMealCategoryForDeleteAndUpdate(mealCategoryId);
+
+            await _fileHelper.Delete(mealCategory.ImageName);
+
+            mealCategory.IsDeleted = true;
+            mealCategory.DeleteDate = DateTime.Now;
+
+            _mealCategoryDal.Update(mealCategory);
+            await _unitOfWork.SaveChangesAsync();
+
+            return new DeleteSuccessResponse(CommonMessages.EntityDeleted);
         }
 
 
@@ -157,7 +177,7 @@ namespace Business.Concrete
         private async Task<MealCategory> GetByIdMealCategoryForDeleteAndUpdate(int mealCategoryId)
         {
             MealCategory? mealCategory = await _mealCategoryDal
-                .Where(m => m.Id == mealCategoryId)
+                .Where(m => m.Id == mealCategoryId && !m.IsDeleted)
                 .SingleOrDefaultAsync()
                 ?? throw new EntityNotFoundException("Menü");
 

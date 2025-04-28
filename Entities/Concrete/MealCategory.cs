@@ -15,6 +15,9 @@ namespace Entities.Concrete
         
         public string ImageName { get; set; }
 
+        public bool IsActive { get; set; }
+
+        public DateTime? DeactivationDate { get; set; }
 
 
 

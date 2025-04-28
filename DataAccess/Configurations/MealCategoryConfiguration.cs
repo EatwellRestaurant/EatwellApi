@@ -14,6 +14,7 @@ namespace DataAccess.Configurations
         public void Configure(EntityTypeBuilder<MealCategory> builder)
         {
             builder.Property(m => m.Name).HasMaxLength(250);
+            builder.Property(m => m.IsActive).HasDefaultValue(true);
         }
     }
 }

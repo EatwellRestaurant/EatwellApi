@@ -23,5 +23,7 @@ namespace Business.Abstract
         Task<UpdateSuccessResponse> Update(int mealCategoryId, MealCategoryUpsertDto upsertDto);
         
         Task<DeleteSuccessResponse> SetDeleteOrRestore(int mealCategoryId);
+
+        Task<DeleteSuccessResponse> Delete(int mealCategoryId);
     }
 }

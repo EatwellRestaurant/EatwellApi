@@ -30,6 +30,12 @@ namespace WebAPI.Controllers
         public async Task<IActionResult> SetDeleteOrRestore(int mealCategoryId) 
             => Ok(await _mealCategoryService.SetDeleteOrRestore(mealCategoryId));
         
+        
+
+        [HttpDelete]
+        public async Task<IActionResult> Delete(int mealCategoryId) 
+            => Ok(await _mealCategoryService.Delete(mealCategoryId));
+         
 
 
         [HttpPut]
