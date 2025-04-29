@@ -10,6 +10,6 @@ namespace Entities.Concrete
 
 
 
-        public ICollection<UserOperationClaim> UserOperationClaims { get; set; }
+        public ICollection<User> Users { get; set; }
     }
 }

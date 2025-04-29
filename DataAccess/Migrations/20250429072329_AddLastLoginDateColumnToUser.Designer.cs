@@ -4,6 +4,7 @@ using DataAccess.Concrete.EntityFramework;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(RestaurantContext))]
-    partial class RestaurantContextModelSnapshot : ModelSnapshot
+    [Migration("20250429072329_AddLastLoginDateColumnToUser")]
+    partial class AddLastLoginDateColumnToUser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -33,7 +36,7 @@ namespace DataAccess.Migrations
                     b.Property<DateTime>("CreateDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2025, 4, 29, 10, 47, 22, 996, DateTimeKind.Local).AddTicks(3063));
+                        .HasDefaultValue(new DateTime(2025, 4, 29, 10, 23, 28, 829, DateTimeKind.Local).AddTicks(3905));
 
                     b.Property<DateTime?>("DeleteDate")
                         .HasColumnType("datetime2");
@@ -703,6 +706,29 @@ namespace DataAccess.Migrations
                     b.UseTpcMappingStrategy();
                 });
 
+            modelBuilder.Entity("Entities.Concrete.UserOperationClaim", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("OperationClaimId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("UserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("OperationClaimId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("UserOperationClaims");
+                });
+
             modelBuilder.Entity("Entities.Concrete.Branch", b =>
                 {
                     b.HasBaseType("Entities.Concrete.BaseEntity");
@@ -873,9 +899,6 @@ namespace DataAccess.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
-                    b.Property<int>("OperationClaimId")
-                        .HasColumnType("int");
-
                     b.Property<string>("Password")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -890,8 +913,6 @@ namespace DataAccess.Migrations
 
                     b.Property<DateTime>("VerificationCodeDuration")
                         .HasColumnType("datetime2");
-
-                    b.HasIndex("OperationClaimId");
 
                     b.ToTable("Users");
                 });
@@ -1013,6 +1034,25 @@ namespace DataAccess.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("Entities.Concrete.UserOperationClaim", b =>
+                {
+                    b.HasOne("Entities.Concrete.OperationClaim", "OperationClaim")
+                        .WithMany("UserOperationClaims")
+                        .HasForeignKey("OperationClaimId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Entities.Concrete.User", "User")
+                        .WithMany("UserOperationClaims")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("OperationClaim");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("Entities.Concrete.Branch", b =>
                 {
                     b.HasOne("Entities.Concrete.City", "City")
@@ -1046,17 +1086,6 @@ namespace DataAccess.Migrations
                     b.Navigation("Branch");
                 });
 
-            modelBuilder.Entity("Entities.Concrete.User", b =>
-                {
-                    b.HasOne("Entities.Concrete.OperationClaim", "OperationClaim")
-                        .WithMany("Users")
-                        .HasForeignKey("OperationClaimId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("OperationClaim");
-                });
-
             modelBuilder.Entity("Entities.Concrete.City", b =>
                 {
                     b.Navigation("Branches");
@@ -1064,7 +1093,7 @@ namespace DataAccess.Migrations
 
             modelBuilder.Entity("Entities.Concrete.OperationClaim", b =>
                 {
-                    b.Navigation("Users");
+                    b.Navigation("UserOperationClaims");
                 });
 
             modelBuilder.Entity("Entities.Concrete.Branch", b =>
@@ -1084,6 +1113,8 @@ namespace DataAccess.Migrations
             modelBuilder.Entity("Entities.Concrete.User", b =>
                 {
                     b.Navigation("Evaluations");
+
+                    b.Navigation("UserOperationClaims");
                 });
 
             modelBuilder.Entity("Entities.Concrete.Country", b =>

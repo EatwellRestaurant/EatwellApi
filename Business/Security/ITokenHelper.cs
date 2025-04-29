@@ -10,6 +10,6 @@ namespace Business.Security
     public interface ITokenHelper
     {
         //Bu metotla, token'ın kim için oluşturulacağını ve içerisine hangi yetkileri koyacağımızı belirleriz.
-        AccessToken CreateToken(User user, List<OperationClaim> operationClaims);
+        AccessToken CreateToken(User user, string operationClaimName);
     }
 }

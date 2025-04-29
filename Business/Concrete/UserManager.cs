@@ -47,7 +47,7 @@ namespace Business.Concrete
 
         public async Task<DataResponse<AccessToken>> CreateAccessToken(User user)
         {
-            DataResponse<List<OperationClaim>> claims = await _operationClaimService.GetClaims(user.Id);
+            DataResponse<string> claims = await _operationClaimService.GetClaim(user.OperationClaimId);
 
 
             if (!claims.Data.Any())

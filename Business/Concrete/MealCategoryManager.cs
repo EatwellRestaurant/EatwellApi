@@ -109,10 +109,12 @@ namespace Business.Concrete
             {
                 foreach (Product product in mealCategory.Products)
                 {
-                    product.IsDeleted = true;
-                    product.DeleteDate = DateTime.Now;
-                    
-                    await _fileHelper.Delete(product.ImageName);
+                    if (!product.IsDeleted)
+                    {
+                        product.IsDeleted = true;
+                        product.DeleteDate = DateTime.Now;
+                        await _fileHelper.Delete(product.ImageName);
+                    }
                 }
             }
 
@@ -121,7 +123,7 @@ namespace Business.Concrete
 
             _mealCategoryDal.Update(mealCategory);
             await _unitOfWork.SaveChangesAsync();
-            
+
             await _fileHelper.Delete(mealCategory.ImageName);
 
             return new DeleteSuccessResponse(CommonMessages.EntityDeleted);

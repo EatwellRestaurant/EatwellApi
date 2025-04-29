@@ -45,9 +45,8 @@ namespace Business.Concrete
                 Verification = false,
                 VerificationCode = new Random().Next(10000, 99999).ToString(),
                 VerificationCodeDuration = DateTime.Now.AddMinutes(3),
+                OperationClaimId = 2  //Kullanıcı
             };
-
-            user.UserOperationClaims.Add(new UserOperationClaim { OperationClaimId = 2 });
 
             await _userService.AddAsync(user);
             await _emailService.SendEmailAsync(user.Email, user.FirstName, user.VerificationCode);
@@ -75,8 +74,9 @@ namespace Business.Concrete
 
 
             DataResponse<AccessToken> dataResponse = await _userService.CreateAccessToken(user);
+            user.LastLoginDate = DateTime.Now;
 
-
+            await _unitOfWork.SaveChangesAsync();
             return new DataResponse<AccessToken>(dataResponse.Data, AuthMessages.SuccessfulLogin);
         }
 

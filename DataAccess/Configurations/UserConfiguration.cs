@@ -15,8 +15,11 @@ namespace DataAccess.Configurations
         {
             builder.Property(u => u.FirstName).HasMaxLength(50);
             builder.Property(u => u.LastName).HasMaxLength(50);
-            builder.Property(r => r.Email).HasMaxLength(254);
+            builder.Property(u => u.Email).HasMaxLength(254);
             builder.Property(u => u.VerificationCode).HasMaxLength(5);
+            builder.Property(u => u.OperationClaimId).HasDefaultValue(2);
+
+            builder.HasOne(u => u.OperationClaim).WithMany(o => o.Users).HasForeignKey(o => o.OperationClaimId);
         }
     }
 }

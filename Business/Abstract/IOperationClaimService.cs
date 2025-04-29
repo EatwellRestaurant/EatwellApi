@@ -11,6 +11,6 @@ namespace Business.Abstract
 {
     public interface IOperationClaimService
     {
-        Task<DataResponse<List<OperationClaim>>> GetClaims(int userId);
+        Task<DataResponse<string>> GetClaim(int operationClaimId);
     }
 }

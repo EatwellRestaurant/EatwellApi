@@ -14,28 +14,23 @@ namespace Business.Concrete
 {
     public class OperationClaimManager : IOperationClaimService
     {
-        readonly IUserOperationClaimService _userOperationClaimService;
+        readonly IOperationClaimDal _operationClaimDal;
 
-        public OperationClaimManager(IUserOperationClaimService userOperationClaimService)
+        public OperationClaimManager(IOperationClaimDal operationClaimDal)
         {
-            _userOperationClaimService = userOperationClaimService;
+            _operationClaimDal = operationClaimDal;
         }
 
 
 
-        public async Task<DataResponse<List<OperationClaim>>> GetClaims(int userId)
+        public async Task<DataResponse<string>> GetClaim(int operationClaimId)
         {
-             List<OperationClaim> operationClaims = await _userOperationClaimService
-                .Where(u => u.UserId == userId)
-                .Select(u => new OperationClaim
-                {
-                    Id = u.OperationClaim.Id,
-                    Name = u.OperationClaim.Name,
-                })
-                .ToListAsync();
+             string operationClaimName = await _operationClaimDal
+                .Where(o => o.Id == operationClaimId)
+                .Select(o => o.Name)
+                .SingleAsync();
 
-
-            return new DataResponse<List<OperationClaim>>(operationClaims);
+            return new DataResponse<string>(operationClaimName);
         }
     }
 }
