@@ -14,6 +14,7 @@ using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
 using Entities.Dtos.User;
+using Entities.Enums;
 using Microsoft.EntityFrameworkCore;
 using Service.Concrete;
 
@@ -63,7 +64,7 @@ namespace Business.Concrete
         public async Task<DataResponse<List<UserListDto>>> GetAll() 
             => new DataResponse<List<UserListDto>>(_mapper.Map<List<UserListDto>>
                 (await _userDal
-                .GetAllQueryable() 
+                .GetAllQueryable(u => u.OperationClaimId != (byte)OperationClaimType.Admin) 
                 .OrderByDescending(u => u.CreateDate)
                 .ToListAsync()), 
                 CommonMessages.EntityListed);
@@ -74,7 +75,7 @@ namespace Business.Concrete
         public async Task<DataResponse<UserDetailDto>> Get(int userId)
         {
             User? user = await _userDal
-                .GetAsNoTrackingAsync(u => u.Id == userId)
+                .GetAsNoTrackingAsync(u => u.Id == userId && u.OperationClaimId != (byte)OperationClaimType.Admin)
                 ?? throw new EntityNotFoundException("Kullanıcı");
 
 

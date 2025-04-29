@@ -46,6 +46,12 @@ namespace WebAPI.Controllers
         [HttpGet] 
         public async Task<IActionResult> GetAllForAdminByMealCategoryId(int mealCategoryId) 
             => Ok(await _productService.GetAllForAdminByMealCategoryId(mealCategoryId));
+        
+       
+
+        [HttpGet] 
+        public async Task<IActionResult> GetAllForAdmin() 
+            => Ok(await _productService.GetAllForAdmin());
 
 
 

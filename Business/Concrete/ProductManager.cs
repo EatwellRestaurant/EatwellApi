@@ -145,6 +145,15 @@ namespace Business.Concrete
         }
 
 
+        [SecuredOperation("admin", Priority = 1)]
+        public async Task<DataResponse<List<ProductListDto>>> GetAllForAdmin() 
+            => new DataResponse<List<ProductListDto>>(_mapper.Map<List<ProductListDto>>
+                (await _productDal
+                .GetAllQueryable(p => !p.IsDeleted)
+                .OrderByDescending(p => p.CreateDate)
+                .ToListAsync()),
+                CommonMessages.EntityListed);
+        
 
         [SecuredOperation("admin", Priority = 1)]
         [ValidationAspect(typeof(ProductUpsertDtoValidator))]
@@ -174,6 +183,8 @@ namespace Business.Concrete
 
             return new UpdateSuccessResponse(CommonMessages.EntityUpdated);
         }
+
+
 
 
 
