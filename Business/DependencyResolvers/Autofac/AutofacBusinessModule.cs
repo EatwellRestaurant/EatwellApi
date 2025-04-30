@@ -61,9 +61,6 @@ namespace Business.DependencyResolvers.Autofac
             builder.RegisterType<OperationClaimManager>().As<IOperationClaimService>().SingleInstance();
             builder.RegisterType<EfOperationClaimDal>().As<IOperationClaimDal>().SingleInstance();
 
-            builder.RegisterType<CountryManager>().As<ICountryService>().SingleInstance();
-            builder.RegisterType<EfCountryDal>().As<ICountryDal>().SingleInstance();
-
             builder.RegisterType<CityManager>().As<ICityService>().SingleInstance();
             builder.RegisterType<EfCityDal>().As<ICityDal>().SingleInstance();
 

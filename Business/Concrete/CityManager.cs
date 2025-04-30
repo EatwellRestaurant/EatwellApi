@@ -1,23 +1,13 @@
 ﻿using AutoMapper;
 using Business.Abstract;
 using Business.Constants.Messages;
-using Business.Constants.Messages.Entity;
 using Core.Exceptions.General;
 using Core.ResponseModels;
-using Core.Utilities.Results;
 using DataAccess.Abstract;
-using DataAccess.Concrete.EntityFramework;
 using Entities.Concrete;
 using Entities.Dtos.City;
-using Entities.Dtos.Country;
 using Microsoft.EntityFrameworkCore;
 using Service.Concrete;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics.Metrics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Business.Concrete
 {

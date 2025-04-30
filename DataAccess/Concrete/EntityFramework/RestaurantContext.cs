@@ -21,7 +21,6 @@ namespace DataAccess.Concrete.EntityFramework
         public DbSet<BranchImage> BranchImages { get; set; }
         public DbSet<BranchEmployee> BranchEmployees { get; set; }
         public DbSet<City> Cities { get; set; }
-        public DbSet<Country> Countries { get; set; }
         public DbSet<Evaluation> Evaluations { get; set; }
         public DbSet<MealCategory> MealCategories { get; set; }
         public DbSet<Product> Products { get; set; }

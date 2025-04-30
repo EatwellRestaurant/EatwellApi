@@ -146,10 +146,11 @@ namespace Business.Concrete
 
 
         [SecuredOperation("admin", Priority = 1)]
-        public async Task<DataResponse<List<ProductListDto>>> GetAllForAdmin() 
-            => new DataResponse<List<ProductListDto>>(_mapper.Map<List<ProductListDto>>
+        public async Task<DataResponse<List<ProductListWithMealCategoryDto>>> GetAllForAdmin() 
+            => new DataResponse<List<ProductListWithMealCategoryDto>>(_mapper.Map<List<ProductListWithMealCategoryDto>>
                 (await _productDal
                 .GetAllQueryable(p => !p.IsDeleted)
+                .Include(p => p.MealCategory)
                 .OrderByDescending(p => p.CreateDate)
                 .ToListAsync()),
                 CommonMessages.EntityListed);

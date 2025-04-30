@@ -2,7 +2,6 @@
 using Entities.Concrete;
 using Entities.Dtos.Branch;
 using Entities.Dtos.City;
-using Entities.Dtos.Country;
 using Entities.Dtos.MealCategory;
 using Entities.Dtos.Product;
 using Entities.Dtos.Reservation;
@@ -37,17 +36,6 @@ namespace Business.Mapping
 
 
             CreateMap<MealCategory, MealCategoryDetailDto>();
-
-            #endregion
-
-
-
-            #region Country
-
-            CreateMap<Country, AdminCountryListDto>();
-
-
-            CreateMap<Country, CountryDto>();
 
             #endregion
 
@@ -98,6 +86,10 @@ namespace Business.Mapping
             #region Product
 
             CreateMap<Product, ProductListDto>();
+
+
+            CreateMap<Product, ProductListWithMealCategoryDto>()
+                .ForMember(dest => dest.MealCategoryName, opt => opt.MapFrom(src => src.MealCategory.Name));
 
 
             CreateMap<Product, ProductDetailDto>();

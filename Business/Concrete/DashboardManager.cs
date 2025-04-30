@@ -28,8 +28,8 @@ namespace Business.Concrete
         {
             DashboardStatisticsDto statisticsDto = new()
             {
-                UserCount = await _userService.CountAsync(),
-                MealCategoryCount = await _mealCategoryService.CountAsync(),
+                UserCount = await _userService.CountAsync(u => !u.IsDeleted),
+                MealCategoryCount = await _mealCategoryService.CountAsync(m => !m.IsDeleted),
             };
 
             return new DataResponse<DashboardStatisticsDto>(statisticsDto, CommonMessages.EntityListed);
