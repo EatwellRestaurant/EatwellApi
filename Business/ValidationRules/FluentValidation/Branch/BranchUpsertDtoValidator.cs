@@ -9,39 +9,34 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 
-namespace Business.ValidationRules.FluentValidation
+namespace Business.ValidationRules.FluentValidation.Branch
 {
     public class BranchUpsertDtoValidator : AbstractValidator<BranchUpsertDto>
     {
         public BranchUpsertDtoValidator()
         {
-            RuleFor(b => b.CityId)
-                .NotEmpty()
-                .WithMessage("Lütfen bir şehir seçiniz!");
-            
-            
             RuleFor(b => b.Name)
-                .NotEmpty()
+                .Must(b => !b.IsNullOrEmpty())
                 .WithMessage("Lütfen şube ismini giriniz!");
-            
+
 
             RuleFor(b => b.Address)
-                .NotEmpty()
+                .Must(b => !b.IsNullOrEmpty())
                 .WithMessage("Lütfen şubenin adresini giriniz!");
-            
-            
+
+
             RuleFor(b => b.Email)
-                .NotEmpty()
+                .Must(b => !b.IsNullOrEmpty())
                 .WithMessage("Lütfen şubenin adresini giriniz!");
 
 
             RuleFor(b => b.Phone)
                 .Cascade(CascadeMode.Stop)
-                .NotEmpty()
+                .Must(b => !b.IsNullOrEmpty())
                 .WithMessage("Lütfen şubenin telefon numarasını giriniz!")
                 .Matches(new Regex(@"0\d{3}\ \d{3} \d{2} \d{2}"))
                 .WithMessage("Lütfen geçerli bir telefon numarası giriniz!");
-                
+
 
             RuleFor(b => b.WebSite)
                 .Matches(new Regex(@"\b(?:https?://|www\.)\S+\b"))
@@ -65,7 +60,7 @@ namespace Business.ValidationRules.FluentValidation
                 .Matches(new Regex(@"^(https?:\/\/)?www\."))
                 .When(b => !b.Twitter.IsNullOrEmpty())
                 .WithMessage("Lütfen https://www. veya http://www. ile başlayan bir adres giriniz!");
-            
+
 
             RuleFor(b => b.Gmail)
                 .Matches(new Regex(@"^(https?:\/\/)?www\."))

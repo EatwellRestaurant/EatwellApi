@@ -15,11 +15,11 @@ namespace Business.Abstract
         Task<DataResponse<List<AdminBranchListDto>>> GetAllForAdmin();
        
         Task<DataResponse<BranchDetailDto>> GetForAdmin(int branchId);
-        
-        Task<CreateSuccessResponse> Add(BranchUpsertDto upsertDto);
+
+        Task<CreateSuccessResponse> Add(BranchInsertDto insertDto);
 
         Task<DeleteSuccessResponse> Delete(int branchId);
         
-        Task<UpdateSuccessResponse> Update(int branchId, BranchUpsertDto upsertDto);
+        Task<UpdateSuccessResponse> Update(int branchId, BranchUpdateDto updateDto);
     }
-}
+} 

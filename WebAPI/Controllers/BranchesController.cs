@@ -8,18 +8,18 @@ namespace WebAPI.Controllers
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
-    public class BranchsController : ControllerBase
+    public class BranchesController : ControllerBase
     {
         readonly IBranchService _branchService;
 
-        public BranchsController(IBranchService branchService) 
+        public BranchesController(IBranchService branchService) 
             => _branchService = branchService;
         
 
 
         [HttpPost]
-        public async Task<IActionResult> Add(BranchUpsertDto upsertDto) 
-            => Ok(await _branchService.Add(upsertDto));
+        public async Task<IActionResult> Add(BranchInsertDto insertDto) 
+            => Ok(await _branchService.Add(insertDto));
 
 
 
@@ -30,8 +30,8 @@ namespace WebAPI.Controllers
 
 
         [HttpPut]
-        public async Task<IActionResult> Update(int branchId, BranchUpsertDto upsertDto) 
-            => Ok(await _branchService.Update(branchId, upsertDto));
+        public async Task<IActionResult> Update(int branchId, BranchUpdateDto updateDto) 
+            => Ok(await _branchService.Update(branchId, updateDto));
 
 
 

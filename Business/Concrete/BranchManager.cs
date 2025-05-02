@@ -2,18 +2,14 @@
 using Business.Abstract;
 using Business.BusinessAspects.Autofac;
 using Business.Constants.Messages;
-using Business.Constants.Messages.Entity;
-using Business.ValidationRules.FluentValidation;
+using Business.ValidationRules.FluentValidation.Branch;
 using Core.Aspects.Autofac.Validation;
 using Core.Exceptions.Branch;
 using Core.Exceptions.General;
 using Core.ResponseModels;
-using Core.Utilities.Results;
 using DataAccess.Abstract;
-using DataAccess.Concrete.EntityFramework;
 using Entities.Concrete;
 using Entities.Dtos.Branch;
-using Entities.Dtos.MealCategory;
 using Microsoft.EntityFrameworkCore;
 
 namespace Business.Concrete
@@ -36,17 +32,17 @@ namespace Business.Concrete
 
 
         [SecuredOperation("admin", Priority = 1)]
-        [ValidationAspect(typeof(BranchUpsertDtoValidator), Priority = 2)]
-        public async Task<CreateSuccessResponse> Add(BranchUpsertDto upsertDto)
+        [ValidationAspect(typeof(BranchInsertDtoValidator), Priority = 2)]
+        public async Task<CreateSuccessResponse> Add(BranchInsertDto insertDto)
         {
-            await CheckIfCityIdExists(upsertDto.CityId);
+            await CheckIfCityIdExists(insertDto.CityId);
 
-            await CheckIfBranchNameExists(upsertDto.Name);
+            await CheckIfBranchNameExists(insertDto.Name);
 
-            await CheckIfBranchAddressExists(upsertDto.Address);
+            await CheckIfBranchAddressExists(insertDto.Address);
 
             
-            await _branchDal.AddAsync(_mapper.Map<Branch>(upsertDto));
+            await _branchDal.AddAsync(_mapper.Map<Branch>(insertDto));
             await _unitOfWork.SaveChangesAsync();
             
             return new CreateSuccessResponse(CommonMessages.EntityAdded);
@@ -118,34 +114,29 @@ namespace Business.Concrete
 
 
         [SecuredOperation("admin", Priority = 1)]
-        [ValidationAspect(typeof(BranchUpsertDtoValidator), Priority = 2)]
-        public async Task<UpdateSuccessResponse> Update(int branchId, BranchUpsertDto upsertDto)
+        [ValidationAspect(typeof(BranchUpdateDtoValidator), Priority = 2)]
+        public async Task<UpdateSuccessResponse> Update(int branchId, BranchUpdateDto updateDto)
         {
             Branch? branch = await _branchDal
                 .Where(b => b.Id == branchId)
                 .SingleOrDefaultAsync()
                 ?? throw new EntityNotFoundException("Şube");
 
-
-            if (branch.CityId != upsertDto.CityId)
-                await CheckIfCityIdExists(upsertDto.CityId);
-
-
-            if (branch.Name != upsertDto.Name) 
-                await CheckIfBranchNameExists(upsertDto.Name, branchId);
+            if (branch.Name != updateDto.Name) 
+                await CheckIfBranchNameExists(updateDto.Name, branchId);
 
 
-            if (branch.Address != upsertDto.Address) 
-                await CheckIfBranchAddressExists(upsertDto.Address, branchId);
+            if (branch.Address != updateDto.Address) 
+                await CheckIfBranchAddressExists(updateDto.Address, branchId);
 
 
-            _mapper.Map(upsertDto, branch);
+            _mapper.Map(updateDto, branch);
             branch.UpdateDate = DateTime.Now;
 
             _branchDal.Update(branch);
             await _unitOfWork.SaveChangesAsync();
 
-            return new UpdateSuccessResponse(BranchMessages.BranchUpdated);
+            return new UpdateSuccessResponse(CommonMessages.EntityUpdated);
         }
 
 
