@@ -14,6 +14,5 @@ namespace Business.Abstract
     public interface ICityService : IService<City>
     {
         Task<DataResponse<List<CityWithBranchCountDto>>> GetAll();
-        Task<DataResponse<CityWithBranchesDto>> Get(int cityId);
     }
 }

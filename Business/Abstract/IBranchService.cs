@@ -12,8 +12,10 @@ namespace Business.Abstract
 {
     public interface IBranchService
     {
-        Task<DataResponse<List<AdminBranchListDto>>> GetAllForAdmin();
-       
+        Task<DataResponse<List<BranchListWithCityDto>>> GetAllForAdmin();
+
+        Task<DataResponse<List<BranchListDto>>> GetAllForAdminByCityId(int cityId);
+
         Task<DataResponse<BranchDetailDto>> GetForAdmin(int branchId);
 
         Task<CreateSuccessResponse> Add(BranchInsertDto insertDto);

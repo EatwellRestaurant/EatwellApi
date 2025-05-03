@@ -37,35 +37,6 @@ namespace Business.ValidationRules.FluentValidation.Branch
                 .Matches(new Regex(@"0\d{3}\ \d{3} \d{2} \d{2}"))
                 .WithMessage("Lütfen geçerli bir telefon numarası giriniz!");
 
-
-            RuleFor(b => b.WebSite)
-                .Matches(new Regex(@"\b(?:https?://|www\.)\S+\b"))
-                .When(b => !b.WebSite.IsNullOrEmpty())
-                .WithMessage("Lütfen geçerli bir web site adresi giriniz!");
-
-
-            RuleFor(b => b.Facebook)
-                .Matches(new Regex(@"^(https?:\/\/)?www\."))
-                .When(b => !b.Facebook.IsNullOrEmpty())
-                .WithMessage("Lütfen https://www. veya http://www. ile başlayan bir adres giriniz!");
-
-
-            RuleFor(b => b.Instagram)
-                .Matches(new Regex(@"^(https?:\/\/)?www\."))
-                .When(b => !b.Instagram.IsNullOrEmpty())
-                .WithMessage("Lütfen https://www. veya http://www. ile başlayan bir adres giriniz!");
-
-
-            RuleFor(b => b.Twitter)
-                .Matches(new Regex(@"^(https?:\/\/)?www\."))
-                .When(b => !b.Twitter.IsNullOrEmpty())
-                .WithMessage("Lütfen https://www. veya http://www. ile başlayan bir adres giriniz!");
-
-
-            RuleFor(b => b.Gmail)
-                .Matches(new Regex(@"^(https?:\/\/)?www\."))
-                .When(b => !b.Gmail.IsNullOrEmpty())
-                .WithMessage("Lütfen https://www. veya http://www. ile başlayan bir adres giriniz!");
         }
     }
 }

@@ -44,5 +44,11 @@ namespace WebAPI.Controllers
         [HttpGet] 
         public async Task<IActionResult> GetAllForAdmin() 
             => Ok(await _branchService.GetAllForAdmin());
+        
+
+        
+        [HttpGet] 
+        public async Task<IActionResult> GetAllForAdminByCityId(int cityId) 
+            => Ok(await _branchService.GetAllForAdminByCityId(cityId));
     }
 }

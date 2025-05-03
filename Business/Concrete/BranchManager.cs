@@ -8,8 +8,10 @@ using Core.Exceptions.Branch;
 using Core.Exceptions.General;
 using Core.ResponseModels;
 using DataAccess.Abstract;
+using DataAccess.Concrete.EntityFramework;
 using Entities.Concrete;
 using Entities.Dtos.Branch;
+using Entities.Dtos.Product;
 using Microsoft.EntityFrameworkCore;
 
 namespace Business.Concrete
@@ -58,10 +60,10 @@ namespace Business.Concrete
             // Bunun yerine DateTime.Now değerini bir değişkene atayıp, 
             // sorguya sabit bir değer olarak dahil ettik. Ve bu, sorgunun doğru çalışmasını sağladı.
 
-            var now = DateTime.Now; 
+            DateTime now = DateTime.Now; 
 
             Branch? branch = await _branchDal
-                .Where(b => b.Id == branchId)
+                .Where(b => b.Id == branchId && !b.IsDeleted)
                 .Include(b => b.Reservations
                     .Where(r => r.ReservationDate >= now && !r.IsDeleted))
                 .SingleOrDefaultAsync()
@@ -70,6 +72,7 @@ namespace Business.Concrete
 
             if (branch.Reservations.Any())
                 throw new BranchHasReservationsException();
+
 
             branch.DeleteDate = DateTime.Now;
             branch.IsDeleted = true;
@@ -86,7 +89,7 @@ namespace Business.Concrete
         public async Task<DataResponse<BranchDetailDto>> GetForAdmin(int branchId)
         {
             Branch? branch = await _branchDal
-                .Where(b => b.Id == branchId)
+                .Where(b => b.Id == branchId && !b.IsDeleted)
                 .Include(b => b.City)
                 .AsNoTracking()
                 .SingleOrDefaultAsync()
@@ -101,10 +104,10 @@ namespace Business.Concrete
 
 
         [SecuredOperation("admin")]
-        public async Task<DataResponse<List<AdminBranchListDto>>> GetAllForAdmin()
-        => new DataResponse<List<AdminBranchListDto>>(_mapper.Map<List<AdminBranchListDto>>
+        public async Task<DataResponse<List<BranchListWithCityDto>>> GetAllForAdmin()
+        => new DataResponse<List<BranchListWithCityDto>>(_mapper.Map<List<BranchListWithCityDto>>
                 (await _branchDal
-                .GetAllQueryable()
+                .GetAllQueryable(b => !b.IsDeleted)
                 .Include(b => b.City)
                 .AsNoTracking()
                 .OrderByDescending(b => b.CreateDate)
@@ -114,11 +117,28 @@ namespace Business.Concrete
 
 
         [SecuredOperation("admin", Priority = 1)]
+        public async Task<DataResponse<List<BranchListDto>>> GetAllForAdminByCityId(int cityId)
+        {
+            if (!await _cityService.AnyAsync(c => c.Id == cityId))
+                throw new EntityNotFoundException("Şehir");
+
+
+            return new DataResponse<List<BranchListDto>>(_mapper.Map<List<BranchListDto>>
+                    (await _branchDal
+                    .GetAllQueryable(b => b.CityId == cityId && !b.IsDeleted)
+                    .OrderByDescending(b => b.CreateDate)
+                    .ToListAsync()),
+                    CommonMessages.EntityListed);
+        }
+
+
+
+        [SecuredOperation("admin", Priority = 1)]
         [ValidationAspect(typeof(BranchUpdateDtoValidator), Priority = 2)]
         public async Task<UpdateSuccessResponse> Update(int branchId, BranchUpdateDto updateDto)
         {
             Branch? branch = await _branchDal
-                .Where(b => b.Id == branchId)
+                .Where(b => b.Id == branchId && !b.IsDeleted)
                 .SingleOrDefaultAsync()
                 ?? throw new EntityNotFoundException("Şube");
 
@@ -154,14 +174,14 @@ namespace Business.Concrete
         
         private async Task CheckIfBranchNameExists(string branchName, int? branchId = null)
         {
-            if (await _branchDal.AnyAsync(b => b.Name == branchName && !b.IsDeleted && branchId.HasValue && b.Id != branchId))
+            if (await _branchDal.AnyAsync(b => b.Name == branchName && !b.IsDeleted && (branchId.HasValue ? b.Id != branchId : true)))
                 throw new EntityAlreadyExistsException("şube ismi");
         }
 
 
         private async Task CheckIfBranchAddressExists(string branchAddress, int? branchId = null)
         {
-            if (await _branchDal.AnyAsync(b => b.Address == branchAddress && !b.IsDeleted && branchId.HasValue && b.Id != branchId))
+            if (await _branchDal.AnyAsync(b => b.Address == branchAddress && !b.IsDeleted && (branchId.HasValue ? b.Id != branchId : true)))
                 throw new EntityAlreadyExistsException("adres");
         }
 

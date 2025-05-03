@@ -23,25 +23,12 @@ namespace Business.Concrete
         }
 
 
-        public async Task<DataResponse<CityWithBranchesDto>> Get(int cityId)
-        {
-            City city = await _cityDal
-                .Where(c => c.Id == cityId)
-                .Include(c => c.Branches)
-                .AsNoTracking()
-                .SingleOrDefaultAsync()
-                ?? throw new EntityNotFoundException("Şehir");
-
-
-            return new DataResponse<CityWithBranchesDto>(_mapper.Map<CityWithBranchesDto>(city), CommonMessages.EntityFetch);
-        }
-
 
         public async Task<DataResponse<List<CityWithBranchCountDto>>> GetAll()
             => new DataResponse<List<CityWithBranchCountDto>>(_mapper.Map<List<CityWithBranchCountDto>>
                 (await _cityDal
                 .GetAllQueryable()
-                .Include(c => c.Branches)
+                .Include(c => c.Branches.Where(b => !b.IsDeleted))
                 .AsNoTracking()
                 .ToListAsync()),
                 CommonMessages.EntityListed);

@@ -16,11 +16,6 @@ namespace WebAPI.Controllers
             _cityService = cityService;
         }
 
-
-
-        [HttpGet]
-        public async Task<IActionResult> Get(int cityId) 
-            => Ok(await _cityService.Get(cityId));
             
 
         [HttpGet]
