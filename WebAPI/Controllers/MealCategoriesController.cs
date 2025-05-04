@@ -1,4 +1,6 @@
 ﻿using Business.Abstract;
+using Core.Requests;
+using Core.ResponseModels;
 using Entities.Concrete;
 using Entities.Dtos.MealCategory;
 using Microsoft.AspNetCore.Authorization;
@@ -52,7 +54,7 @@ namespace WebAPI.Controllers
 
 
         [HttpGet]
-        public async Task<IActionResult> GetAllForAdmin() 
-            => Ok(await _mealCategoryService.GetAllForAdmin());
+        public async Task<IActionResult> GetAllForAdmin([FromQuery] PaginationRequest paginationRequest) 
+            => Ok(await _mealCategoryService.GetAllForAdmin(paginationRequest));
     }
 }

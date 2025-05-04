@@ -5,15 +5,13 @@ using Business.Constants.Messages;
 using Business.Constants.Messages.Entity;
 using Business.ValidationRules.FluentValidation;
 using Core.Aspects.Autofac.Validation;
-using Core.Exceptions.File;
 using Core.Exceptions.General;
+using Core.Requests;
 using Core.ResponseModels;
 using Core.Utilities.FileHelper;
 using DataAccess.Abstract;
-using DataAccess.Concrete.EntityFramework;
 using Entities.Concrete;
 using Entities.Dtos.MealCategory;
-using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Service.Concrete;
 
@@ -146,13 +144,21 @@ namespace Business.Concrete
 
 
         [SecuredOperation("admin")]
-        public async Task<DataResponse<List<MealCategoryListDto>>> GetAllForAdmin()
-            => new DataResponse<List<MealCategoryListDto>>(_mapper.Map<List<MealCategoryListDto>>
+        public async Task<PaginationResponse<MealCategoryListDto>> GetAllForAdmin(PaginationRequest paginationRequest)
+        {
+            int totalItems = await _mealCategoryDal.CountAsync(m => !m.IsDeleted);
+
+
+            List<MealCategoryListDto> mealCategoryListDtos = _mapper.Map<List<MealCategoryListDto>>
                 (await _mealCategoryDal
                 .GetAllQueryable(m => !m.IsDeleted)
                 .OrderByDescending(m => m.CreateDate)
-                .ToListAsync()), 
-                CommonMessages.EntityListed);
+                .Skip((paginationRequest.PageNumber - 1) * paginationRequest.PageSize)
+                .Take(paginationRequest.PageSize)
+                .ToListAsync());
+
+            return new PaginationResponse<MealCategoryListDto>(mealCategoryListDtos, paginationRequest.PageNumber, paginationRequest.PageSize, totalItems);
+        }
 
 
 
