@@ -26,8 +26,13 @@ namespace Business.ValidationRules.FluentValidation.Branch
 
 
             RuleFor(b => b.Email)
+                .Cascade(CascadeMode.Stop)
                 .Must(b => !b.IsNullOrEmpty())
-                .WithMessage("Lütfen şubenin adresini giriniz!");
+                .WithMessage("Lütfen şubenin e-posta adresini giriniz!")
+                .EmailAddress()
+                .WithMessage("Lütfen geçerli bir e-posta adresi giriniz!")
+                .Matches(new Regex(@"\w+\.com$"))
+                .WithMessage("Lütfen geçerli bir e-posta adresi giriniz!");
 
 
             RuleFor(b => b.Phone)

@@ -64,6 +64,8 @@ namespace Business.DependencyResolvers.Autofac
             builder.RegisterType<CityManager>().As<ICityService>().SingleInstance();
             builder.RegisterType<EfCityDal>().As<ICityDal>().SingleInstance();
 
+            builder.RegisterType<TableManager>().As<ITableService>().InstancePerLifetimeScope();
+            builder.RegisterType<EfTableDal>().As<ITableDal>().InstancePerLifetimeScope();
 
 
 
