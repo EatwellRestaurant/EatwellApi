@@ -14,6 +14,9 @@ namespace DataAccess.Configurations
         public void Configure(EntityTypeBuilder<Table> builder)
         {
             builder.Property(t => t.Name).HasMaxLength(50);
+
+
+            builder.HasOne(t => t.Branch).WithMany(b => b.Tables).HasForeignKey(t => t.BranchId);
         }
     }
 }

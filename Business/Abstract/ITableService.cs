@@ -13,9 +13,9 @@ namespace Business.Abstract
 {
     public interface ITableService : IService<Table>
     {
-        Task<CreateSuccessResponse> Add(TableUpsertDto upsertDto);
+        Task<CreateSuccessResponse> Add(TableInsertDto insertDto);
 
-        Task<UpdateSuccessResponse> Update(int tableId, TableUpsertDto upsertDto);
+        Task<UpdateSuccessResponse> Update(int tableId, TableUpdateDto updateDto);
 
         Task<DeleteSuccessResponse> Delete(int tableId);
 

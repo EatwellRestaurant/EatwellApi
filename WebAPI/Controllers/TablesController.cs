@@ -17,14 +17,14 @@ namespace WebAPI.Controllers
 
 
         [HttpPost]
-        public async Task<IActionResult> Add(TableUpsertDto upsertDto) 
-            => Ok(await _tableService.Add(upsertDto));
+        public async Task<IActionResult> Add(TableInsertDto insertDto) 
+            => Ok(await _tableService.Add(insertDto));
 
 
 
         [HttpPut]
-        public async Task<IActionResult> Update(int tableId, TableUpsertDto upsertDto)
-            => Ok(await _tableService.Update(tableId, upsertDto));
+        public async Task<IActionResult> Update(int tableId, TableUpdateDto updateDto)
+            => Ok(await _tableService.Update(tableId, updateDto));
         
 
         

@@ -27,6 +27,7 @@ namespace Entities.Concrete
         public ICollection<BranchEmployee> BranchEmployees { get; set; }
         public ICollection<BranchImage> BranchImages { get; set; }
         public ICollection<Reservation> Reservations { get; set; }
+        public ICollection<Table> Tables { get; set; }
 
 
     }

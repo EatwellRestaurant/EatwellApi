@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Business.ValidationRules.FluentValidation
+namespace Business.ValidationRules.FluentValidation.Table
 {
     public class TableUpsertDtoValidator : AbstractValidator<TableUpsertDto>
     {
@@ -19,6 +19,11 @@ namespace Business.ValidationRules.FluentValidation
                  .WithMessage("Lütfen masa ismini giriniz!")
                  .MaximumLength(50)
                  .WithMessage("Masa isminin uzunluğu en fazla 50 karakter olmalıdır!");
+
+
+            RuleFor(t => t.TableNo)
+                .GreaterThan(0)
+                .WithMessage("Masa numarası sıfırdan büyük olmalıdır!");
 
 
             RuleFor(t => t.Capacity)

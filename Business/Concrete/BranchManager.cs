@@ -13,17 +13,18 @@ using Entities.Concrete;
 using Entities.Dtos.Branch;
 using Entities.Dtos.Product;
 using Microsoft.EntityFrameworkCore;
+using Service.Concrete;
 
 namespace Business.Concrete
 {
-    public class BranchManager : IBranchService
+    public class BranchManager : Manager<Branch>, IBranchService
     {
         readonly IBranchDal _branchDal;
         readonly IMapper _mapper;
         readonly IUnitOfWork _unitOfWork;
         readonly ICityService _cityService;
 
-        public BranchManager(IBranchDal branchDal, IMapper mapper, IUnitOfWork unitOfWork, ICityService cityService)
+        public BranchManager(IBranchDal branchDal, IMapper mapper, IUnitOfWork unitOfWork, ICityService cityService) : base(branchDal)
         {
             _branchDal = branchDal;
             _mapper = mapper;

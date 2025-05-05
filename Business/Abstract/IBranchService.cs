@@ -2,6 +2,7 @@
 using Core.Utilities.Results;
 using Entities.Concrete;
 using Entities.Dtos.Branch;
+using Service.Abstract;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace Business.Abstract
 {
-    public interface IBranchService
+    public interface IBranchService : IService<Branch>
     {
         Task<DataResponse<List<BranchListWithCityDto>>> GetAllForAdmin();
 

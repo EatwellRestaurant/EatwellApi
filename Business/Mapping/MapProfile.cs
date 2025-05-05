@@ -5,6 +5,7 @@ using Entities.Dtos.City;
 using Entities.Dtos.MealCategory;
 using Entities.Dtos.Product;
 using Entities.Dtos.Reservation;
+using Entities.Dtos.Table;
 using Entities.Dtos.User;
 
 namespace Business.Mapping
@@ -84,6 +85,16 @@ namespace Business.Mapping
             #region Reservation
 
             CreateMap<ReservationUpsertDto, Reservation>();
+
+            #endregion
+
+
+            #region Table
+
+            CreateMap<TableInsertDto, Table>();
+
+
+            CreateMap<TableUpdateDto, Table>();
 
             #endregion
 
