@@ -7,10 +7,12 @@ using System.Threading.Tasks;
 
 namespace Entities.Dtos.Table
 {
-    public class TableUpsertDto
+    public class TableDto
     {
         public int TableNo { get; set; }
+
         public string Name { get; set; }
+        
         public byte Capacity { get; set; }
     }
 }

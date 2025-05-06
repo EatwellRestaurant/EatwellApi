@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Entities.Dtos.Table
 {
-    public class TableUpdateDto : TableUpsertDto
+    public class TableUpdateDto : TableDto
     {
     }
 }

@@ -89,12 +89,16 @@ namespace Business.Mapping
             #endregion
 
 
+
             #region Table
 
             CreateMap<TableInsertDto, Table>();
 
 
             CreateMap<TableUpdateDto, Table>();
+
+            
+            CreateMap<Table, TableDto>();
 
             #endregion
 

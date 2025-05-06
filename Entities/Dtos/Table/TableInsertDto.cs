@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Entities.Dtos.Table
 {
-    public class TableInsertDto : TableUpsertDto
+    public class TableInsertDto : TableDto
     {
         public int BranchId { get; set; }
     }

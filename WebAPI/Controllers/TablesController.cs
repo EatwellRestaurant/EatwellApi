@@ -31,6 +31,12 @@ namespace WebAPI.Controllers
         [HttpDelete]
         public async Task<IActionResult> Delete(int tableId)
             => Ok(await _tableService.Delete(tableId));
+        
+        
+
+        [HttpGet]
+        public async Task<IActionResult> GetAllForAdmin()
+            => Ok(await _tableService.GetAllForAdmin());
 
     }
 }

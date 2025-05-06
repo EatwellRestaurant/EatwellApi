@@ -86,6 +86,16 @@ namespace Business.Concrete
 
 
 
+        [SecuredOperation("admin", Priority = 1)]
+        public async Task<DataResponse<List<TableDto>>> GetAllForAdmin() 
+            => new DataResponse<List<TableDto>>(_mapper.Map<List<TableDto>>
+                (await _tableDal
+                .GetAllQueryable(t => !t.IsDeleted)
+                .OrderBy(t => t.TableNo)
+                .ToListAsync()),
+                CommonMessages.EntityListed);
+
+
 
 
         #region BusinessRules

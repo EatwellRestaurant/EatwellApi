@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Business.ValidationRules.FluentValidation.Table
 {
-    public class TableUpsertDtoValidator : AbstractValidator<TableUpsertDto>
+    public class TableUpsertDtoValidator : AbstractValidator<TableDto>
     {
         public TableUpsertDtoValidator()
         {
