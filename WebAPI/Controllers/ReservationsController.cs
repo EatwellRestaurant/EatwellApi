@@ -1,8 +1,10 @@
 ﻿using Business.Abstract;
+using Core.Requests;
 using Entities.Concrete;
 using Entities.Dtos.Reservation;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using WebAPI.Dtos;
 
 namespace WebAPI.Controllers
 {
@@ -10,11 +12,13 @@ namespace WebAPI.Controllers
     [ApiController]
     public class ReservationsController : ControllerBase
     {
-        private IReservationService _reservationService;
+        readonly IReservationService _reservationService;
+        readonly ITableService _tableService;
 
-        public ReservationsController(IReservationService reservationService)
+        public ReservationsController(IReservationService reservationService, ITableService tableService)
         {
             _reservationService = reservationService;
+            _tableService = tableService;
         }
 
 
@@ -57,15 +61,15 @@ namespace WebAPI.Controllers
             return BadRequest(result);
         }
 
+
+
         [HttpGet]
-        public async Task<IActionResult> GetAll()
-        {
-            var result = await _reservationService.GetAll();
-            if (result.Success)
+        public async Task<IActionResult> GetAllForAdmin(int branchId, [FromQuery] PaginationRequest paginationRequest) 
+            => Ok(new ReservationPageDataDto
             {
-                return Ok(result);
-            }
-            return BadRequest(result);
-        }
+                ReservationResponse = await _reservationService.GetAllForAdmin(branchId, paginationRequest),
+                TableResponse = await _tableService.GetAllForAdmin(branchId)
+            });
+ 
     }
 }

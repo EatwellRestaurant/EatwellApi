@@ -49,8 +49,8 @@ namespace Business.DependencyResolvers.Autofac
             builder.RegisterType<ProductManager>().As<IProductService>().InstancePerLifetimeScope();
             builder.RegisterType<EfProductDal>().As<IProductDal>().InstancePerLifetimeScope();
 
-            builder.RegisterType<ReservationManager>().As<IReservationService>().SingleInstance();
-            builder.RegisterType<EfReservationDal>().As<IReservationDal>().SingleInstance();
+            builder.RegisterType<ReservationManager>().As<IReservationService>().InstancePerLifetimeScope();
+            builder.RegisterType<EfReservationDal>().As<IReservationDal>().InstancePerLifetimeScope();
 
             builder.RegisterType<AuthManager>().As<IAuthService>().SingleInstance();
             builder.RegisterType<JwtHelper>().As<ITokenHelper>().SingleInstance();

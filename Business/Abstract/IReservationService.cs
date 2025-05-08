@@ -1,4 +1,5 @@
-﻿using Core.ResponseModels;
+﻿using Core.Requests;
+using Core.ResponseModels;
 using Core.Utilities.Results;
 using Entities.Concrete;
 using Entities.Dtos.Reservation;
@@ -12,10 +13,14 @@ namespace Business.Abstract
 {
     public interface IReservationService
     {
-        Task<IDataResult<List<Reservation>>> GetAll();
+        Task<PaginationResponse<ReservationListDto>> GetAllForAdmin(int branchId, PaginationRequest paginationRequest);
+
         Task<IDataResult<Reservation?>> Get(int id);
+        
         Task<CreateSuccessResponse> Add(ReservationUpsertDto upsertDto);
+        
         IResult Delete(Reservation reservation);
+        
         IResult Update(Reservation reservation);
     }
 }

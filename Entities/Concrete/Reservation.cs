@@ -10,10 +10,10 @@ namespace Entities.Concrete
     public class Reservation : BaseEntity
     {
         public int BranchId { get; set; }
+
+        public int TableId { get; set; }
         
-        public string FirstName { get; set; }
-        
-        public string LastName { get; set; }
+        public string FullName { get; set; }
         
         public string Email { get; set; }
         
@@ -28,6 +28,7 @@ namespace Entities.Concrete
 
 
         public Branch Branch { get; set; }
+        public Table Table { get; set; }
 
 
     }

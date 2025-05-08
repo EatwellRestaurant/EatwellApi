@@ -9,7 +9,7 @@ namespace Entities.Dtos.Table
 {
     public class TableDto
     {
-        public int TableNo { get; set; }
+        public int No { get; set; }
 
         public string Name { get; set; }
         

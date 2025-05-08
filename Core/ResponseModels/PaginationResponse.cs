@@ -27,11 +27,13 @@ namespace Core.ResponseModels
 
         public PaginationResponse(List<T> data, int pageNumber, int pageSize, int totalItems) 
         {
+            int totalPages = (int)Math.Ceiling(totalItems / (double)pageSize);
+
             Data = data;
             PageNumber = pageNumber;
             PageSize = pageSize;
             TotalItems = totalItems;
-            TotalPages = (int)Math.Ceiling(totalItems / (double)pageSize);
+            TotalPages = totalPages == 0 ? 1 : totalPages;
             Success = true;
             StatusCode = StatusCodes.Status200OK;
         }

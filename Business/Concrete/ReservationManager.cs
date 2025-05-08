@@ -1,10 +1,13 @@
 ﻿using AutoMapper;
 using Business.Abstract;
+using Business.BusinessAspects.Autofac;
 using Business.Constants.Messages;
 using Business.Constants.Messages.Entity;
 using Business.ValidationRules.FluentValidation;
 using Core.Aspects.Autofac.Validation;
+using Core.Exceptions.General;
 using Core.Exceptions.Reservation;
+using Core.Requests;
 using Core.ResponseModels;
 using Core.Utilities.Business;
 using Core.Utilities.Email;
@@ -12,6 +15,7 @@ using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
 using Entities.Dtos.Reservation;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,12 +29,21 @@ namespace Business.Concrete
         readonly IReservationDal _reservationDal;
         readonly IMapper _mapper;
         readonly IUnitOfWork _unitOfWork;
+        readonly IBranchService _branchService;
+        readonly ITableService _tableService;
 
-        public ReservationManager(IReservationDal reservationDal, IMapper mapper, IUnitOfWork unitOfWork)
+        public ReservationManager(
+            IReservationDal reservationDal,
+            IMapper mapper,
+            IUnitOfWork unitOfWork,
+            IBranchService branchService,
+            ITableService tableService)
         {
             _reservationDal = reservationDal;
             _mapper = mapper;
             _unitOfWork = unitOfWork;
+            _branchService = branchService;
+            _tableService = tableService;
         }
 
 
@@ -38,13 +51,20 @@ namespace Business.Concrete
         [ValidationAspect(typeof(ReservationUpsertDtoValidator))]
         public async Task<CreateSuccessResponse> Add(ReservationUpsertDto upsertDto)
         {
-            await CheckIfReservation(upsertDto.ReservationDate);
-            
-            await _reservationDal.AddAsync(_mapper.Map<Reservation>(upsertDto));
+            await CheckIfReservation(upsertDto.ReservationDate, upsertDto.BranchId, upsertDto.PersonCount);
+
+            Reservation reservation = _mapper.Map<Reservation>(upsertDto);
+
+            reservation.Table = await _tableService.Where(t => t.Capacity >= upsertDto.PersonCount)
+                .OrderBy(t => t.Capacity)
+                .FirstAsync();
+
+            await _reservationDal.AddAsync(reservation);
             await _unitOfWork.SaveChangesAsync();
 
-            return new CreateSuccessResponse(ReservationMessages.ReservationAdded);
+            return new CreateSuccessResponse(CommonMessages.EntityAdded);
         }
+
 
         public IResult Delete(Reservation reservation)
         {
@@ -57,9 +77,23 @@ namespace Business.Concrete
             return new SuccessDataResult<Reservation?>(await _reservationDal.GetAsync(r => r.Id == id), ReservationMessages.ReservationWasBrought);
         }
 
-        public async Task<IDataResult<List<Reservation>>> GetAll()
+
+
+        [SecuredOperation("admin", Priority = 1)]
+        public async Task<PaginationResponse<ReservationListDto>> GetAllForAdmin(int branchId, PaginationRequest paginationRequest)
         {
-            return new SuccessDataResult<List<Reservation>>(await _reservationDal.GetAllAsync(), ReservationMessages.ReservationsListed);
+            int totalItems = await _reservationDal.CountAsync(r => r.BranchId == branchId);
+
+            List<ReservationListDto> reservationListDtos = _mapper.Map<List<ReservationListDto>>
+                (await _reservationDal
+                .GetAllQueryable(r => r.BranchId == branchId)
+                .Include(r => r.Table)
+                .OrderByDescending(r => r.CreateDate)
+                .Skip((paginationRequest.PageNumber - 1) * paginationRequest.PageSize)
+                .Take(paginationRequest.PageSize)
+                .ToListAsync());
+
+            return new PaginationResponse<ReservationListDto>(reservationListDtos, paginationRequest.PageNumber, paginationRequest.PageSize, totalItems);
         }
 
 
@@ -73,11 +107,28 @@ namespace Business.Concrete
 
 
 
-        //Business Codes
-        private async Task CheckIfReservation(DateTime reservationDate)
+        #region BusinessRules
+
+        private async Task CheckIfReservation(DateTime reservationDate, int branchId, int personCount)
         {
-            if (await _reservationDal.AnyAsync(r => r.ReservationDate == reservationDate && r.IsDeleted))
-                throw new ReservationAlreadyExistsException();
+            if (!await _branchService.AnyAsync(b => b.Id == branchId && !b.IsDeleted))
+                throw new EntityNotFoundException("Şube");
+
+
+            List<Table> tables = await _tableService
+                .Where(t => t.BranchId == branchId && t.Capacity >= personCount)
+                .Include(t => t.Reservations)
+                .ToListAsync();
+
+
+            if (!tables.Any())
+                throw new NoAvailableTableException();
+
+            
+            if (tables.Any(t => t.Reservations.Any(r => r.ReservationDate == reservationDate)))
+                throw new NoAvailableTableException();
         }
+
+        #endregion
     }
 }

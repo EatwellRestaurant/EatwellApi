@@ -14,22 +14,12 @@ namespace Business.ValidationRules.FluentValidation
     {
         public ReservationUpsertDtoValidator()
         {
-            RuleFor(r => r.FirstName)
+            RuleFor(r => r.FullName)
                  .Cascade(CascadeMode.Stop)
                  .NotEmpty()
                  .WithMessage("Lütfen isminizi giriniz!")
                  .MaximumLength(50)
-                 .WithMessage("İsminizin uzunluğu en fazla 50 karakter olmalıdır!");
-
-
-
-            RuleFor(r => r.LastName)
-                .Cascade(CascadeMode.Stop)
-                .NotEmpty()
-                .WithMessage("Lütfen soy isminizi giriniz!")
-                .MaximumLength(50)
-                .WithMessage("Soy isminizin uzunluğu en fazla 50 karakter olmalıdır!");
-
+                 .WithMessage("İsminizin uzunluğu en fazla 85 karakter olmalıdır!");
 
 
             RuleFor(r => r.Email)
@@ -48,7 +38,7 @@ namespace Business.ValidationRules.FluentValidation
                 .NotEmpty()
                 .WithMessage("Lütfen telefon numaranızı giriniz!")
                 .Matches(new Regex(@"0\d{3}\ \d{3} \d{2} \d{2}"))
-                .WithMessage("Telefon numaranız geçerli değil!");
+                .WithMessage("Lütfen geçerli bir telefon numarası giriniz!");
 
 
 
@@ -59,8 +49,8 @@ namespace Business.ValidationRules.FluentValidation
 
 
             RuleFor(r => r.PersonCount)
-                .Must(r => r > 0 && r < 7)
-                .WithMessage("Sadece 1 ila 6 kişi arasında rezervasyon oluşturabilirsiniz.");
+                .Must(r => r > 0 && r < 21)
+                .WithMessage("Sadece 1 ila 20 kişi arasında rezervasyon oluşturabilirsiniz.");
         }
     }
 }

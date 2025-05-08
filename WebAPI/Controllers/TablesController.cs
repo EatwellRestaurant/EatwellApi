@@ -35,8 +35,8 @@ namespace WebAPI.Controllers
         
 
         [HttpGet]
-        public async Task<IActionResult> GetAllForAdmin()
-            => Ok(await _tableService.GetAllForAdmin());
+        public async Task<IActionResult> GetAllForAdmin(int branchId)
+            => Ok(await _tableService.GetAllForAdmin(branchId));
 
     }
 }

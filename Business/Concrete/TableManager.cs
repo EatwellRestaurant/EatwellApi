@@ -87,11 +87,11 @@ namespace Business.Concrete
 
 
         [SecuredOperation("admin", Priority = 1)]
-        public async Task<DataResponse<List<TableDto>>> GetAllForAdmin() 
+        public async Task<DataResponse<List<TableDto>>> GetAllForAdmin(int branchId) 
             => new DataResponse<List<TableDto>>(_mapper.Map<List<TableDto>>
                 (await _tableDal
-                .GetAllQueryable(t => !t.IsDeleted)
-                .OrderBy(t => t.TableNo)
+                .GetAllQueryable(t => t.BranchId == branchId && !t.IsDeleted)
+                .OrderBy(t => t.No)
                 .ToListAsync()),
                 CommonMessages.EntityListed);
 

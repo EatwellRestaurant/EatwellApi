@@ -7,6 +7,7 @@ using Entities.Dtos.Product;
 using Entities.Dtos.Reservation;
 using Entities.Dtos.Table;
 using Entities.Dtos.User;
+using Microsoft.EntityFrameworkCore.SqlServer.Internal;
 
 namespace Business.Mapping
 {
@@ -85,6 +86,10 @@ namespace Business.Mapping
             #region Reservation
 
             CreateMap<ReservationUpsertDto, Reservation>();
+
+
+            CreateMap<Reservation, ReservationListDto>()
+                .ForMember(dest => dest.TableNo, opt => opt.MapFrom(src => src.Table.No));
 
             #endregion
 

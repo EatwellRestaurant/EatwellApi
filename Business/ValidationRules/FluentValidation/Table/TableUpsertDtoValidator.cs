@@ -21,7 +21,7 @@ namespace Business.ValidationRules.FluentValidation.Table
                  .WithMessage("Masa isminin uzunluğu en fazla 50 karakter olmalıdır!");
 
 
-            RuleFor(t => t.TableNo)
+            RuleFor(t => t.No)
                 .GreaterThan(0)
                 .WithMessage("Masa numarası sıfırdan büyük olmalıdır!");
 
