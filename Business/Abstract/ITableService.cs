@@ -19,7 +19,7 @@ namespace Business.Abstract
 
         Task<DeleteSuccessResponse> Delete(int tableId);
 
-        Task<DataResponse<List<TableDto>>> GetAllForAdmin(int branchId);
+        Task<DataResponse<List<TableListDto>>> GetAllForAdmin(int branchId);
 
     }
 }

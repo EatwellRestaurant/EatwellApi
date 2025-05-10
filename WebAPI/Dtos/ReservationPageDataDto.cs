@@ -8,6 +8,6 @@ namespace WebAPI.Dtos
     {
         public PaginationResponse<ReservationListDto> ReservationResponse { get; set; }
 
-        public DataResponse<List<TableDto>> TableResponse { get; set; }
+        public DataResponse<List<TableListDto>> TableResponse { get; set; }
     }
 } 

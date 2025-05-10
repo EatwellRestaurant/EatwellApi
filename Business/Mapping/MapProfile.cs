@@ -103,7 +103,7 @@ namespace Business.Mapping
             CreateMap<TableUpdateDto, Table>();
 
             
-            CreateMap<Table, TableDto>();
+            CreateMap<Table, TableListDto>();
 
             #endregion
 

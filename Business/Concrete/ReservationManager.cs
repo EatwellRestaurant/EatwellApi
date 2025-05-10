@@ -3,6 +3,7 @@ using Business.Abstract;
 using Business.BusinessAspects.Autofac;
 using Business.Constants.Messages;
 using Business.Constants.Messages.Entity;
+using Business.Extensions;
 using Business.ValidationRules.FluentValidation;
 using Core.Aspects.Autofac.Validation;
 using Core.Exceptions.General;
@@ -15,6 +16,7 @@ using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
 using Entities.Dtos.Reservation;
+using Entities.Filters;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -80,20 +82,21 @@ namespace Business.Concrete
 
 
         [SecuredOperation("admin", Priority = 1)]
-        public async Task<PaginationResponse<ReservationListDto>> GetAllForAdmin(int branchId, PaginationRequest paginationRequest)
+        public async Task<PaginationResponse<ReservationListDto>> GetAllForAdmin(int branchId, PaginationRequest paginationRequest, ReservationFilter filter)
         {
-            int totalItems = await _reservationDal.CountAsync(r => r.BranchId == branchId);
+            IQueryable<Reservation> query = _reservationDal
+                .GetAllQueryable(r => r.BranchId == branchId)
+                .FilterByFullName(filter.FullName)
+                .FilterByTableId(filter.TableId)
+                .FilterByDate(filter.DateRangeFilter);
 
             List<ReservationListDto> reservationListDtos = _mapper.Map<List<ReservationListDto>>
-                (await _reservationDal
-                .GetAllQueryable(r => r.BranchId == branchId)
-                .Include(r => r.Table)
+                (await query.Include(r => r.Table)
                 .OrderByDescending(r => r.CreateDate)
-                .Skip((paginationRequest.PageNumber - 1) * paginationRequest.PageSize)
-                .Take(paginationRequest.PageSize)
+                .ApplyPagination(paginationRequest)
                 .ToListAsync());
 
-            return new PaginationResponse<ReservationListDto>(reservationListDtos, paginationRequest.PageNumber, paginationRequest.PageSize, totalItems);
+            return new PaginationResponse<ReservationListDto>(reservationListDtos, paginationRequest.PageNumber, paginationRequest.PageSize, await query.CountAsync());
         }
 
 

@@ -2,6 +2,7 @@
 using Core.Requests;
 using Entities.Concrete;
 using Entities.Dtos.Reservation;
+using Entities.Filters;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using WebAPI.Dtos;
@@ -64,12 +65,18 @@ namespace WebAPI.Controllers
 
 
         [HttpGet]
-        public async Task<IActionResult> GetAllForAdmin(int branchId, [FromQuery] PaginationRequest paginationRequest) 
+        public async Task<IActionResult> GetAdminDashboardReservationData(int branchId, [FromQuery] PaginationRequest paginationRequest, [FromQuery] ReservationFilter reservationFilter) 
             => Ok(new ReservationPageDataDto
             {
-                ReservationResponse = await _reservationService.GetAllForAdmin(branchId, paginationRequest),
+                ReservationResponse = await _reservationService.GetAllForAdmin(branchId, paginationRequest, reservationFilter),
                 TableResponse = await _tableService.GetAllForAdmin(branchId)
             });
+        
+        
+
+        [HttpGet]
+        public async Task<IActionResult> GetAllForAdmin(int branchId, [FromQuery] PaginationRequest paginationRequest, [FromQuery] ReservationFilter reservationFilter) 
+            => Ok(await _reservationService.GetAllForAdmin(branchId, paginationRequest, reservationFilter));
  
     }
-}
+} 
