@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Business.Extensions
+namespace Core.Extensions
 {
     public static class QueryableExtensions
     {

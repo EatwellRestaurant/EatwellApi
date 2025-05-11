@@ -9,6 +9,8 @@ using Core.Aspects.Autofac.Validation;
 using Core.Entities.Abstract;
 using Core.Exceptions.General;
 using Core.Exceptions.User;
+using Core.Extensions;
+using Core.Requests;
 using Core.ResponseModels;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
@@ -61,14 +63,20 @@ namespace Business.Concrete
 
 
         [SecuredOperation("admin")]
-        public async Task<DataResponse<List<UserListDto>>> GetAll() 
-            => new DataResponse<List<UserListDto>>(_mapper.Map<List<UserListDto>>
-                (await _userDal
-                .GetAllQueryable(u => u.OperationClaimId != (byte)OperationClaimType.Admin) 
-                .OrderByDescending(u => u.CreateDate)
-                .ToListAsync()), 
-                CommonMessages.EntityListed);
+        public async Task<PaginationResponse<UserListDto>> GetAll(PaginationRequest paginationRequest)
+        {
+            IQueryable<User> query = _userDal
+                .GetAllQueryable(u => u.OperationClaimId != (byte)OperationClaimType.Admin);
 
+
+            List<UserListDto> userListDtos = _mapper.Map<List<UserListDto>>
+                (await query
+                .OrderByDescending(u => u.CreateDate)
+                .ApplyPagination(paginationRequest)
+                .ToListAsync());
+
+            return new PaginationResponse<UserListDto>(userListDtos, paginationRequest, await query.CountAsync());
+        }
 
 
         [SecuredOperation("admin")]

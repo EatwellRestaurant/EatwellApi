@@ -157,7 +157,7 @@ namespace Business.Concrete
                 .Take(paginationRequest.PageSize)
                 .ToListAsync());
 
-            return new PaginationResponse<MealCategoryListDto>(mealCategoryListDtos, paginationRequest.PageNumber, paginationRequest.PageSize, totalItems);
+            return new PaginationResponse<MealCategoryListDto>(mealCategoryListDtos, paginationRequest, totalItems);
         }
 
 

@@ -1,4 +1,5 @@
 ﻿using Business.Security;
+using Core.Requests;
 using Core.ResponseModels;
 using Core.Utilities.Results;
 using Entities.Concrete;
@@ -14,7 +15,7 @@ namespace Business.Abstract
 {
     public interface IUserService : IService<User>
     {
-        Task<DataResponse<List<UserListDto>>> GetAll();
+        Task<PaginationResponse<UserListDto>> GetAll(PaginationRequest paginationRequest);
 
         Task<DataResponse<UserDetailDto>> Get(int userId);
 

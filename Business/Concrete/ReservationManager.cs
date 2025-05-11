@@ -8,6 +8,7 @@ using Business.ValidationRules.FluentValidation;
 using Core.Aspects.Autofac.Validation;
 using Core.Exceptions.General;
 using Core.Exceptions.Reservation;
+using Core.Extensions;
 using Core.Requests;
 using Core.ResponseModels;
 using Core.Utilities.Business;
@@ -96,7 +97,7 @@ namespace Business.Concrete
                 .ApplyPagination(paginationRequest)
                 .ToListAsync());
 
-            return new PaginationResponse<ReservationListDto>(reservationListDtos, paginationRequest.PageNumber, paginationRequest.PageSize, await query.CountAsync());
+            return new PaginationResponse<ReservationListDto>(reservationListDtos, paginationRequest, await query.CountAsync());
         }
 
 

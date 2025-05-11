@@ -1,4 +1,5 @@
 ﻿using Business.Abstract;
+using Core.Requests;
 using Entities.Dtos.User;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -22,8 +23,8 @@ namespace WebAPI.Controllers
 
 
         [HttpGet]
-        public async Task<IActionResult> GetAll() 
-            => Ok(await _userService.GetAll());
+        public async Task<IActionResult> GetAll([FromQuery] PaginationRequest paginationRequest) 
+            => Ok(await _userService.GetAll(paginationRequest));
         
         
         

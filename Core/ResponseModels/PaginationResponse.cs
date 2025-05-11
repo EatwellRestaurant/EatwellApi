@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Core.Requests;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,13 +26,13 @@ namespace Core.ResponseModels
 
 
 
-        public PaginationResponse(List<T> data, int pageNumber, int pageSize, int totalItems) 
+        public PaginationResponse(List<T> data, PaginationRequest paginationRequest, int totalItems) 
         {
-            int totalPages = (int)Math.Ceiling(totalItems / (double)pageSize);
+            int totalPages = (int)Math.Ceiling(totalItems / (double)paginationRequest.PageSize);
 
             Data = data;
-            PageNumber = pageNumber;
-            PageSize = pageSize;
+            PageNumber = paginationRequest.PageNumber;
+            PageSize = paginationRequest.PageSize;
             TotalItems = totalItems;
             TotalPages = totalPages == 0 ? 1 : totalPages;
             Success = true;
