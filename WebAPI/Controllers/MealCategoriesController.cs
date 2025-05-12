@@ -49,12 +49,16 @@ namespace WebAPI.Controllers
         [HttpGet]
         public async Task<IActionResult> GetForAdmin(int mealCategoryId) 
             => Ok(await _mealCategoryService.GetForAdmin(mealCategoryId));
-             
-        
+
 
 
         [HttpGet]
-        public async Task<IActionResult> GetAllForAdmin([FromQuery] PaginationRequest paginationRequest) 
-            => Ok(await _mealCategoryService.GetAllForAdmin(paginationRequest));
+        public async Task<IActionResult> GetAllForAdmin([FromQuery] PaginationRequest? paginationRequest)
+        {
+            if (paginationRequest!.PageNumber == 0 ||  paginationRequest.PageSize == 0)
+                paginationRequest = null;
+
+            return Ok(await _mealCategoryService.GetAllForAdmin(paginationRequest));
+        }
     }
 }

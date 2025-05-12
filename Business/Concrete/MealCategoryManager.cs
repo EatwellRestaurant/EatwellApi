@@ -6,6 +6,7 @@ using Business.Constants.Messages.Entity;
 using Business.ValidationRules.FluentValidation;
 using Core.Aspects.Autofac.Validation;
 using Core.Exceptions.General;
+using Core.Extensions;
 using Core.Requests;
 using Core.ResponseModels;
 using Core.Utilities.FileHelper;
@@ -144,20 +145,20 @@ namespace Business.Concrete
 
 
         [SecuredOperation("admin")]
-        public async Task<PaginationResponse<MealCategoryListDto>> GetAllForAdmin(PaginationRequest paginationRequest)
+        public async Task<object> GetAllForAdmin(PaginationRequest? paginationRequest)
         {
-            int totalItems = await _mealCategoryDal.CountAsync(m => !m.IsDeleted);
-
+            IQueryable<MealCategory> query = _mealCategoryDal
+                .GetAllQueryable(m => !m.IsDeleted);
 
             List<MealCategoryListDto> mealCategoryListDtos = _mapper.Map<List<MealCategoryListDto>>
-                (await _mealCategoryDal
-                .GetAllQueryable(m => !m.IsDeleted)
+                (await query
                 .OrderByDescending(m => m.CreateDate)
-                .Skip((paginationRequest.PageNumber - 1) * paginationRequest.PageSize)
-                .Take(paginationRequest.PageSize)
+                .ApplyPagination(paginationRequest)
                 .ToListAsync());
 
-            return new PaginationResponse<MealCategoryListDto>(mealCategoryListDtos, paginationRequest, totalItems);
+            return paginationRequest != null 
+                ? new PaginationResponse<MealCategoryListDto>(mealCategoryListDtos, paginationRequest, await query.CountAsync())
+                : new DataResponse<List<MealCategoryListDto>>(mealCategoryListDtos, CommonMessages.EntityListed);
         }
 
 

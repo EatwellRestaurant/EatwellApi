@@ -1,4 +1,6 @@
 ﻿using Business.Abstract;
+using Core.Requests;
+using Core.ResponseModels;
 using Entities.Concrete;
 using Entities.Dtos;
 using Entities.Dtos.Product;
@@ -44,14 +46,14 @@ namespace WebAPI.Controllers
          
 
         [HttpGet] 
-        public async Task<IActionResult> GetAllForAdminByMealCategoryId(int mealCategoryId) 
-            => Ok(await _productService.GetAllForAdminByMealCategoryId(mealCategoryId));
+        public async Task<IActionResult> GetAllForAdminByMealCategoryId(int mealCategoryId, [FromQuery] PaginationRequest paginationRequest) 
+            => Ok(await _productService.GetAllForAdminByMealCategoryId(mealCategoryId, paginationRequest));
         
        
 
         [HttpGet] 
-        public async Task<IActionResult> GetAllForAdmin() 
-            => Ok(await _productService.GetAllForAdmin());
+        public async Task<IActionResult> GetAllForAdmin([FromQuery] PaginationRequest paginationRequest) 
+            => Ok(await _productService.GetAllForAdmin(paginationRequest));
 
 
 

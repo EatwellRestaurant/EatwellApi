@@ -1,4 +1,5 @@
-﻿using Core.ResponseModels;
+﻿using Core.Requests;
+using Core.ResponseModels;
 using Core.Utilities.Results;
 using Entities.Concrete;
 using Entities.Dtos;
@@ -14,9 +15,9 @@ namespace Business.Abstract
 {
     public interface IProductService
     {
-        Task<DataResponse<List<ProductListDto>>> GetAllForAdminByMealCategoryId(int mealCategoryId);
+        Task<PaginationResponse<ProductListDto>> GetAllForAdminByMealCategoryId(int mealCategoryId, PaginationRequest paginationRequest);
 
-        Task<DataResponse<List<ProductListWithMealCategoryDto>>> GetAllForAdmin();
+        Task<PaginationResponse<ProductListWithMealCategoryDto>> GetAllForAdmin(PaginationRequest paginationRequest);
 
         Task<DataResponse<ProductDetailDto>> GetForAdmin(int productId);
         

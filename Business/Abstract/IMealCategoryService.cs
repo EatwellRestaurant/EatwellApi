@@ -8,7 +8,7 @@ namespace Business.Abstract
 {
     public interface IMealCategoryService : IService<MealCategory>
     {
-        Task<PaginationResponse<MealCategoryListDto>> GetAllForAdmin(PaginationRequest paginationRequest);
+        Task<object> GetAllForAdmin(PaginationRequest? paginationRequest);
 
         Task<DataResponse<MealCategoryDetailDto>> GetForAdmin(int mealCategoryId);
         
