@@ -1,4 +1,5 @@
 ﻿using Business.Abstract;
+using Core.Requests;
 using Entities.Concrete;
 using Entities.Dtos.Branch;
 using Microsoft.AspNetCore.Http;
@@ -41,14 +42,19 @@ namespace WebAPI.Controllers
 
 
 
-        [HttpGet] 
-        public async Task<IActionResult> GetAllForAdmin() 
-            => Ok(await _branchService.GetAllForAdmin());
+        [HttpGet]
+        public async Task<IActionResult> GetAllForAdmin([FromQuery] PaginationRequest? paginationRequest)
+        {
+            if (paginationRequest!.PageNumber == 0 || paginationRequest.PageSize == 0)
+                paginationRequest = null;
+
+            return Ok(await _branchService.GetAllForAdmin(paginationRequest));
+        }
         
 
         
         [HttpGet] 
-        public async Task<IActionResult> GetAllForAdminByCityId(int cityId) 
-            => Ok(await _branchService.GetAllForAdminByCityId(cityId));
+        public async Task<IActionResult> GetAllForAdminByCityId(int cityId, [FromQuery] PaginationRequest paginationRequest) 
+            => Ok(await _branchService.GetAllForAdminByCityId(cityId, paginationRequest));
     }
 }

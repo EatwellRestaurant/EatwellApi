@@ -2,6 +2,8 @@
 using Business.Abstract;
 using Business.Constants.Messages;
 using Core.Exceptions.General;
+using Core.Extensions;
+using Core.Requests;
 using Core.ResponseModels;
 using DataAccess.Abstract;
 using Entities.Concrete;
@@ -24,14 +26,21 @@ namespace Business.Concrete
 
 
 
-        public async Task<DataResponse<List<CityWithBranchCountDto>>> GetAll()
-            => new DataResponse<List<CityWithBranchCountDto>>(_mapper.Map<List<CityWithBranchCountDto>>
-                (await _cityDal
-                .GetAllQueryable()
+        public async Task<object> GetAll(PaginationRequest? paginationRequest)
+        {
+            IQueryable<City> query = _cityDal
+                .GetAllQueryable();
+
+            List<CityWithBranchCountDto> cityLists = _mapper.Map<List<CityWithBranchCountDto>>
+                (await query
                 .Include(c => c.Branches.Where(b => !b.IsDeleted))
-                .AsNoTracking()
-                .ToListAsync()),
-                CommonMessages.EntityListed);
+                .ApplyPagination(paginationRequest)
+                .ToListAsync());
+
+            return paginationRequest != null 
+                ? new PaginationResponse<CityWithBranchCountDto>(cityLists, paginationRequest, await query.CountAsync())
+                : new DataResponse<List<CityWithBranchCountDto>>(cityLists, CommonMessages.EntityListed);
+        }
 
     }
 }

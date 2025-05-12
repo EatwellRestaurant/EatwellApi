@@ -6,6 +6,8 @@ using Business.ValidationRules.FluentValidation.Branch;
 using Core.Aspects.Autofac.Validation;
 using Core.Exceptions.Branch;
 using Core.Exceptions.General;
+using Core.Extensions;
+using Core.Requests;
 using Core.ResponseModels;
 using DataAccess.Abstract;
 using DataAccess.Concrete.EntityFramework;
@@ -105,31 +107,41 @@ namespace Business.Concrete
 
 
         [SecuredOperation("admin")]
-        public async Task<DataResponse<List<BranchListWithCityDto>>> GetAllForAdmin()
-        => new DataResponse<List<BranchListWithCityDto>>(_mapper.Map<List<BranchListWithCityDto>>
-                (await _branchDal
-                .GetAllQueryable(b => !b.IsDeleted)
+        public async Task<object> GetAllForAdmin(PaginationRequest? paginationRequest)
+        {
+            IQueryable<Branch> query = _branchDal
+                .GetAllQueryable(b => !b.IsDeleted);
+
+            List<BranchListWithCityDto> branchLists = _mapper.Map<List<BranchListWithCityDto>>
+                (await query
                 .Include(b => b.City)
-                .AsNoTracking()
                 .OrderByDescending(b => b.CreateDate)
-                .ToListAsync()),
-                CommonMessages.EntityListed);
+                .ApplyPagination(paginationRequest)
+                .ToListAsync());
+
+            return paginationRequest != null
+                ? new PaginationResponse<BranchListWithCityDto>(branchLists, paginationRequest, await query.CountAsync())
+                : new DataResponse<List<BranchListWithCityDto>>(branchLists, CommonMessages.EntityListed);
+        }
 
 
 
         [SecuredOperation("admin", Priority = 1)]
-        public async Task<DataResponse<List<BranchListDto>>> GetAllForAdminByCityId(int cityId)
+        public async Task<PaginationResponse<BranchListDto>> GetAllForAdminByCityId(int cityId, PaginationRequest paginationRequest)
         {
             if (!await _cityService.AnyAsync(c => c.Id == cityId))
                 throw new EntityNotFoundException("Şehir");
 
+            IQueryable<Branch> query = _branchDal
+                    .GetAllQueryable(b => b.CityId == cityId && !b.IsDeleted);
 
-            return new DataResponse<List<BranchListDto>>(_mapper.Map<List<BranchListDto>>
-                    (await _branchDal
-                    .GetAllQueryable(b => b.CityId == cityId && !b.IsDeleted)
+            List<BranchListDto> branchLists = _mapper.Map<List<BranchListDto>>
+                    (await query
                     .OrderByDescending(b => b.CreateDate)
-                    .ToListAsync()),
-                    CommonMessages.EntityListed);
+                    .ApplyPagination(paginationRequest)
+                    .ToListAsync());
+
+            return new PaginationResponse<BranchListDto>(branchLists, paginationRequest, await query.CountAsync());
         }
 
 

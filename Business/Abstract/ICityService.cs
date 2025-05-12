@@ -1,4 +1,5 @@
-﻿using Core.ResponseModels;
+﻿using Core.Requests;
+using Core.ResponseModels;
 using Core.Utilities.Results;
 using Entities.Concrete;
 using Entities.Dtos.City;
@@ -13,6 +14,6 @@ namespace Business.Abstract
 {
     public interface ICityService : IService<City>
     {
-        Task<DataResponse<List<CityWithBranchCountDto>>> GetAll();
+        Task<object> GetAll(PaginationRequest? paginationRequest);
     }
 }

@@ -1,4 +1,5 @@
-﻿using Core.ResponseModels;
+﻿using Core.Requests;
+using Core.ResponseModels;
 using Core.Utilities.Results;
 using Entities.Concrete;
 using Entities.Dtos.Branch;
@@ -13,9 +14,9 @@ namespace Business.Abstract
 {
     public interface IBranchService : IService<Branch>
     {
-        Task<DataResponse<List<BranchListWithCityDto>>> GetAllForAdmin();
+        Task<object> GetAllForAdmin(PaginationRequest? paginationRequest);
 
-        Task<DataResponse<List<BranchListDto>>> GetAllForAdminByCityId(int cityId);
+        Task<PaginationResponse<BranchListDto>> GetAllForAdminByCityId(int cityId, PaginationRequest paginationRequest);
 
         Task<DataResponse<BranchDetailDto>> GetForAdmin(int branchId);
 
