@@ -91,6 +91,11 @@ namespace Business.Mapping
             CreateMap<Reservation, ReservationListDto>()
                 .ForMember(dest => dest.TableNo, opt => opt.MapFrom(src => src.Table.No));
 
+
+            CreateMap<Reservation, ReservationDetailDto>()
+                .IncludeBase<Reservation,ReservationListDto>();
+
+
             #endregion
 
 

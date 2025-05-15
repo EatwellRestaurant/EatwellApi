@@ -15,7 +15,9 @@ using Core.Utilities.Business;
 using Core.Utilities.Email;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
+using DataAccess.Concrete.EntityFramework;
 using Entities.Concrete;
+using Entities.Dtos.Branch;
 using Entities.Dtos.Reservation;
 using Entities.Filters;
 using Microsoft.EntityFrameworkCore;
@@ -75,9 +77,21 @@ namespace Business.Concrete
             return new SuccessResult(ReservationMessages.ReservationDeleted);
         }
 
-        public async Task<IDataResult<Reservation?>> Get(int id)
+
+
+        public async Task<DataResponse<ReservationDetailDto>> Get(int reservationId)
         {
-            return new SuccessDataResult<Reservation?>(await _reservationDal.GetAsync(r => r.Id == id), ReservationMessages.ReservationWasBrought);
+            Reservation? reservation = await _reservationDal
+                .Where(r => r.Id == reservationId && !r.IsDeleted)
+                .Include(r => r.Table)
+                .AsNoTracking()
+                .SingleOrDefaultAsync()
+                ?? throw new EntityNotFoundException("Rezervasyon");
+
+
+            return new DataResponse<ReservationDetailDto>
+                           (_mapper.Map<ReservationDetailDto>(reservation),
+                           CommonMessages.EntityFetch);
         }
 
 

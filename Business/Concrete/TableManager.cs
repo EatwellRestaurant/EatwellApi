@@ -5,8 +5,10 @@ using Business.Constants.Messages;
 using Business.ValidationRules.FluentValidation.Table;
 using Core.Aspects.Autofac.Validation;
 using Core.Exceptions.General;
+using Core.Exceptions.Table;
 using Core.ResponseModels;
 using DataAccess.Abstract;
+using DataAccess.Concrete.EntityFramework;
 using Entities.Concrete;
 using Entities.Dtos.Table;
 using Microsoft.EntityFrameworkCore;
@@ -60,6 +62,9 @@ namespace Business.Concrete
             if (table.Name != updateDto.Name)
                 await CheckIfTableNameExists(updateDto.Name, table.BranchId, tableId);
 
+            if (table.Capacity != updateDto.Capacity && table.Reservations.Any())
+                throw new CapacityChangeNotAllowedException();
+
             _mapper.Map(updateDto, table);
 
             _tableDal.Update(table);
@@ -97,6 +102,20 @@ namespace Business.Concrete
 
 
 
+        [SecuredOperation("admin", Priority = 1)]
+        public async Task<DataResponse<TableListDto>> GetForAdmin(int tableId)
+        {
+            Table? table = await _tableDal
+                .GetAsNoTrackingAsync(t => t.Id == tableId && !t.IsDeleted)
+                ?? throw new EntityNotFoundException("Masa");
+
+            return new DataResponse<TableListDto>
+                (_mapper.Map<TableListDto>(table),
+                CommonMessages.EntityFetch);
+        }
+
+
+
 
         #region BusinessRules
 
@@ -116,8 +135,18 @@ namespace Business.Concrete
 
         private async Task<Table> GetByIdTableForDeleteAndUpdate(int tableId)
         {
+            // Oluşturduğumuz sorguda rezervasyonların saat dilimini de dikkate alıyoruz ve
+            // DateTime.Now, runtime değeri olduğu için doğrudan sorguya dahil edilirse,
+            // EF Core tarafından doğru bir şekilde SQL sorgusuna dönüştürülemez. Çünkü değeri sürekli değişiyor.
+            // Bunun yerine DateTime.Now değerini bir değişkene atayıp, 
+            // sorguya sabit bir değer olarak dahil ettik. Ve bu, sorgunun doğru çalışmasını sağladı.
+
+            DateTime now = DateTime.Now;
+
             Table? table = await _tableDal
                 .Where(t => t.Id == tableId && !t.IsDeleted)
+                .Include(t => t.Reservations
+                    .Where(r => r.ReservationDate >= now && !r.IsDeleted))
                 .SingleOrDefaultAsync()
                 ?? throw new EntityNotFoundException("Masa");
 

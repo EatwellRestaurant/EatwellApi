@@ -16,7 +16,7 @@ namespace Business.Abstract
     {
         Task<PaginationResponse<ReservationListDto>> GetAllForAdmin(int branchId, PaginationRequest paginationRequest, ReservationFilter filter);
 
-        Task<IDataResult<Reservation?>> Get(int id);
+        Task<DataResponse<ReservationDetailDto>> Get(int reservationId);
         
         Task<CreateSuccessResponse> Add(ReservationUpsertDto upsertDto);
         

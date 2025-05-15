@@ -21,5 +21,6 @@ namespace Business.Abstract
 
         Task<DataResponse<List<TableListDto>>> GetAllForAdmin(int branchId);
 
+        Task<DataResponse<TableListDto>> GetForAdmin(int tableId);
     }
 }

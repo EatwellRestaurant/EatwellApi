@@ -51,16 +51,11 @@ namespace WebAPI.Controllers
             return BadRequest(result);
         }
 
+
+
         [HttpGet]
-        public async Task<IActionResult> Get(int id)
-        {
-            var result = await _reservationService.Get(id);
-            if (result.Success)
-            {
-                return Ok(result);
-            }
-            return BadRequest(result);
-        }
+        public async Task<IActionResult> Get(int reservationId) 
+            => Ok(await _reservationService.Get(reservationId));
 
 
 

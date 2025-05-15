@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace WebAPI.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[action]")]
     [ApiController]
     public class TablesController : ControllerBase
     {
@@ -37,6 +37,12 @@ namespace WebAPI.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAllForAdmin(int branchId)
             => Ok(await _tableService.GetAllForAdmin(branchId));
+        
+        
+
+        [HttpGet]
+        public async Task<IActionResult> GetForAdmin(int tableId)
+            => Ok(await _tableService.GetForAdmin(tableId));
 
     }
 }
