@@ -11,21 +11,13 @@ using Core.Exceptions.Reservation;
 using Core.Extensions;
 using Core.Requests;
 using Core.ResponseModels;
-using Core.Utilities.Business;
-using Core.Utilities.Email;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
-using DataAccess.Concrete.EntityFramework;
 using Entities.Concrete;
-using Entities.Dtos.Branch;
 using Entities.Dtos.Reservation;
 using Entities.Filters;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Service.Concrete;
 
 namespace Business.Concrete
 {
@@ -56,13 +48,11 @@ namespace Business.Concrete
         [ValidationAspect(typeof(ReservationUpsertDtoValidator))]
         public async Task<CreateSuccessResponse> Add(ReservationUpsertDto upsertDto)
         {
-            await CheckIfReservation(upsertDto.ReservationDate, upsertDto.BranchId, upsertDto.PersonCount);
+            int tableId = await GetAvailableTableIdAsync(upsertDto.ReservationDate, upsertDto.BranchId, upsertDto.PersonCount);
 
             Reservation reservation = _mapper.Map<Reservation>(upsertDto);
 
-            reservation.Table = await _tableService.Where(t => t.Capacity >= upsertDto.PersonCount)
-                .OrderBy(t => t.Capacity)
-                .FirstAsync();
+            reservation.TableId = tableId;
 
             await _reservationDal.AddAsync(reservation);
             await _unitOfWork.SaveChangesAsync();
@@ -127,7 +117,7 @@ namespace Business.Concrete
 
         #region BusinessRules
 
-        private async Task CheckIfReservation(DateTime reservationDate, int branchId, int personCount)
+        private async Task<int> GetAvailableTableIdAsync(DateTime reservationDate, int branchId, int personCount)
         {
             if (!await _branchService.AnyAsync(b => b.Id == branchId && !b.IsDeleted))
                 throw new EntityNotFoundException("Şube");
@@ -136,15 +126,21 @@ namespace Business.Concrete
             List<Table> tables = await _tableService
                 .Where(t => t.BranchId == branchId && t.Capacity >= personCount)
                 .Include(t => t.Reservations)
+                .AsNoTracking()
                 .ToListAsync();
 
 
             if (!tables.Any())
                 throw new NoAvailableTableException();
 
-            
-            if (tables.Any(t => t.Reservations.Any(r => r.ReservationDate == reservationDate)))
+
+            Table? table = tables.Where(t => !t.Reservations.Any(r => r.ReservationDate == reservationDate))
+                .OrderBy(t => t.Capacity)
+                .FirstOrDefault() ??
                 throw new NoAvailableTableException();
+
+
+            return table.Id;
         }
 
         #endregion

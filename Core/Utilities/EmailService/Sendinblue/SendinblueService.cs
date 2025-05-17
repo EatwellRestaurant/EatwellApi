@@ -4,11 +4,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using sib_api_v3_sdk.Api;
-using sib_api_v3_sdk.Client;
-using sib_api_v3_sdk.Model;
 using Core.ResponseModels;
 using Microsoft.EntityFrameworkCore.Metadata;
+using brevo_csharp.Model;
+using brevo_csharp.Api;
+using brevo_csharp.Client;
 
 namespace Core.Utilities.Email.Sendinblue
 {

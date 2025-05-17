@@ -11,6 +11,7 @@ using DataAccess.Abstract;
 using DataAccess.Concrete.EntityFramework;
 using Entities.Concrete;
 using Entities.Dtos.Table;
+using Entities.Filters;
 using Microsoft.EntityFrameworkCore;
 using Service.Concrete;
 
@@ -24,10 +25,10 @@ namespace Business.Concrete
         readonly IMapper _mapper;
 
         public TableManager(
-            ITableDal tableDal, 
-            IUnitOfWork unitOfWork, 
-            IBranchService branchService, 
-            IMapper mapper) 
+            ITableDal tableDal,
+            IUnitOfWork unitOfWork,
+            IBranchService branchService,
+            IMapper mapper)
             : base(tableDal)
         {
             _tableDal = tableDal;
@@ -43,7 +44,7 @@ namespace Business.Concrete
         {
             await CheckIfBranchIdExists(insertDto.BranchId);
 
-            await CheckIfTableNameExists(insertDto.Name, insertDto.BranchId);
+            await CheckIfTableNoExists(insertDto.No, insertDto.BranchId);
 
             await _tableDal.AddAsync(_mapper.Map<Table>(insertDto));
             await _unitOfWork.SaveChangesAsync();
@@ -60,7 +61,7 @@ namespace Business.Concrete
             Table table = await GetByIdTableForDeleteAndUpdate(tableId);
 
             if (table.Name != updateDto.Name)
-                await CheckIfTableNameExists(updateDto.Name, table.BranchId, tableId);
+                await CheckIfTableNoExists(updateDto.No, table.BranchId, tableId);
 
             if (table.Capacity != updateDto.Capacity && table.Reservations.Any())
                 throw new CapacityChangeNotAllowedException();
@@ -79,6 +80,9 @@ namespace Business.Concrete
         public async Task<DeleteSuccessResponse> Delete(int tableId)
         {
             Table table = await GetByIdTableForDeleteAndUpdate(tableId);
+
+            if (table.Reservations.Any())
+                throw new TableDeletionNotAllowedException();
 
             table.IsDeleted = true;
             table.DeleteDate = DateTime.Now;
@@ -126,10 +130,10 @@ namespace Business.Concrete
         }
 
 
-        private async Task CheckIfTableNameExists(string tableName, int branchId, int? tableId = null)
+        private async Task CheckIfTableNoExists(int tableNo, int branchId, int? tableId = null)
         {
-            if (await _tableDal.AnyAsync(t => t.Name == tableName && !t.IsDeleted && t.BranchId == branchId && (tableId.HasValue ? t.Id != tableId : true)))
-                throw new EntityAlreadyExistsException("masa ismi");
+            if (await _tableDal.AnyAsync(t => t.No == tableNo && !t.IsDeleted && t.BranchId == branchId && (tableId.HasValue ? t.Id != tableId : true)))
+                throw new EntityAlreadyExistsException("masa numarası");
         }
 
 
@@ -147,12 +151,13 @@ namespace Business.Concrete
                 .Where(t => t.Id == tableId && !t.IsDeleted)
                 .Include(t => t.Reservations
                     .Where(r => r.ReservationDate >= now && !r.IsDeleted))
+                .AsNoTracking()
                 .SingleOrDefaultAsync()
                 ?? throw new EntityNotFoundException("Masa");
 
-
             return table;
         }
+
 
         #endregion
     }
