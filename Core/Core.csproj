@@ -7,6 +7,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Exceptions\MealCategory\**" />
+    <EmbeddedResource Remove="Exceptions\MealCategory\**" />
+    <None Remove="Exceptions\MealCategory\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Autofac" Version="8.0.0" />
     <PackageReference Include="Autofac.Extras.DynamicProxy" Version="6.0.1" />
     <PackageReference Include="Azure.Identity" Version="1.12.0" />
@@ -27,7 +33,6 @@
 
   <ItemGroup>
     <Folder Include="Entities\Concrete\" />
-    <Folder Include="Exceptions\MealCategory\" />
   </ItemGroup>
 
 

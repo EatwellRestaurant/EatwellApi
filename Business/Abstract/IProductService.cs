@@ -19,6 +19,8 @@ namespace Business.Abstract
 
         Task<PaginationResponse<ProductListWithMealCategoryDto>> GetAllForAdmin(PaginationRequest paginationRequest);
 
+        Task<UpdateSuccessResponse> SaveSelectedProducts(List<SelectedProductDto> selectedProductDtos);
+
         Task<object> GetAll(PaginationRequest? paginationRequest);
 
         Task<DataResponse<List<ProductDisplayDto>>> GetSelectedProducts();

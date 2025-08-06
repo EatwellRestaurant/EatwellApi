@@ -48,7 +48,7 @@ namespace Core.DataAccess.EntityFramework
 
 
 
-        public async Task<List<TEntity>> GetAllList(Expression<Func<TEntity, bool>>? expression = null)
+        public async Task<List<TEntity>> GetAllListAsync(Expression<Func<TEntity, bool>>? expression = null)
             => expression == null ? await _dbSet.ToListAsync() : await _dbSet.Where(expression).ToListAsync();
 
 

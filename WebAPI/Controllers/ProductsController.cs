@@ -77,5 +77,12 @@ namespace WebAPI.Controllers
         [HttpDelete]
         public async Task<IActionResult> SetDeleteOrRestore(int productId)
             => Ok(await _productService.SetDeleteOrRestore(productId));
+
+
+         
+        [HttpPut]
+        public async Task<IActionResult> SaveSelectedProducts(List<SelectedProductDto> selectedProductDtos) 
+            => Ok(await _productService.SaveSelectedProducts(selectedProductDtos));
+        
     }
 }

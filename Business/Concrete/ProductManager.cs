@@ -6,6 +6,7 @@ using Business.Constants.Messages.Entity;
 using Business.ValidationRules.FluentValidation;
 using Core.Aspects.Autofac.Validation;
 using Core.Exceptions.General;
+using Core.Exceptions.Product;
 using Core.Extensions;
 using Core.Requests;
 using Core.ResponseModels;
@@ -17,6 +18,7 @@ using Entities.Concrete;
 using Entities.Dtos.MealCategory;
 using Entities.Dtos.Product;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
 
 namespace Business.Concrete
 {
@@ -225,6 +227,118 @@ namespace Business.Concrete
         }
 
 
+
+        [SecuredOperation("admin", Priority = 1)]
+        public async Task<UpdateSuccessResponse> SaveSelectedProducts(List<SelectedProductDto> selectedProductDtos)
+        {
+            // Veri tabanında seçili ve aktif durumda olan ürünleri alıyoruz
+            List<Product> activeSelectedProducts = await _productDal.
+                GetAllListAsync(p => p.IsSelected && !p.IsDeleted && p.IsActive);
+
+
+
+            // Kullanıcıdan gelen, seçili ürünlerin id listesi
+            List<int> incomingSelectedProductIds = selectedProductDtos
+                .Select(s => s.Id)
+                .ToList();
+
+
+            // Artık seçili olmayan (daha önce seçili olup şimdi listede olmayan) ürünlerin id listesi
+            List<int> deselectedProductIds = activeSelectedProducts
+                .Select(a => a.Id)
+                .Except(incomingSelectedProductIds.ToList())
+                .ToList();
+
+
+            List<Product> deselectedProducts = activeSelectedProducts
+                .Where(a => deselectedProductIds.Contains(a.Id))
+                .ToList();
+
+
+            deselectedProducts.ForEach(p => {
+                p.IsSelected = false;
+                p.Order = 0;
+            });
+
+
+
+
+            var duplicateOrders = selectedProductDtos
+                .GroupBy(x => x.Order)
+                .Where(g => g.Count() > 1)
+                .Select(g => new
+                {
+                    Order = g.Key,
+                    ProductIds = g.Select(x => x.Id).ToList()
+                })
+                .ToList();
+
+
+            if (duplicateOrders.Any())
+                throw new DuplicateProductOrderException();
+            
+
+
+
+            var selectedProductDtoMap = selectedProductDtos
+                .ToDictionary(x => x.Id, x => x.Order);
+            
+
+            // Veri tabanında zaten seçili olan ve kullanıcıdan da gelen ürünler
+            List<Product> matchedProducts = activeSelectedProducts
+                .Where(p => incomingSelectedProductIds.Contains(p.Id))
+                .ToList();
+
+
+            matchedProducts.ForEach(product =>
+            {
+                if (selectedProductDtoMap.TryGetValue(product.Id, out byte order))
+                {
+                    product.Order = order;
+                }
+            });
+
+
+
+            // Yeni seçilen ürünlerin id listesi
+            List<int> newSelectedProductIds = incomingSelectedProductIds
+                .Except(activeSelectedProducts.Select(p => p.Id).ToList())
+                .ToList();
+
+
+            List<Product> newSelectedProducts = await _productDal
+               .GetAllListAsync(p => newSelectedProductIds.Contains(p.Id) && !p.IsDeleted && p.IsActive);
+
+
+
+            List<int> missingProductIds = newSelectedProductIds
+                .Except(newSelectedProducts.Select(p => p.Id).ToList())
+                .ToList();
+
+
+            if (missingProductIds.Any())
+                throw new EntitiesNotFoundException("ürünler")
+                {
+                    Ids = missingProductIds
+                };
+            
+
+
+            newSelectedProducts.ForEach(product =>
+            {
+                product.IsSelected = true;
+
+                if (selectedProductDtoMap.TryGetValue(product.Id, out byte order))
+                {
+                    product.Order = order;
+                }
+            });
+
+
+            await _unitOfWork.SaveChangesAsync();
+
+            return new UpdateSuccessResponse(CommonMessages.EntityUpdated);
+        }
 
 
 
