@@ -163,6 +163,22 @@ namespace Business.Concrete
 
 
 
+        public async Task<PaginationResponse<MealCategoryListDto>> GetAll(PaginationRequest paginationRequest)
+        {
+            IQueryable<MealCategory> query = _mealCategoryDal
+                .GetAllQueryable(m => !m.IsDeleted && m.IsActive);
+
+            List<MealCategoryListDto> mealCategoryListDtos = _mapper.Map<List<MealCategoryListDto>>
+                (await query
+                .OrderByDescending(m => m.CreateDate)
+                .ApplyPagination(paginationRequest)
+                .ToListAsync());
+
+            return new PaginationResponse<MealCategoryListDto>(mealCategoryListDtos, paginationRequest, await query.CountAsync());
+        }
+
+
+
         [SecuredOperation("admin", Priority = 1)]
         [ValidationAspect(typeof(MealCategoryUpsertDtoValidator), Priority = 2)]
         public async Task<UpdateSuccessResponse> Update(int mealCategoryId, MealCategoryUpsertDto upsertDto)

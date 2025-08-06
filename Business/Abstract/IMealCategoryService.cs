@@ -2,12 +2,15 @@
 using Core.ResponseModels;
 using Entities.Concrete;
 using Entities.Dtos.MealCategory;
+using Microsoft.EntityFrameworkCore;
 using Service.Abstract;
 
 namespace Business.Abstract
 {
     public interface IMealCategoryService : IService<MealCategory>
     {
+        Task<PaginationResponse<MealCategoryListDto>> GetAll(PaginationRequest paginationRequest);
+
         Task<object> GetAllForAdmin(PaginationRequest? paginationRequest);
 
         Task<DataResponse<MealCategoryDetailDto>> GetForAdmin(int mealCategoryId);

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Entities.Dtos.Product
 {
-    public class ProductListWithMealCategoryDto : ProductListDto
+    public class ProductListWithMealCategoryDto : ProductAdminListDto
     {
         public int MealCategoryId { get; set; }
 

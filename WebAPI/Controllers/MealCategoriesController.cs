@@ -60,5 +60,12 @@ namespace WebAPI.Controllers
 
             return Ok(await _mealCategoryService.GetAllForAdmin(paginationRequest));
         }
+        
+
+        
+        [HttpGet]
+        public async Task<IActionResult> GetAll([FromQuery] PaginationRequest paginationRequest)
+            => Ok(await _mealCategoryService.GetAllForAdmin(paginationRequest));
+        
     }
 }

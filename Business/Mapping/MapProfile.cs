@@ -116,7 +116,7 @@ namespace Business.Mapping
 
             #region Product
 
-            CreateMap<Product, ProductListDto>();
+            CreateMap<Product, ProductAdminListDto>();
 
 
             CreateMap<Product, ProductListWithMealCategoryDto>()
@@ -124,6 +124,9 @@ namespace Business.Mapping
 
 
             CreateMap<Product, ProductDetailDto>();
+
+
+            CreateMap<Product, ProductDisplayDto>();
 
             #endregion
 

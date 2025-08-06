@@ -15,9 +15,13 @@ namespace Business.Abstract
 {
     public interface IProductService
     {
-        Task<PaginationResponse<ProductListDto>> GetAllForAdminByMealCategoryId(int mealCategoryId, PaginationRequest paginationRequest);
+        Task<PaginationResponse<ProductAdminListDto>> GetAllForAdminByMealCategoryId(int mealCategoryId, PaginationRequest paginationRequest);
 
         Task<PaginationResponse<ProductListWithMealCategoryDto>> GetAllForAdmin(PaginationRequest paginationRequest);
+
+        Task<object> GetAll(PaginationRequest? paginationRequest);
+
+        Task<DataResponse<List<ProductDisplayDto>>> GetSelectedProducts();
 
         Task<DataResponse<ProductDetailDto>> GetForAdmin(int productId);
         

@@ -13,6 +13,10 @@ namespace Entities.Concrete
 
         public bool IsActive { get; set; }
 
+        public bool IsSelected { get; set; }
+
+        public byte Order { get; set; }
+
         public string Name { get; set; }
         
         public string ImagePath { get; set; }

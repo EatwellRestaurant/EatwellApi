@@ -57,6 +57,23 @@ namespace WebAPI.Controllers
 
 
 
+        [HttpGet]
+        public async Task<IActionResult> GetAll([FromQuery] PaginationRequest? paginationRequest)
+        {
+            if (paginationRequest!.PageNumber == 0 || paginationRequest.PageSize == 0)
+                paginationRequest = null;
+
+            return Ok(await _productService.GetAll(paginationRequest));
+        }
+
+
+
+        [HttpGet] 
+        public async Task<IActionResult> GetSelectedProducts()
+            => Ok(await _productService.GetSelectedProducts());
+        
+
+
         [HttpDelete]
         public async Task<IActionResult> SetDeleteOrRestore(int productId)
             => Ok(await _productService.SetDeleteOrRestore(productId));

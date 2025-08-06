@@ -132,7 +132,7 @@ namespace Business.Concrete
 
 
         [SecuredOperation("admin", Priority = 1)]
-        public async Task<PaginationResponse<ProductListDto>> GetAllForAdminByMealCategoryId(int mealCategoryId, PaginationRequest paginationRequest)
+        public async Task<PaginationResponse<ProductAdminListDto>> GetAllForAdminByMealCategoryId(int mealCategoryId, PaginationRequest paginationRequest)
         {
             if (!await _mealCategoryService.AnyAsync(m => m.Id == mealCategoryId && !m.IsDeleted))
                 throw new EntityNotFoundException("Menü");
@@ -140,13 +140,13 @@ namespace Business.Concrete
             IQueryable<Product> query = _productDal
                     .GetAllQueryable(p => p.MealCategoryId == mealCategoryId && !p.IsDeleted);
 
-            List<ProductListDto> productListDtos = _mapper.Map<List<ProductListDto>>
+            List<ProductAdminListDto> productListDtos = _mapper.Map<List<ProductAdminListDto>>
                     (await query
                     .OrderByDescending(p => p.CreateDate)
                     .ApplyPagination(paginationRequest)
                     .ToListAsync());
 
-            return new PaginationResponse<ProductListDto>(productListDtos, paginationRequest, await query.CountAsync());
+            return new PaginationResponse<ProductAdminListDto>(productListDtos, paginationRequest, await query.CountAsync());
         }
 
 
@@ -165,6 +165,35 @@ namespace Business.Concrete
     
             return new PaginationResponse<ProductListWithMealCategoryDto>(productLists,paginationRequest, await query.CountAsync());
         }
+
+
+        public async Task<object> GetAll(PaginationRequest? paginationRequest)
+        {
+            IQueryable<Product> query = _productDal
+               .GetAllQueryable(p => !p.IsDeleted && p.IsActive);
+            
+            List<ProductDisplayDto> productListDtos = _mapper.Map<List<ProductDisplayDto>>
+               (await query
+               .OrderByDescending(p => p.CreateDate)
+               .ApplyPagination(paginationRequest)
+               .ToListAsync());
+
+            return paginationRequest != null 
+                ? new PaginationResponse<ProductDisplayDto>(productListDtos, paginationRequest, await query.CountAsync())
+                : new DataResponse<List<ProductDisplayDto>>(productListDtos, CommonMessages.EntityListed);
+        }
+
+
+        public async Task<DataResponse<List<ProductDisplayDto>>> GetSelectedProducts()
+        {
+            List<Product> products = await _productDal
+                .GetAllQueryable(p => !p.IsDeleted && p.IsActive && p.IsSelected)
+                .OrderBy(p => p.Order)
+                .ToListAsync();
+
+            return new DataResponse<List<ProductDisplayDto>>(_mapper.Map<List<ProductDisplayDto>>(products), CommonMessages.EntityListed);
+        }
+
 
         [SecuredOperation("admin", Priority = 1)]
         [ValidationAspect(typeof(ProductUpsertDtoValidator))]
