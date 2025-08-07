@@ -66,6 +66,9 @@ namespace Business.DependencyResolvers.Autofac
 
             builder.RegisterType<TableManager>().As<ITableService>().InstancePerLifetimeScope();
             builder.RegisterType<EfTableDal>().As<ITableDal>().InstancePerLifetimeScope();
+            
+            builder.RegisterType<PageContentManager>().As<IPageContentService>().InstancePerLifetimeScope();
+            builder.RegisterType<EfPageContentDal>().As<IPageContentDal>().InstancePerLifetimeScope();
 
 
 
