@@ -1,4 +1,5 @@
-﻿using Business.Abstract;
+﻿using AutoMapper;
+using Business.Abstract;
 using Business.BusinessAspects.Autofac;
 using Business.Constants.Messages;
 using Business.ValidationRules.FluentValidation.PageContent;
@@ -18,26 +19,30 @@ namespace Business.Concrete
         readonly IPageContentDal _pageContentDal;
         readonly IFileHelper _fileHelper;
         readonly IUnitOfWork _unitOfWork;
+        readonly IMapper _mapper;
 
-        public PageContentManager(IPageContentDal pageContentDal, IFileHelper fileHelper, IUnitOfWork unitOfWork)
+        public PageContentManager(IPageContentDal pageContentDal, IFileHelper fileHelper, IUnitOfWork unitOfWork, IMapper mapper)
         {
             _pageContentDal = pageContentDal;
             _fileHelper = fileHelper;
             _unitOfWork = unitOfWork;
+            _mapper = mapper;
         }
 
 
         [SecuredOperation("admin", Priority = 1)]
-        [ValidationAspect(typeof(PageContentDtoValidator), Priority = 2)]
-        public async Task<UpdateSuccessResponse> Save(PageContentDto pageContentDto)
+        [ValidationAspect(typeof(PageContentUpdateDtoValidator), Priority = 2)]
+        public async Task<UpdateSuccessResponse> Update(PageContentUpdateDto pageContentUpdateDto)
         {
-            PageContent? pageContent = await _pageContentDal.GetByIdAsync(pageContentDto.Id);
+            PageContent? pageContent = await _pageContentDal
+                .GetByIdAsync(pageContentUpdateDto.Id);
+
 
             if (pageContent == null)
                 throw new EntityNotFoundException("İçerik");
 
 
-            bool onlyImageNeed = pageContentDto.Id switch
+            bool onlyImageNeed = pageContentUpdateDto.Id switch
             {
                 PageContentIds.HomeHero
                 or PageContentIds.HomeMenuSection
@@ -53,16 +58,16 @@ namespace Business.Concrete
 
             if (onlyImageNeed)
             {
-                pageContentDto.Description = null;
+                pageContentUpdateDto.Description = null;
 
-                ImageRespone imageRespone = await _fileHelper.Update(pageContentDto.ImagePath!, pageContent.ImageName!);
+                ImageRespone imageRespone = await _fileHelper.Update(pageContentUpdateDto.ImagePath!, pageContent.ImageName!);
                 
                 pageContent.ImagePath = imageRespone.Path;
                 pageContent.ImageName = imageRespone.Name;
             }
 
 
-            bool onlyDescriptionNeed = pageContentDto.Id switch
+            bool onlyDescriptionNeed = pageContentUpdateDto.Id switch
             {
                 PageContentIds.AboutFirstText
                 or PageContentIds.AboutSecondText => true,
@@ -71,16 +76,32 @@ namespace Business.Concrete
 
 
             if (onlyDescriptionNeed)
-                pageContentDto.ImagePath = null;
+                pageContentUpdateDto.ImagePath = null;
             
 
-            pageContent.Description = pageContentDto.Description;
+            pageContent.Description = pageContentUpdateDto.Description;
             pageContent.UpdateDate = DateTime.Now;
 
 
             await _unitOfWork.SaveChangesAsync();
 
             return new UpdateSuccessResponse(CommonMessages.EntityUpdated);
+        }
+
+
+
+        [SecuredOperation("admin")] 
+        public async Task<DataResponse<List<PageContentListDto>>> GetAll(byte page)
+        {
+            List<PageContent> pageContents = await _pageContentDal
+                .GetAllAsync(p => p.Page == page);
+
+
+            if (pageContents.Count <= 0)
+                throw new EntityNotFoundException("Sayfa");
+
+
+            return new DataResponse<List<PageContentListDto>>(_mapper.Map<List<PageContentListDto>>(pageContents));
         }
 
     }

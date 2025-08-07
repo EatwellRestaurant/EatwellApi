@@ -18,9 +18,15 @@ namespace WebAPI.Controllers
 
 
 
-        [HttpPut]
-        public async Task<IActionResult> Save([FromForm] PageContentDto pageContentDto)
-            => Ok(await _pageContentService.Save(pageContentDto));
+        [HttpPut] 
+        public async Task<IActionResult> Update([FromForm] PageContentUpdateDto pageContentDto)
+            => Ok(await _pageContentService.Update(pageContentDto));
+        
+        
+        
+        [HttpGet]
+        public async Task<IActionResult> GetAll(byte page)
+            => Ok(await _pageContentService.GetAll(page));
         
     
     }

@@ -3,10 +3,12 @@ using Entities.Concrete;
 using Entities.Dtos.Branch;
 using Entities.Dtos.City;
 using Entities.Dtos.MealCategory;
+using Entities.Dtos.PageContent;
 using Entities.Dtos.Product;
 using Entities.Dtos.Reservation;
 using Entities.Dtos.Table;
 using Entities.Dtos.User;
+using Entities.Enums;
 using Microsoft.EntityFrameworkCore.SqlServer.Internal;
 
 namespace Business.Mapping
@@ -127,6 +129,16 @@ namespace Business.Mapping
 
 
             CreateMap<Product, ProductDisplayDto>();
+
+            #endregion
+
+
+
+            #region PageContent
+
+            CreateMap<PageContent, PageContentListDto>()
+                .ForMember(dest => dest.SectionId, opt => opt.MapFrom(src => src.Section))
+                .ForMember(dest => dest.SectionName, opt => opt.MapFrom(src => ((SectionEnum)src.Section).ToString()));
 
             #endregion
 

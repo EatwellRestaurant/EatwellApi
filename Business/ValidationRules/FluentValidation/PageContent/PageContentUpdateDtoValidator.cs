@@ -12,9 +12,9 @@ using System.Threading.Tasks;
 
 namespace Business.ValidationRules.FluentValidation.PageContent
 {
-    public class PageContentDtoValidator : AbstractValidator<PageContentDto>
+    public class PageContentUpdateDtoValidator : AbstractValidator<PageContentUpdateDto>
     {
-        public PageContentDtoValidator()
+        public PageContentUpdateDtoValidator()
         {
             RuleFor(p => p).Custom((dto, context) =>
             {
