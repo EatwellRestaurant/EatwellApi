@@ -15,6 +15,6 @@ namespace Entities.Dtos.PageContent
 
         public string? Description { get; set; }
 
-        public IFormFile? ImagePath { get; set; }
+        public IFormFile? Image { get; set; }
     }
 }

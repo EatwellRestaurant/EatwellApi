@@ -18,11 +18,11 @@ namespace Business.ValidationRules.FluentValidation.PageContent
         {
             RuleFor(p => p).Custom((dto, context) =>
             {
-                string? message = GetImagePathErrorMessage(dto.Id, dto.ImagePath);
+                string? message = GetImagePathErrorMessage(dto.Id, dto.Image);
 
 
                 if (message is not null)
-                    context.AddFailure(nameof(dto.ImagePath), message);
+                    context.AddFailure(nameof(dto.Image), message);
             }); 
             
             

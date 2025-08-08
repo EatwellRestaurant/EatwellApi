@@ -32,7 +32,7 @@ namespace Business.Concrete
 
         [SecuredOperation("admin", Priority = 1)]
         [ValidationAspect(typeof(PageContentUpdateDtoValidator), Priority = 2)]
-        public async Task<UpdateSuccessResponse> Update(PageContentUpdateDto pageContentUpdateDto)
+        public async Task<DataResponse<string?>> Update(PageContentUpdateDto pageContentUpdateDto)
         {
             PageContent? pageContent = await _pageContentDal
                 .GetByIdAsync(pageContentUpdateDto.Id);
@@ -57,40 +57,42 @@ namespace Business.Concrete
 
 
             if (onlyImageNeed)
-            {
                 pageContentUpdateDto.Description = null;
+            else
+            {
+                bool onlyDescriptionNeed = pageContentUpdateDto.Id switch
+                {
+                    PageContentIds.AboutFirstText
+                    or PageContentIds.AboutSecondText => true,
+                    _ => false
+                };
 
-                ImageRespone imageRespone = await _fileHelper.Update(pageContentUpdateDto.ImagePath!, pageContent.ImageName!);
-                
+
+                if (onlyDescriptionNeed)
+                    pageContentUpdateDto.Image = null;
+            }
+
+
+            if (pageContentUpdateDto.Image != null)
+            {
+                ImageRespone imageRespone = await _fileHelper.Update(pageContentUpdateDto.Image!, pageContent.ImageName!);
+
                 pageContent.ImagePath = imageRespone.Path;
                 pageContent.ImageName = imageRespone.Name;
             }
 
 
-            bool onlyDescriptionNeed = pageContentUpdateDto.Id switch
-            {
-                PageContentIds.AboutFirstText
-                or PageContentIds.AboutSecondText => true,
-                _ => false
-            };
-
-
-            if (onlyDescriptionNeed)
-                pageContentUpdateDto.ImagePath = null;
-            
-
             pageContent.Description = pageContentUpdateDto.Description;
             pageContent.UpdateDate = DateTime.Now;
 
-
             await _unitOfWork.SaveChangesAsync();
 
-            return new UpdateSuccessResponse(CommonMessages.EntityUpdated);
+            return new DataResponse<string?>(pageContent.ImagePath ,CommonMessages.EntityUpdated);
         }
 
 
 
-        [SecuredOperation("admin")] 
+        [SecuredOperation("admin")]
         public async Task<DataResponse<List<PageContentListDto>>> GetAll(byte page)
         {
             List<PageContent> pageContents = await _pageContentDal

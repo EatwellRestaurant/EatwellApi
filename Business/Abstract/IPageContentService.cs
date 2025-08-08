@@ -10,7 +10,7 @@ namespace Business.Abstract
 {
     public interface IPageContentService 
     {
-        Task<UpdateSuccessResponse> Update(PageContentUpdateDto pageContentDto);
+        Task<DataResponse<string?>> Update(PageContentUpdateDto pageContentDto);
 
         Task<DataResponse<List<PageContentListDto>>> GetAll(byte page);
     }
