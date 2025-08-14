@@ -82,7 +82,7 @@ namespace Business.Concrete
             }
 
 
-            pageContent.Description = pageContentUpdateDto.Description;
+            pageContent.Description = pageContentUpdateDto.Description ?? pageContent.Description;
             pageContent.UpdateDate = DateTime.Now;
 
             await _unitOfWork.SaveChangesAsync();
@@ -92,7 +92,6 @@ namespace Business.Concrete
 
 
 
-        [SecuredOperation("admin")]
         public async Task<DataResponse<List<PageContentListDto>>> GetAll(byte page)
         {
             List<PageContent> pageContents = await _pageContentDal

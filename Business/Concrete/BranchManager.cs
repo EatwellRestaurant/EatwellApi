@@ -2,6 +2,7 @@
 using Business.Abstract;
 using Business.BusinessAspects.Autofac;
 using Business.Constants.Messages;
+using Business.Constants.Messages.Entity;
 using Business.ValidationRules.FluentValidation.Branch;
 using Core.Aspects.Autofac.Validation;
 using Core.Exceptions.Branch;
@@ -173,6 +174,45 @@ namespace Business.Concrete
         }
 
 
+
+        [SecuredOperation("admin", Priority = 1)]
+        public async Task<UpdateSuccessResponse> SetBranchAsHeadOffice(int branchId)
+        {
+            Branch? branch = await _branchDal
+                .GetAsync(b => b.Id == branchId && !b.IsDeleted);
+
+            if (branch == null)
+                throw new EntityNotFoundException("Şube");
+
+
+            if (!branch.IsHeadOffice)
+            {
+                Branch? headOffice = await _branchDal
+                    .GetAsync(b => b.IsHeadOffice && !b.IsDeleted);
+
+                if (headOffice != null)
+                    headOffice.IsHeadOffice = false;
+                
+                branch.IsHeadOffice = true;
+            }
+
+            await _unitOfWork.SaveChangesAsync();
+            return new UpdateSuccessResponse(BranchMessages.HeadOfficeSet);
+        }
+
+
+
+        public async Task<DataResponse<BranchDetailDto>> GetHeadOffice()
+        {
+            Branch? branch = await _branchDal
+                .GetAsNoTrackingAsync(b => b.IsHeadOffice && !b.IsDeleted);
+
+            if (branch == null)
+                throw new EntityNotFoundException("Genel merkez");
+
+
+            return new DataResponse<BranchDetailDto>(_mapper.Map<BranchDetailDto>(branch));
+        }
 
 
 

@@ -18,7 +18,7 @@ namespace Business.ValidationRules.FluentValidation.PageContent
         {
             RuleFor(p => p).Custom((dto, context) =>
             {
-                string? message = GetImagePathErrorMessage(dto.Id, dto.Image);
+                string? message = GetImagePathErrorMessage(dto.Id, dto.Image, dto.Description);
 
 
                 if (message is not null)
@@ -45,9 +45,6 @@ namespace Business.ValidationRules.FluentValidation.PageContent
             {
                 return id switch
                 {
-                    PageContentIds.HomeAboutSection =>
-                        "Anasayfa hakkımda bölümü için açıklama metni zorunludur.",
-
                     PageContentIds.AboutFirstText =>
                         "Hakkımda sayfasının ilk metin alanı zorunludur.",
                     
@@ -61,7 +58,7 @@ namespace Business.ValidationRules.FluentValidation.PageContent
             return null;
         } 
 
-        private string? GetImagePathErrorMessage(int id, IFormFile? imagePath)
+        private string? GetImagePathErrorMessage(int id, IFormFile? imagePath, string? description)
         {
             if (imagePath is null)
             {
@@ -70,8 +67,8 @@ namespace Business.ValidationRules.FluentValidation.PageContent
                     PageContentIds.HomeHero =>
                         "Anasayfa hero bölümü için görsel zorunludur.",
 
-                    PageContentIds.HomeAboutSection =>
-                        "Anasayfa hakkımda bölümü için görsel zorunludur.",
+                    PageContentIds.HomeAboutSection when description is null =>
+                        "Anasayfa hakkımda bölümü için görsel veya metin giriniz.",
 
                     PageContentIds.HomeMenuSection => 
                         "Anasayfa menü bölümü için görsel zorunludur.",

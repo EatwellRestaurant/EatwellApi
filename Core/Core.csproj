@@ -7,8 +7,11 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Entities\Concrete\**" />
     <Compile Remove="Exceptions\MealCategory\**" />
+    <EmbeddedResource Remove="Entities\Concrete\**" />
     <EmbeddedResource Remove="Exceptions\MealCategory\**" />
+    <None Remove="Entities\Concrete\**" />
     <None Remove="Exceptions\MealCategory\**" />
   </ItemGroup>
 
@@ -29,10 +32,6 @@
     <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="8.3.0" />
     <PackageReference Include="StackExchange.Redis" Version="2.8.31" />
     <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.3.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Entities\Concrete\" />
   </ItemGroup>
 
 

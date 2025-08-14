@@ -25,5 +25,9 @@ namespace Business.Abstract
         Task<DeleteSuccessResponse> Delete(int branchId);
         
         Task<UpdateSuccessResponse> Update(int branchId, BranchUpdateDto updateDto);
+
+        Task<UpdateSuccessResponse> SetBranchAsHeadOffice(int branchId);
+
+        Task<DataResponse<BranchDetailDto>> GetHeadOffice();
     }
 } 
