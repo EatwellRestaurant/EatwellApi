@@ -30,6 +30,7 @@ namespace Entities.Concrete
 
 
         public MealCategory MealCategory { get; set; }
+        public ICollection<OrderProduct> OrderProducts { get; set; }
 
     }
 }

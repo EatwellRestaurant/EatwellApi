@@ -17,5 +17,6 @@ namespace Entities.Concrete
 
         public Branch Branch { get; set; }
         public ICollection<Reservation> Reservations { get; set; }
+        public ICollection<Order> Orders { get; set; }
     }
 }

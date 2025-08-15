@@ -29,6 +29,7 @@ namespace DataAccess.Concrete.EntityFramework
         public DbSet<OperationClaim> OperationClaims { get; set; }
         public DbSet<Table> Tables { get; set; }
         public DbSet<PageContent> PageContents { get; set; }
+        public DbSet<Order> Orders { get; set; }
 
 
 

@@ -176,10 +176,12 @@ namespace Business.Concrete
 
 
         [SecuredOperation("admin", Priority = 1)]
-        public async Task<UpdateSuccessResponse> SetBranchAsHeadOffice(int branchId)
+        public async Task<DataResponse<BranchDetailDto>> SetBranchAsHeadOffice(int branchId)
         {
             Branch? branch = await _branchDal
-                .GetAsync(b => b.Id == branchId && !b.IsDeleted);
+                .Where(b => b.Id == branchId && !b.IsDeleted)
+                .Include(b => b.City)
+                .SingleOrDefaultAsync();
 
             if (branch == null)
                 throw new EntityNotFoundException("Şube");
@@ -197,7 +199,7 @@ namespace Business.Concrete
             }
 
             await _unitOfWork.SaveChangesAsync();
-            return new UpdateSuccessResponse(BranchMessages.HeadOfficeSet);
+            return new DataResponse<BranchDetailDto>(_mapper.Map<BranchDetailDto>(branch), BranchMessages.HeadOfficeSet);
         }
 
 
@@ -205,7 +207,10 @@ namespace Business.Concrete
         public async Task<DataResponse<BranchDetailDto>> GetHeadOffice()
         {
             Branch? branch = await _branchDal
-                .GetAsNoTrackingAsync(b => b.IsHeadOffice && !b.IsDeleted);
+                .Where(b => b.IsHeadOffice && !b.IsDeleted)
+                .Include(b => b.City)
+                .AsNoTracking()
+                .SingleOrDefaultAsync();
 
             if (branch == null)
                 throw new EntityNotFoundException("Genel merkez");

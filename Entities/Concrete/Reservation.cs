@@ -29,6 +29,7 @@ namespace Entities.Concrete
 
         public Branch Branch { get; set; }
         public Table Table { get; set; }
+        public Order Order { get; set; }
 
 
     }
