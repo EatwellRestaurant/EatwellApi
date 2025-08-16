@@ -3,6 +3,7 @@ using Entities.Concrete;
 using Entities.Dtos.Branch;
 using Entities.Dtos.City;
 using Entities.Dtos.MealCategory;
+using Entities.Dtos.Order;
 using Entities.Dtos.PageContent;
 using Entities.Dtos.Product;
 using Entities.Dtos.Reservation;
@@ -141,6 +142,17 @@ namespace Business.Mapping
                 .ForMember(dest => dest.SectionName, opt => opt.MapFrom(src => ((SectionEnum)src.Section).ToString()));
 
             #endregion
+
+
+
+
+            #region Order
+
+            CreateMap<OrderInsertDto, Order>()
+                .ForMember(dest => dest.Status, opt => opt.MapFrom(src => true));
+
+            #endregion
+
 
         }
     }

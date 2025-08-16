@@ -21,7 +21,7 @@ using Service.Concrete;
 
 namespace Business.Concrete
 {
-    public class ReservationManager : IReservationService
+    public class ReservationManager : Manager<Reservation>, IReservationService
     {
         readonly IReservationDal _reservationDal;
         readonly IMapper _mapper;
@@ -34,7 +34,8 @@ namespace Business.Concrete
             IMapper mapper,
             IUnitOfWork unitOfWork,
             IBranchService branchService,
-            ITableService tableService)
+            ITableService tableService) 
+            : base (reservationDal)
         {
             _reservationDal = reservationDal;
             _mapper = mapper;

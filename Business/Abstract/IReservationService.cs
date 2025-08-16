@@ -4,6 +4,7 @@ using Core.Utilities.Results;
 using Entities.Concrete;
 using Entities.Dtos.Reservation;
 using Entities.Filters;
+using Service.Abstract;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace Business.Abstract
 {
-    public interface IReservationService
+    public interface IReservationService : IService<Reservation>
     {
         Task<PaginationResponse<ReservationListDto>> GetAllForAdmin(int branchId, PaginationRequest paginationRequest, ReservationFilter filter);
 

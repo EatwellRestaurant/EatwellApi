@@ -70,6 +70,9 @@ namespace Business.DependencyResolvers.Autofac
             builder.RegisterType<PageContentManager>().As<IPageContentService>().InstancePerLifetimeScope();
             builder.RegisterType<EfPageContentDal>().As<IPageContentDal>().InstancePerLifetimeScope();
 
+            builder.RegisterType<OrderManager>().As<IOrderService>().InstancePerLifetimeScope();
+            builder.RegisterType<EfOrderDal>().As<IOrderDal>().InstancePerLifetimeScope();
+
 
 
             var assembly = System.Reflection.Assembly.GetExecutingAssembly();

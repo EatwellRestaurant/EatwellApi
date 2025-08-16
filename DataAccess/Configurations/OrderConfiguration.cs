@@ -13,6 +13,10 @@ namespace DataAccess.Configurations
     {
         public void Configure(EntityTypeBuilder<Order> builder)
         {
+ 
+            builder.Property(o => o.Status).HasDefaultValue(true);
+
+
             builder.HasOne(o => o.Branch).WithMany(b => b.Orders).HasForeignKey(o => o.BranchId).OnDelete(DeleteBehavior.Restrict);
             builder.HasOne(o => o.Table).WithMany(t => t.Orders).HasForeignKey(o => o.TableId).OnDelete(DeleteBehavior.Restrict);
             builder.HasOne(o => o.Reservation).WithOne(r => r.Order).HasForeignKey<Order>(o => o.ReservationId).OnDelete(DeleteBehavior.Restrict);

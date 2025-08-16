@@ -18,11 +18,12 @@ using Entities.Concrete;
 using Entities.Dtos.MealCategory;
 using Entities.Dtos.Product;
 using Microsoft.EntityFrameworkCore;
+using Service.Concrete;
 using System.Linq;
 
 namespace Business.Concrete
 {
-    public class ProductManager : IProductService
+    public class ProductManager : Manager<Product>, IProductService
     {
         readonly IProductDal _productDal;
         readonly IFileHelper _fileHelper;
@@ -36,6 +37,7 @@ namespace Business.Concrete
             IUnitOfWork unitOfWork, 
             IMealCategoryService mealCategoryService, 
             IMapper mapper)
+            : base(productDal)
         {
             _productDal = productDal;
             _fileHelper = fileHelper;

@@ -8,6 +8,11 @@ namespace Entities.Concrete
 {
     public class Order : BaseEntity
     {
+        public Order() 
+        { 
+            OrderProducts = new HashSet<OrderProduct>();
+        }
+
         public int BranchId { get; set; }
 
         public int TableId { get; set; }
@@ -18,7 +23,7 @@ namespace Entities.Concrete
 
         public bool Status { get; set; }
 
-        public byte? PaymentMethod { get; set; }
+        public byte PaymentMethod { get; set; }
 
 
 

@@ -5,6 +5,7 @@ using Entities.Concrete;
 using Entities.Dtos;
 using Entities.Dtos.Product;
 using Microsoft.AspNetCore.Http;
+using Service.Abstract;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace Business.Abstract
 {
-    public interface IProductService
+    public interface IProductService : IService<Product>
     {
         Task<PaginationResponse<ProductAdminListDto>> GetAllForAdminByMealCategoryId(int mealCategoryId, PaginationRequest paginationRequest);
 
