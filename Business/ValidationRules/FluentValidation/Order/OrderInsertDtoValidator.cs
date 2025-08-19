@@ -23,14 +23,6 @@ namespace Business.ValidationRules.FluentValidation.Order
                 .WithMessage("Lütfen masa giriniz!");
 
 
-            RuleFor(o => o.PaymentMethod)
-                .Cascade(CascadeMode.Stop)
-                .GreaterThan((byte)0)
-                .WithMessage("Lütfen ödeme yöntemini giriniz!")
-                .Must(o => Enum.IsDefined(typeof(PaymentMethodEnum), o))
-                .WithMessage("Geçerli bir ödeme yöntemi giriniz!");
-
-
             RuleFor(o => o.Products)
                 .Must(o => o.Count > 0)
                 .WithMessage("Lütfen siparişinize en az bir ürün ekleyin.");

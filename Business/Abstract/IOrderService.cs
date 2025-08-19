@@ -13,5 +13,11 @@ namespace Business.Abstract
     public interface IOrderService : IService<Order>
     {
         Task<CreateSuccessResponse> Add(OrderInsertDto orderInsertDto);
+
+        Task<UpdateSuccessResponse> Pay(int orderId, OrderPaymentDto orderPaymentDto);
+
+        Task<DataResponse<int>> GetOrderCount(int? branchId);
+
+        Task<DataResponse<decimal>> CalculateTotalSales(int? branchId);
     }
 }

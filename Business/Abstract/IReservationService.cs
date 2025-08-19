@@ -24,5 +24,7 @@ namespace Business.Abstract
         IResult Delete(Reservation reservation);
         
         IResult Update(Reservation reservation);
+
+        Task<DataResponse<int>> GetReservationCount(int? branchId);
     }
 }

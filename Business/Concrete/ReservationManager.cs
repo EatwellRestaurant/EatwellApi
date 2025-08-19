@@ -106,6 +106,7 @@ namespace Business.Concrete
         }
 
 
+
         [ValidationAspect(typeof(ReservationUpsertDtoValidator))]
         public IResult Update(Reservation reservation)
         {
@@ -113,6 +114,12 @@ namespace Business.Concrete
             return new SuccessResult(ReservationMessages.ReservationUpdated);
         }
 
+
+
+        [SecuredOperation("admin")]
+        public async Task<DataResponse<int>> GetReservationCount(int? branchId)
+            => new DataResponse<int>(await _reservationDal
+                .CountAsync(r => (branchId.HasValue ? r.BranchId == branchId : true) && !r.IsDeleted));
 
 
 

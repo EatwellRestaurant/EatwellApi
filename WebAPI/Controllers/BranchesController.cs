@@ -36,21 +36,9 @@ namespace WebAPI.Controllers
 
 
 
-        [HttpPut]
-        public async Task<IActionResult> SetBranchAsHeadOffice(int branchId)
-            => Ok(await _branchService.SetBranchAsHeadOffice(branchId));
-
-
-
         [HttpGet]
         public async Task<IActionResult> GetForAdmin(int branchId) 
             => Ok(await _branchService.GetForAdmin(branchId));
-
-
-
-        [HttpGet]
-        public async Task<IActionResult> GetHeadOffice()
-            => Ok(await _branchService.GetHeadOffice());
 
 
 
@@ -68,5 +56,6 @@ namespace WebAPI.Controllers
         [HttpGet] 
         public async Task<IActionResult> GetAllForAdminByCityId(int cityId, [FromQuery] PaginationRequest paginationRequest) 
             => Ok(await _branchService.GetAllForAdminByCityId(cityId, paginationRequest));
+
     }
 }

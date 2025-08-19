@@ -2,7 +2,6 @@
 using Business.Abstract;
 using Business.BusinessAspects.Autofac;
 using Business.Constants.Messages;
-using Business.Constants.Messages.Entity;
 using Business.ValidationRules.FluentValidation.Branch;
 using Core.Aspects.Autofac.Validation;
 using Core.Exceptions.Branch;
@@ -11,10 +10,8 @@ using Core.Extensions;
 using Core.Requests;
 using Core.ResponseModels;
 using DataAccess.Abstract;
-using DataAccess.Concrete.EntityFramework;
 using Entities.Concrete;
 using Entities.Dtos.Branch;
-using Entities.Dtos.Product;
 using Microsoft.EntityFrameworkCore;
 using Service.Concrete;
 
@@ -27,7 +24,12 @@ namespace Business.Concrete
         readonly IUnitOfWork _unitOfWork;
         readonly ICityService _cityService;
 
-        public BranchManager(IBranchDal branchDal, IMapper mapper, IUnitOfWork unitOfWork, ICityService cityService) : base(branchDal)
+        public BranchManager
+            (IBranchDal branchDal,
+            IMapper mapper,
+            IUnitOfWork unitOfWork,
+            ICityService cityService)
+            : base(branchDal)
         {
             _branchDal = branchDal;
             _mapper = mapper;
@@ -173,51 +175,6 @@ namespace Business.Concrete
             return new UpdateSuccessResponse(CommonMessages.EntityUpdated);
         }
 
-
-
-        [SecuredOperation("admin", Priority = 1)]
-        public async Task<DataResponse<BranchDetailDto>> SetBranchAsHeadOffice(int branchId)
-        {
-            Branch? branch = await _branchDal
-                .Where(b => b.Id == branchId && !b.IsDeleted)
-                .Include(b => b.City)
-                .SingleOrDefaultAsync();
-
-            if (branch == null)
-                throw new EntityNotFoundException("Şube");
-
-
-            if (!branch.IsHeadOffice)
-            {
-                Branch? headOffice = await _branchDal
-                    .GetAsync(b => b.IsHeadOffice && !b.IsDeleted);
-
-                if (headOffice != null)
-                    headOffice.IsHeadOffice = false;
-                
-                branch.IsHeadOffice = true;
-            }
-
-            await _unitOfWork.SaveChangesAsync();
-            return new DataResponse<BranchDetailDto>(_mapper.Map<BranchDetailDto>(branch), BranchMessages.HeadOfficeSet);
-        }
-
-
-
-        public async Task<DataResponse<BranchDetailDto>> GetHeadOffice()
-        {
-            Branch? branch = await _branchDal
-                .Where(b => b.IsHeadOffice && !b.IsDeleted)
-                .Include(b => b.City)
-                .AsNoTracking()
-                .SingleOrDefaultAsync();
-
-            if (branch == null)
-                throw new EntityNotFoundException("Genel merkez");
-
-
-            return new DataResponse<BranchDetailDto>(_mapper.Map<BranchDetailDto>(branch));
-        }
 
 
 

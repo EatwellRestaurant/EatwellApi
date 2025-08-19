@@ -21,5 +21,13 @@ namespace WebAPI.Controllers
         [HttpPost]
         public async Task<IActionResult> Add(OrderInsertDto orderInsertDto)
             => Ok(await _orderService.Add(orderInsertDto));
+
+
+
+        [HttpPut]
+        public async Task<IActionResult> Pay(int orderId, OrderPaymentDto orderPaymentDto)
+            => Ok(await _orderService.Pay(orderId, orderPaymentDto));
+
+
     }
 }

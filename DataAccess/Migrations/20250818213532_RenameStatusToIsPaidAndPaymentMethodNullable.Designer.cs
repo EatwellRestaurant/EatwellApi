@@ -4,6 +4,7 @@ using DataAccess.Concrete.EntityFramework;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(RestaurantContext))]
-    partial class RestaurantContextModelSnapshot : ModelSnapshot
+    [Migration("20250818213532_RenameStatusToIsPaidAndPaymentMethodNullable")]
+    partial class RenameStatusToIsPaidAndPaymentMethodNullable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -33,7 +36,7 @@ namespace DataAccess.Migrations
                     b.Property<DateTime>("CreateDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2025, 8, 19, 0, 42, 2, 441, DateTimeKind.Local).AddTicks(5946));
+                        .HasDefaultValue(new DateTime(2025, 8, 19, 0, 35, 32, 312, DateTimeKind.Local).AddTicks(6216));
 
                     b.Property<DateTime?>("DeleteDate")
                         .HasColumnType("datetime2");
@@ -626,7 +629,7 @@ namespace DataAccess.Migrations
                     b.Property<DateTime>("CreateDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2025, 8, 19, 0, 42, 2, 442, DateTimeKind.Local).AddTicks(7066));
+                        .HasDefaultValue(new DateTime(2025, 8, 19, 0, 35, 32, 313, DateTimeKind.Local).AddTicks(6409));
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
@@ -765,6 +768,9 @@ namespace DataAccess.Migrations
 
                     b.Property<string>("Instagram")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsHeadOffice")
+                        .HasColumnType("bit");
 
                     b.Property<string>("Name")
                         .IsRequired()

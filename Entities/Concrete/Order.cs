@@ -21,9 +21,9 @@ namespace Entities.Concrete
 
         public decimal TotalPrice { get; set; }
 
-        public bool Status { get; set; }
+        public bool IsPaid { get; set; }
 
-        public byte PaymentMethod { get; set; }
+        public byte? PaymentMethod { get; set; }
 
 
 

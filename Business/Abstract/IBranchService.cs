@@ -3,6 +3,7 @@ using Core.ResponseModels;
 using Core.Utilities.Results;
 using Entities.Concrete;
 using Entities.Dtos.Branch;
+using Entities.Dtos.Order;
 using Service.Abstract;
 using System;
 using System.Collections.Generic;
@@ -26,8 +27,5 @@ namespace Business.Abstract
         
         Task<UpdateSuccessResponse> Update(int branchId, BranchUpdateDto updateDto);
 
-        Task<DataResponse<BranchDetailDto>> SetBranchAsHeadOffice(int branchId);
-
-        Task<DataResponse<BranchDetailDto>> GetHeadOffice();
     }
 } 

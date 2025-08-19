@@ -14,7 +14,7 @@ namespace DataAccess.Configurations
         public void Configure(EntityTypeBuilder<Order> builder)
         {
  
-            builder.Property(o => o.Status).HasDefaultValue(true);
+            builder.Property(o => o.IsPaid).HasDefaultValue(true);
 
 
             builder.HasOne(o => o.Branch).WithMany(b => b.Orders).HasForeignKey(o => o.BranchId).OnDelete(DeleteBehavior.Restrict);

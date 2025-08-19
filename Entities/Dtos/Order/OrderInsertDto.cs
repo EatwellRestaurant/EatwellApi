@@ -15,8 +15,6 @@ namespace Entities.Dtos.Order
 
         public int? ReservationId { get; set; }
 
-        public byte PaymentMethod { get; set; }
-
         public List<OrderProductDto> Products { get; set; }
 
     }

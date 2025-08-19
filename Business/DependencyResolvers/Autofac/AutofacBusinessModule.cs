@@ -28,8 +28,10 @@ namespace Business.DependencyResolvers.Autofac
         {
             builder.RegisterType<RestaurantContext>().InstancePerLifetimeScope();
             builder.RegisterType<FileHelper>().As<IFileHelper>().InstancePerLifetimeScope();
-            builder.RegisterType<DashboardManager>().As<IDashboardService>().SingleInstance();
             builder.RegisterType<SendinblueService>().As<IEmailService>().SingleInstance();
+            
+            builder.RegisterType<DashboardManager>().As<IDashboardService>().SingleInstance();
+            builder.RegisterType<BranchStatisticsManager>().As<IBranchStatisticsService>().SingleInstance();
 
             builder.RegisterType<BranchManager>().As<IBranchService>().SingleInstance();
             builder.RegisterType<EfBranchDal>().As<IBranchDal>().SingleInstance();

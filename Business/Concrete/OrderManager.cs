@@ -2,14 +2,17 @@
 using Business.Abstract;
 using Business.BusinessAspects.Autofac;
 using Business.Constants.Messages;
+using Business.Constants.Messages.Entity;
 using Business.ValidationRules.FluentValidation.Order;
 using Core.Aspects.Autofac.Validation;
 using Core.Exceptions.General;
+using Core.Exceptions.Order;
 using Core.Exceptions.Reservation;
 using Core.ResponseModels;
 using DataAccess.Abstract;
 using Entities.Concrete;
 using Entities.Dtos.Order;
+using Entities.Enums;
 using Microsoft.EntityFrameworkCore;
 using Service.Concrete;
 
@@ -128,5 +131,45 @@ namespace Business.Concrete
         }
 
 
+
+        [SecuredOperation("employee", Priority = 1)]
+        [ValidationAspect(typeof(OrderPaymentDtoValidator), Priority = 2)]
+        public async Task<UpdateSuccessResponse> Pay(int orderId, OrderPaymentDto orderPaymentDto)
+        {
+            Order? order = await _orderDal
+                .GetAsync(o => o.Id == orderId && !o.IsDeleted);
+
+
+            if (order == null)
+                throw new EntityNotFoundException("Sipariş");
+
+
+            if (order.IsPaid)
+                throw new OrderAlreadyPaidException();
+
+
+            order.IsPaid = true;
+            order.PaymentMethod = orderPaymentDto.PaymentMethod;
+
+            await _unitOfWork.SaveChangesAsync();
+
+            return new UpdateSuccessResponse(OrderMessages.OrderPaid);
+        }
+
+
+
+        [SecuredOperation("admin")]
+        public async Task<DataResponse<int>> GetOrderCount(int? branchId) 
+            => new DataResponse<int>(await _orderDal
+                .CountAsync(o => (branchId.HasValue ? o.BranchId == branchId : true) && !o.IsDeleted));
+        
+        
+        
+        [SecuredOperation("admin")] 
+        public async Task<DataResponse<decimal>> CalculateTotalSales(int? branchId) 
+            => new DataResponse<decimal>(await _orderDal
+                .Where(o => (branchId.HasValue ? o.BranchId == branchId : true) && !o.IsDeleted)
+                .SumAsync(o => o.TotalPrice));
+        
     }
-}
+} 
