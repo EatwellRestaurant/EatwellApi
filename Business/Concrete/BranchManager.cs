@@ -14,6 +14,7 @@ using Entities.Concrete;
 using Entities.Dtos.Branch;
 using Microsoft.EntityFrameworkCore;
 using Service.Concrete;
+using System.Globalization;
 
 namespace Business.Concrete
 {
@@ -49,10 +50,10 @@ namespace Business.Concrete
 
             await CheckIfBranchAddressExists(insertDto.Address);
 
-            
+
             await _branchDal.AddAsync(_mapper.Map<Branch>(insertDto));
             await _unitOfWork.SaveChangesAsync();
-            
+
             return new CreateSuccessResponse(CommonMessages.EntityAdded);
         }
 
@@ -66,7 +67,7 @@ namespace Business.Concrete
             // Bunun yerine DateTime.Now değerini bir değişkene atayıp, 
             // sorguya sabit bir değer olarak dahil ettik. Ve bu, sorgunun doğru çalışmasını sağladı.
 
-            DateTime now = DateTime.Now; 
+            DateTime now = DateTime.Now;
 
             Branch? branch = await _branchDal
                 .Where(b => b.Id == branchId && !b.IsDeleted)
@@ -158,11 +159,11 @@ namespace Business.Concrete
                 .SingleOrDefaultAsync()
                 ?? throw new EntityNotFoundException("Şube");
 
-            if (branch.Name != updateDto.Name) 
+            if (branch.Name != updateDto.Name)
                 await CheckIfBranchNameExists(updateDto.Name, branchId);
 
 
-            if (branch.Address != updateDto.Address) 
+            if (branch.Address != updateDto.Address)
                 await CheckIfBranchAddressExists(updateDto.Address, branchId);
 
 
@@ -178,6 +179,31 @@ namespace Business.Concrete
 
 
 
+        [SecuredOperation("admin", Priority = 1)]
+        public async Task<DataResponse<List<BranchSalesDto>>> GetAllBranchesMonthlySalesAsync()
+            => new
+            (await _branchDal
+                .GetAllQueryable(b => !b.IsDeleted)
+                .Include(b => b.Orders)
+                .Select(b => new BranchSalesDto
+                {
+                    Id = b.Id,
+                    Name = b.Name,
+                    Sales = b.Orders
+                    .GroupBy(o => o.CreateDate.Month)
+                    .Select(g => new MonthlySalesDto
+                    {
+                        MonthId = (byte)g.Key,
+                        MonthName = CultureInfo.CurrentCulture.DateTimeFormat.GetMonthName(g.Key),
+                        Sales = g.Sum(o => o.TotalPrice)
+                    })
+                    .ToList()
+                })
+                .ToListAsync());
+        
+
+
+
         #region BusinessRules
 
         private async Task CheckIfCityIdExists(int cityId)
@@ -185,8 +211,8 @@ namespace Business.Concrete
             if (!await _cityService.AnyAsync(c => c.Id == cityId))
                 throw new EntityNotFoundException("Şehir");
         }
-        
-        
+
+
         private async Task CheckIfBranchNameExists(string branchName, int? branchId = null)
         {
             if (await _branchDal.AnyAsync(b => b.Name == branchName && !b.IsDeleted && (branchId.HasValue ? b.Id != branchId : true)))

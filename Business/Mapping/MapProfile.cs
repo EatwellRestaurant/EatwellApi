@@ -148,8 +148,7 @@ namespace Business.Mapping
 
             #region Order
 
-            CreateMap<OrderInsertDto, Order>()
-                .ForMember(dest => dest.IsPaid, opt => opt.MapFrom(src => true));
+            CreateMap<OrderInsertDto, Order>();
 
             #endregion
 

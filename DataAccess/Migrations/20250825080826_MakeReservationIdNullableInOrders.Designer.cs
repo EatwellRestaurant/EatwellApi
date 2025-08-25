@@ -4,6 +4,7 @@ using DataAccess.Concrete.EntityFramework;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(RestaurantContext))]
-    partial class RestaurantContextModelSnapshot : ModelSnapshot
+    [Migration("20250825080826_MakeReservationIdNullableInOrders")]
+    partial class MakeReservationIdNullableInOrders
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -33,7 +36,7 @@ namespace DataAccess.Migrations
                     b.Property<DateTime>("CreateDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2025, 8, 25, 14, 44, 10, 789, DateTimeKind.Local).AddTicks(4510));
+                        .HasDefaultValue(new DateTime(2025, 8, 25, 11, 8, 26, 100, DateTimeKind.Local).AddTicks(7243));
 
                     b.Property<DateTime?>("DeleteDate")
                         .HasColumnType("datetime2");
@@ -626,7 +629,7 @@ namespace DataAccess.Migrations
                     b.Property<DateTime>("CreateDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2025, 8, 25, 14, 44, 10, 790, DateTimeKind.Local).AddTicks(7021));
+                        .HasDefaultValue(new DateTime(2025, 8, 25, 11, 8, 26, 101, DateTimeKind.Local).AddTicks(7422));
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
@@ -823,7 +826,7 @@ namespace DataAccess.Migrations
                     b.Property<bool>("IsPaid")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bit")
-                        .HasDefaultValue(false);
+                        .HasDefaultValue(true);
 
                     b.Property<byte?>("PaymentMethod")
                         .HasColumnType("tinyint");

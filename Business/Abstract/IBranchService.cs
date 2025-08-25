@@ -27,5 +27,7 @@ namespace Business.Abstract
         
         Task<UpdateSuccessResponse> Update(int branchId, BranchUpdateDto updateDto);
 
+        Task<DataResponse<List<BranchSalesDto>>> GetAllBranchesMonthlySalesAsync();
+
     }
 } 

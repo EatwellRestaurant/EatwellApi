@@ -1,5 +1,6 @@
 ﻿using Business.Abstract;
 using Core.Requests;
+using Core.ResponseModels;
 using Entities.Concrete;
 using Entities.Dtos.Branch;
 using Microsoft.AspNetCore.Http;
@@ -56,6 +57,12 @@ namespace WebAPI.Controllers
         [HttpGet] 
         public async Task<IActionResult> GetAllForAdminByCityId(int cityId, [FromQuery] PaginationRequest paginationRequest) 
             => Ok(await _branchService.GetAllForAdminByCityId(cityId, paginationRequest));
+
+
+
+        [HttpGet]
+        public async Task<IActionResult> GetAllBranchesMonthlySalesAsync()
+            => Ok(await _branchService.GetAllBranchesMonthlySalesAsync());
 
     }
 }
