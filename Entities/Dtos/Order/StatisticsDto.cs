@@ -9,5 +9,7 @@ namespace Entities.Dtos.Order
         public decimal TotalSales { get; set; }
 
         public List<BranchSalesDto> BranchSalesDtos { get; set; }
+
+        public BranchOverviewDto BranchOverviewDto { get; set; } 
     }
 }

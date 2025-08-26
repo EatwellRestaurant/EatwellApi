@@ -12,6 +12,7 @@ using Core.ResponseModels;
 using DataAccess.Abstract;
 using Entities.Concrete;
 using Entities.Dtos.Branch;
+using Entities.Enums;
 using Microsoft.EntityFrameworkCore;
 using Service.Concrete;
 using System.Globalization;
@@ -183,8 +184,7 @@ namespace Business.Concrete
         public async Task<DataResponse<List<BranchSalesDto>>> GetAllBranchesMonthlySalesAsync()
             => new
             (await _branchDal
-                .GetAllQueryable(b => !b.IsDeleted)
-                .Include(b => b.Orders)
+                .GetAllQueryable(b => !b.IsDeleted && b.Status == BranchStatusEnum.Opened)
                 .Select(b => new BranchSalesDto
                 {
                     Id = b.Id,
@@ -201,7 +201,46 @@ namespace Business.Concrete
                 })
                 .Where(b => b.Sales.Any())
                 .ToListAsync());
-        
+
+
+
+
+        [SecuredOperation("admin", Priority = 1)]
+        public async Task<DataResponse<BranchOverviewDto>> GetBranchOverviewAsync() 
+        {
+            List<Branch> branches = await _branchDal
+                .GetAllQueryable(b => !b.IsDeleted)
+                .Select(b => new Branch()
+                {
+                    Id = b.Id,
+                    Name = b.Name,
+                    Status = b.Status,
+                    EstimatedOpeningDate = b.EstimatedOpeningDate
+                })
+                .ToListAsync();
+
+
+            List<ActiveBranchDto> activeBranchDtos = _mapper
+                .Map<List<ActiveBranchDto>>(branches
+                .Where(b => b.Status == BranchStatusEnum.Opened)
+                .ToList());
+
+
+            List<PendingBranchDto> pendingBranchDtos = _mapper
+                .Map<List<PendingBranchDto>>(branches
+                .Where(b => b.Status != BranchStatusEnum.Opened)
+                .ToList());
+
+
+            return new DataResponse<BranchOverviewDto>(new() 
+            { 
+                ActiveBranchDtos = activeBranchDtos, 
+                PendingBranchDtos =  pendingBranchDtos 
+            }, 
+            CommonMessages.EntityListed);
+        } 
+
+
 
 
 

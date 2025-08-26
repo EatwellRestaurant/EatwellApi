@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Entities.Dtos.Branch
 {
-    public class PendingBranches : BaseBranchDto
+    public class ActiveBranchDto : BaseBranchDto
     {
     }
 }

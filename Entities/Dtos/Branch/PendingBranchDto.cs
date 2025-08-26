@@ -1,4 +1,5 @@
 ﻿using Core.Entities.Abstract;
+using Entities.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +8,11 @@ using System.Threading.Tasks;
 
 namespace Entities.Dtos.Branch
 {
-    public class ActiveBranches : BaseBranchDto
+    public class PendingBranchDto : BaseBranchDto
     {
+        public BranchStatusEnum Status { get; set; }
+
+        public DateTime? EstimatedOpeningDate { get; set; } 
     }
 }
+  

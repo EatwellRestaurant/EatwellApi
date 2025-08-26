@@ -29,5 +29,7 @@ namespace Business.Abstract
 
         Task<DataResponse<List<BranchSalesDto>>> GetAllBranchesMonthlySalesAsync();
 
+        Task<DataResponse<BranchOverviewDto>> GetBranchOverviewAsync();
+
     }
 } 

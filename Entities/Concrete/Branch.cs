@@ -1,4 +1,5 @@
 ﻿using Core.Entities.Abstract;
+using Entities.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,8 +20,15 @@ namespace Entities.Concrete
         public string? Instagram { get; set; }
         public string? Twitter { get; set; }
         public string? Gmail { get; set; }
+        /// <summary>
+        /// Şubenin mevcut kurulum durumunu temsil eder.
+        /// </summary>
+        public BranchStatusEnum Status {  get; set; }
 
-         
+        public DateTime? EstimatedOpeningDate { get; set; }
+
+
+
 
 
         public City City { get; set; }

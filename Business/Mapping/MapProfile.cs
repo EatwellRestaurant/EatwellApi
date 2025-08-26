@@ -69,6 +69,12 @@ namespace Business.Mapping
             CreateMap<Branch, BranchListDto>();
 
 
+            CreateMap<Branch, ActiveBranchDto>();
+
+
+            CreateMap<Branch, PendingBranchDto>();
+
+
             CreateMap<Branch, BranchListWithCityDto>()
                 .ForMember(dest => dest.CityName, opt => opt.MapFrom(src => src.City.Name));
 

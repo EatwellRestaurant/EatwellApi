@@ -35,6 +35,7 @@ namespace Business.Concrete
             DataResponse<int> reservationCount = await _reservationService.GetReservationCount(branchId);
             DataResponse<decimal> totalSales = await _orderService.CalculateTotalSales(branchId);
             DataResponse<List<BranchSalesDto>> branchSales = await _branchService.GetAllBranchesMonthlySalesAsync();
+            DataResponse<BranchOverviewDto> branchOverview = await _branchService.GetBranchOverviewAsync();
 
 
             return new DataResponse<StatisticsDto>(new StatisticsDto
@@ -42,7 +43,8 @@ namespace Business.Concrete
                 OrderCount = orderCount.Data,
                 ReservationCount = reservationCount.Data,
                 TotalSales = totalSales.Data,
-                BranchSalesDtos = branchSales.Data
+                BranchSalesDtos = branchSales.Data,
+                BranchOverviewDto = branchOverview.Data
             }, 
             CommonMessages.StatisticsFetch);
         }
