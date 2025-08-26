@@ -199,6 +199,7 @@ namespace Business.Concrete
                     })
                     .ToList()
                 })
+                .Where(b => b.Sales.Any())
                 .ToListAsync());
         
 

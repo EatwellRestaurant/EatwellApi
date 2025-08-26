@@ -19,5 +19,7 @@ namespace Business.Constants.Messages
         public const string EntityListed = "Veriler başarılı bir şekilde listelendi.";
 
         public const string EntityFetch = "Veri başarılı bir şekilde getirildi.";
+
+        public const string StatisticsFetch = "İstatistikler başarılı bir şekilde getirildi.";
     }  
 } 

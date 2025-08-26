@@ -1,9 +1,9 @@
-﻿namespace Entities.Dtos.Branch
+﻿using Core.Entities.Abstract;
+
+namespace Entities.Dtos.Branch
 {
-    public class BranchDto
+    public class BranchDto : BaseBranchDto
     {
-        public int Id { get; set; }
-        public string Name { get; set; }
         public string Address { get; set; }
         public string Email { get; set; }
     }

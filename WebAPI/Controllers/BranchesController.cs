@@ -60,9 +60,5 @@ namespace WebAPI.Controllers
 
 
 
-        [HttpGet]
-        public async Task<IActionResult> GetAllBranchesMonthlySalesAsync()
-            => Ok(await _branchService.GetAllBranchesMonthlySalesAsync());
-
     }
 }

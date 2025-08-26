@@ -11,7 +11,6 @@ namespace DataAccess.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            // Önce foreign key ve index’i kaldır
             migrationBuilder.DropForeignKey(
                 name: "FK_Orders_Reservations_ReservationId",
                 table: "Orders");
@@ -20,7 +19,6 @@ namespace DataAccess.Migrations
                 name: "IX_Orders_ReservationId",
                 table: "Orders");
 
-            // Kolonu nullable yap
             migrationBuilder.AlterColumn<int>(
                 name: "ReservationId",
                 table: "Orders",
@@ -29,13 +27,11 @@ namespace DataAccess.Migrations
                 oldClrType: typeof(int),
                 oldType: "int");
 
-            // Index’i yeniden oluştur
             migrationBuilder.CreateIndex(
                 name: "IX_Orders_ReservationId",
                 table: "Orders",
                 column: "ReservationId");
 
-            // Foreign key’i yeniden ekle (nullable olduğu için delete behavior’a dikkat!)
             migrationBuilder.AddForeignKey(
                 name: "FK_Orders_Reservations_ReservationId",
                 table: "Orders",
@@ -48,7 +44,6 @@ namespace DataAccess.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            // Foreign key ve index’i kaldır
             migrationBuilder.DropForeignKey(
                 name: "FK_Orders_Reservations_ReservationId",
                 table: "Orders");
@@ -57,7 +52,6 @@ namespace DataAccess.Migrations
                 name: "IX_Orders_ReservationId",
                 table: "Orders");
 
-            // Kolonu tekrar not nullable yap
             migrationBuilder.AlterColumn<int>(
                 name: "ReservationId",
                 table: "Orders",
@@ -68,7 +62,6 @@ namespace DataAccess.Migrations
                 oldType: "int",
                 oldNullable: true);
 
-            // Index ve foreign key’i eski haline getir
             migrationBuilder.CreateIndex(
                 name: "IX_Orders_ReservationId",
                 table: "Orders",
