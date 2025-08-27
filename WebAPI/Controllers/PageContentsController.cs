@@ -1,5 +1,6 @@
 ﻿using Business.Abstract;
 using Entities.Dtos.PageContent;
+using Entities.Enums;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -25,8 +26,8 @@ namespace WebAPI.Controllers
         
         
         [HttpGet]
-        public async Task<IActionResult> GetAll(byte page)
-            => Ok(await _pageContentService.GetAll(page));
+        public async Task<IActionResult> GetAll(PageEnum pageEnum)
+            => Ok(await _pageContentService.GetAll(pageEnum));
         
     
     }

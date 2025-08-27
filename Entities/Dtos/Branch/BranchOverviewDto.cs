@@ -9,7 +9,7 @@ namespace Entities.Dtos.Branch
 {
     public class BranchOverviewDto : IDto
     { 
-        public List<ActiveBranchDto> ActiveBranchDtos { get; set; }
+        public ActiveBranchDto ActiveBranchDto { get; set; }
 
         public List<PendingBranchDto> PendingBranchDtos { get; set; }
 

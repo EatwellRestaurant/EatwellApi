@@ -7,7 +7,11 @@ using System.Threading.Tasks;
 
 namespace Entities.Dtos.Branch
 {
-    public class ActiveBranchDto : BaseBranchDto
+    public class ActiveBranchDto : IDto
     {
+        public List<SalesBranchDto> SalesBranchDtos { get; set; }
+
+        public List<NonSalesBranchDto> NonSalesBranchDtos { get; set; }
+
     }
 }

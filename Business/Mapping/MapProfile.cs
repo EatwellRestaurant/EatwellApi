@@ -69,7 +69,10 @@ namespace Business.Mapping
             CreateMap<Branch, BranchListDto>();
 
 
-            CreateMap<Branch, ActiveBranchDto>();
+            CreateMap<Branch, SalesBranchDto>();
+
+
+            CreateMap<Branch, NonSalesBranchDto>();
 
 
             CreateMap<Branch, PendingBranchDto>();

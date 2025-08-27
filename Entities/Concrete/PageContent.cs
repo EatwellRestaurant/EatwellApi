@@ -1,4 +1,5 @@
 ﻿using Core.Entities.Abstract;
+using Entities.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,9 +12,9 @@ namespace Entities.Concrete
     { 
         public int Id { get; set; }
 
-        public byte Page { get; set; }
+        public PageEnum Page { get; set; }
 
-        public byte Section { get; set; }
+        public SectionEnum Section { get; set; }
 
         public string? Description { get; set; }
 

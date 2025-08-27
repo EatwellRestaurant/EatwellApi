@@ -32,7 +32,7 @@ namespace Entities.Concrete
 
 
         public City City { get; set; }
-        public ICollection<Order> Orders { get; set; }
+        public ICollection<Order>? Orders { get; set; }
         public ICollection<BranchEmployee> BranchEmployees { get; set; }
         public ICollection<BranchImage> BranchImages { get; set; }
         public ICollection<Reservation> Reservations { get; set; }

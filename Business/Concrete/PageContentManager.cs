@@ -11,6 +11,7 @@ using DataAccess.Abstract;
 using Entities.Concrete;
 using Entities.Constants;
 using Entities.Dtos.PageContent;
+using Entities.Enums;
 
 namespace Business.Concrete
 {
@@ -92,10 +93,10 @@ namespace Business.Concrete
 
 
 
-        public async Task<DataResponse<List<PageContentListDto>>> GetAll(byte page)
+        public async Task<DataResponse<List<PageContentListDto>>> GetAll(PageEnum pageEnum)
         {
             List<PageContent> pageContents = await _pageContentDal
-                .GetAllAsync(p => p.Page == page);
+                .GetAllAsync(p => p.Page == pageEnum);
 
 
             if (pageContents.Count <= 0)

@@ -215,14 +215,26 @@ namespace Business.Concrete
                     Id = b.Id,
                     Name = b.Name,
                     Status = b.Status,
-                    EstimatedOpeningDate = b.EstimatedOpeningDate
+                    EstimatedOpeningDate = b.EstimatedOpeningDate,
+                    Orders = b.Orders!.Any() ? new List<Order>() : null
                 })
                 .ToListAsync();
 
 
-            List<ActiveBranchDto> activeBranchDtos = _mapper
-                .Map<List<ActiveBranchDto>>(branches
-                .Where(b => b.Status == BranchStatusEnum.Opened)
+            List<Branch> activeBranches = branches
+                 .Where(b => b.Status == BranchStatusEnum.Opened)
+                 .ToList();
+
+
+            List<SalesBranchDto> salesBranchDtos = _mapper
+                .Map<List<SalesBranchDto>>(activeBranches
+                .Where(b => b.Orders != null)
+                .ToList());
+            
+            
+            List<NonSalesBranchDto> nonSalesBranchDtos= _mapper
+                .Map<List<NonSalesBranchDto>>(activeBranches
+                .Where(b => b.Orders == null)
                 .ToList());
 
 
@@ -234,7 +246,11 @@ namespace Business.Concrete
 
             return new DataResponse<BranchOverviewDto>(new() 
             { 
-                ActiveBranchDtos = activeBranchDtos, 
+                ActiveBranchDto = new()
+                {
+                    SalesBranchDtos = salesBranchDtos,
+                    NonSalesBranchDtos = nonSalesBranchDtos,
+                }, 
                 PendingBranchDtos =  pendingBranchDtos 
             }, 
             CommonMessages.EntityListed);

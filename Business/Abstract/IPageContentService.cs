@@ -1,5 +1,6 @@
 ﻿using Core.ResponseModels;
 using Entities.Dtos.PageContent;
+using Entities.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +13,6 @@ namespace Business.Abstract
     {
         Task<DataResponse<string?>> Update(PageContentUpdateDto pageContentDto);
 
-        Task<DataResponse<List<PageContentListDto>>> GetAll(byte page);
+        Task<DataResponse<List<PageContentListDto>>> GetAll(PageEnum pageEnum);
     }
 }
