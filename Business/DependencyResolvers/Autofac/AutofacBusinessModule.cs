@@ -75,6 +75,9 @@ namespace Business.DependencyResolvers.Autofac
             builder.RegisterType<OrderManager>().As<IOrderService>().InstancePerLifetimeScope();
             builder.RegisterType<EfOrderDal>().As<IOrderDal>().InstancePerLifetimeScope();
 
+            builder.RegisterType<HeadOfficeManager>().As<IHeadOfficeService>().InstancePerLifetimeScope();
+            builder.RegisterType<EfHeadOfficeDal>().As<IHeadOfficeDal>().InstancePerLifetimeScope();
+
 
 
             var assembly = System.Reflection.Assembly.GetExecutingAssembly();

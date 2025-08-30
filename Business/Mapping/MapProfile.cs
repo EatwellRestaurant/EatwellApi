@@ -2,6 +2,7 @@
 using Entities.Concrete;
 using Entities.Dtos.Branch;
 using Entities.Dtos.City;
+using Entities.Dtos.HeadOffice;
 using Entities.Dtos.MealCategory;
 using Entities.Dtos.Order;
 using Entities.Dtos.PageContent;
@@ -158,6 +159,14 @@ namespace Business.Mapping
             #region Order
 
             CreateMap<OrderInsertDto, Order>();
+
+            #endregion
+
+
+
+            #region HeadOffice     
+
+            CreateMap<HeadOffice, HeadOfficeDto>();
 
             #endregion
 
