@@ -9,7 +9,6 @@ using Core.Middlewares;
 using Core.Utilities.IoC;
 using DataAccess.Concrete.EntityFramework;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
@@ -32,9 +31,11 @@ builder.Configuration
     .AddJsonFile($"appsettings.{environment.EnvironmentName}.json", optional: true);
 
 
-builder.Services.AddDbContext<RestaurantContext>(options => options.UseSqlServer(
-    builder.Configuration.GetConnectionString("SqlConnection")
-));
+builder.Services.AddDbContext<RestaurantContext>(options =>
+{
+    options.UseSqlServer(builder.Configuration.GetConnectionString("SqlConnection"));
+    options.EnableSensitiveDataLogging();
+});
 
 
 var cultureInfo = new CultureInfo("tr-TR");

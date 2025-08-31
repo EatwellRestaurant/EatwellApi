@@ -26,24 +26,23 @@ namespace Business.DependencyResolvers.Autofac
     {
         protected override void Load(ContainerBuilder builder)
         {
-            builder.RegisterType<RestaurantContext>().InstancePerLifetimeScope();
             builder.RegisterType<FileHelper>().As<IFileHelper>().InstancePerLifetimeScope();
             builder.RegisterType<SendinblueService>().As<IEmailService>().SingleInstance();
             
-            builder.RegisterType<DashboardManager>().As<IDashboardService>().SingleInstance();
-            builder.RegisterType<BranchStatisticsManager>().As<IBranchStatisticsService>().SingleInstance();
+            builder.RegisterType<DashboardManager>().As<IDashboardService>().InstancePerLifetimeScope();
+            builder.RegisterType<BranchStatisticsManager>().As<IBranchStatisticsService>().InstancePerLifetimeScope();
 
-            builder.RegisterType<BranchManager>().As<IBranchService>().SingleInstance();
-            builder.RegisterType<EfBranchDal>().As<IBranchDal>().SingleInstance();
+            builder.RegisterType<BranchManager>().As<IBranchService>().InstancePerLifetimeScope();
+            builder.RegisterType<EfBranchDal>().As<IBranchDal>().InstancePerLifetimeScope();
 
-            builder.RegisterType<BranchImageManager>().As<IBranchImageService>().SingleInstance();
-            builder.RegisterType<EfBranchImageDal>().As<IBranchImageDal>().SingleInstance();
+            builder.RegisterType<BranchImageManager>().As<IBranchImageService>().InstancePerLifetimeScope();
+            builder.RegisterType<EfBranchImageDal>().As<IBranchImageDal>().InstancePerLifetimeScope();
 
-            builder.RegisterType<BranchEmployeeManager>().As<IBranchEmployeeService>().SingleInstance();
-            builder.RegisterType<EfBranchEmployeeDal>().As<IBranchEmployeeDal>().SingleInstance();
+            builder.RegisterType<BranchEmployeeManager>().As<IBranchEmployeeService>().InstancePerLifetimeScope();
+            builder.RegisterType<EfBranchEmployeeDal>().As<IBranchEmployeeDal>().InstancePerLifetimeScope();
 
-            builder.RegisterType<EvaluationManager>().As<IEvaluationService>().SingleInstance();
-            builder.RegisterType<EfEvaluationDal>().As<IEvaluationDal>().SingleInstance();
+            builder.RegisterType<EvaluationManager>().As<IEvaluationService>().InstancePerLifetimeScope();
+            builder.RegisterType<EfEvaluationDal>().As<IEvaluationDal>().InstancePerLifetimeScope();
 
             builder.RegisterType<MealCategoryManager>().As<IMealCategoryService>().InstancePerLifetimeScope();
             builder.RegisterType<EfMealCategoryDal>().As<IMealCategoryDal>().InstancePerLifetimeScope();
@@ -54,17 +53,17 @@ namespace Business.DependencyResolvers.Autofac
             builder.RegisterType<ReservationManager>().As<IReservationService>().InstancePerLifetimeScope();
             builder.RegisterType<EfReservationDal>().As<IReservationDal>().InstancePerLifetimeScope();
 
-            builder.RegisterType<AuthManager>().As<IAuthService>().SingleInstance();
-            builder.RegisterType<JwtHelper>().As<ITokenHelper>().SingleInstance();
+            builder.RegisterType<AuthManager>().As<IAuthService>().InstancePerLifetimeScope();
+            builder.RegisterType<JwtHelper>().As<ITokenHelper>().InstancePerLifetimeScope();
 
-            builder.RegisterType<UserManager>().As<IUserService>().SingleInstance();
-            builder.RegisterType<EfUserDal>().As<IUserDal>().SingleInstance();
+            builder.RegisterType<UserManager>().As<IUserService>().InstancePerLifetimeScope();
+            builder.RegisterType<EfUserDal>().As<IUserDal>().InstancePerLifetimeScope();
             
-            builder.RegisterType<OperationClaimManager>().As<IOperationClaimService>().SingleInstance();
-            builder.RegisterType<EfOperationClaimDal>().As<IOperationClaimDal>().SingleInstance();
+            builder.RegisterType<OperationClaimManager>().As<IOperationClaimService>().InstancePerLifetimeScope();
+            builder.RegisterType<EfOperationClaimDal>().As<IOperationClaimDal>().InstancePerLifetimeScope();
 
-            builder.RegisterType<CityManager>().As<ICityService>().SingleInstance();
-            builder.RegisterType<EfCityDal>().As<ICityDal>().SingleInstance();
+            builder.RegisterType<CityManager>().As<ICityService>().InstancePerLifetimeScope();
+            builder.RegisterType<EfCityDal>().As<ICityDal>().InstancePerLifetimeScope();
 
             builder.RegisterType<TableManager>().As<ITableService>().InstancePerLifetimeScope();
             builder.RegisterType<EfTableDal>().As<ITableDal>().InstancePerLifetimeScope();
@@ -82,11 +81,13 @@ namespace Business.DependencyResolvers.Autofac
 
             var assembly = System.Reflection.Assembly.GetExecutingAssembly();
 
-            builder.RegisterAssemblyTypes(assembly).AsImplementedInterfaces()
+            builder.RegisterAssemblyTypes(assembly)
+                .AsImplementedInterfaces()
+                .InstancePerLifetimeScope()
                 .EnableInterfaceInterceptors(new ProxyGenerationOptions()
                 {
                     Selector = new AspectInterceptorSelector()
-                }).SingleInstance();
+                });
         }
     }
 }

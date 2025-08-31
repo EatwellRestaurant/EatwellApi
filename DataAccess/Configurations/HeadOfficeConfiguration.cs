@@ -28,7 +28,7 @@ namespace DataAccess.Configurations
                 Email = "avcilar@firma.com",
                 MidWeekWorkingHours = "09:00 - 23:00",
                 WeekendWorkingHours = "11:00 - 22:00",
-                SpecialNote = "*Şubelerimize göre değişiklik gösterebilir.",
+                SpecialNote = "* Şubelerimize göre değişiklik gösterebilir.",
                 Facebook = "https://facebook.com/eatwellrestaurant",
                 Instagram = "https://instagram.com/eatwell_restaurant",
                 Twitter = "https://twitter.com/eatwell_tr",

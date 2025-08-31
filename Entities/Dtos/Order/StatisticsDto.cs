@@ -1,4 +1,5 @@
 ﻿using Entities.Dtos.Branch;
+using Entities.Dtos.HeadOffice;
 
 namespace Entities.Dtos.Order
 {
@@ -10,6 +11,8 @@ namespace Entities.Dtos.Order
 
         public List<BranchSalesDto> BranchSalesDtos { get; set; }
 
-        public BranchOverviewDto BranchOverviewDto { get; set; } 
+        public BranchOverviewDto BranchOverviewDto { get; set; }
+
+        public HeadOfficeDto HeadOfficeDto { get; set; }
     }
 }

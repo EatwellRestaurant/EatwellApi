@@ -3,6 +3,7 @@ using Business.BusinessAspects.Autofac;
 using Business.Constants.Messages;
 using Core.ResponseModels;
 using Entities.Dtos.Branch;
+using Entities.Dtos.HeadOffice;
 using Entities.Dtos.Order;
 using System;
 using System.Collections.Generic;
@@ -17,12 +18,18 @@ namespace Business.Concrete
         readonly IOrderService _orderService;
         readonly IReservationService _reservationService;
         readonly IBranchService _branchService;
+        readonly IHeadOfficeService _headOfficeService;
 
-        public BranchStatisticsManager(IReservationService reservationService, IOrderService orderService, IBranchService branchService)
+        public BranchStatisticsManager
+            (IReservationService reservationService, 
+            IOrderService orderService, 
+            IBranchService branchService, 
+            IHeadOfficeService headOfficeService)
         {
             _reservationService = reservationService;
             _orderService = orderService;
             _branchService = branchService;
+            _headOfficeService = headOfficeService;
         }
 
 
@@ -36,7 +43,7 @@ namespace Business.Concrete
             DataResponse<decimal> totalSales = await _orderService.CalculateTotalSales(branchId);
             DataResponse<List<BranchSalesDto>> branchSales = await _branchService.GetAllBranchesMonthlySalesAsync();
             DataResponse<BranchOverviewDto> branchOverview = await _branchService.GetBranchOverviewAsync();
-
+            DataResponse<HeadOfficeDto> headOffice = await _headOfficeService.GetAsync();
 
             return new DataResponse<StatisticsDto>(new StatisticsDto
             {
@@ -44,7 +51,8 @@ namespace Business.Concrete
                 ReservationCount = reservationCount.Data,
                 TotalSales = totalSales.Data,
                 BranchSalesDtos = branchSales.Data,
-                BranchOverviewDto = branchOverview.Data
+                BranchOverviewDto = branchOverview.Data,
+                HeadOfficeDto = headOffice.Data,
             }, 
             CommonMessages.StatisticsFetch);
         }

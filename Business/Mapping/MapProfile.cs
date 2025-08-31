@@ -166,7 +166,8 @@ namespace Business.Mapping
 
             #region HeadOffice     
 
-            CreateMap<HeadOffice, HeadOfficeDto>();
+            CreateMap<HeadOffice, HeadOfficeDto>()
+                .ReverseMap();
 
             #endregion
 

@@ -11,5 +11,7 @@ namespace Business.Abstract
     public interface IHeadOfficeService
     {
         Task<DataResponse<HeadOfficeDto>> GetAsync();
+
+        Task<UpdateSuccessResponse> UpdateAsync(HeadOfficeDto headOfficeDto);
     }
 }

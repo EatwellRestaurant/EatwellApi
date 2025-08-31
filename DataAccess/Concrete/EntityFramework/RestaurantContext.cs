@@ -11,11 +11,6 @@ namespace DataAccess.Concrete.EntityFramework
         public RestaurantContext(DbContextOptions<RestaurantContext> options) : base(options) { }
 
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder.EnableSensitiveDataLogging();
-        }
-
 
         public DbSet<Branch> Branches { get; set; }
         public DbSet<BranchImage> BranchImages { get; set; }
