@@ -69,8 +69,8 @@ namespace WebAPI.Controllers
 
 
         [HttpGet] 
-        public async Task<IActionResult> GetSelectedProducts()
-            => Ok(await _productService.GetSelectedProducts());
+        public async Task<IActionResult> GetProductsBySelectionStatusAsync(bool isSelected)
+            => Ok(await _productService.GetProductsBySelectionStatusAsync(isSelected));
         
 
 

@@ -24,7 +24,7 @@ namespace Business.Abstract
 
         Task<object> GetAll(PaginationRequest? paginationRequest);
 
-        Task<DataResponse<List<ProductDisplayDto>>> GetSelectedProducts();
+        Task<DataResponse<List<ProductDisplayDto>>> GetProductsBySelectionStatusAsync(bool isSelected);
 
         Task<DataResponse<ProductDetailDto>> GetForAdmin(int productId);
         

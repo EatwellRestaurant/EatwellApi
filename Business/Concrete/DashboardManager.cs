@@ -3,6 +3,7 @@ using Business.BusinessAspects.Autofac;
 using Business.Constants.Messages;
 using Core.ResponseModels;
 using Entities.Dtos.Dashboard;
+using Entities.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,7 +29,7 @@ namespace Business.Concrete
         {
             DashboardStatisticsDto statisticsDto = new()
             {
-                UserCount = await _userService.CountAsync(u => !u.IsDeleted),
+                UserCount = await _userService.CountAsync(u => u.OperationClaimId != (byte)OperationClaimType.Admin && !u.IsDeleted),
                 MealCategoryCount = await _mealCategoryService.CountAsync(m => !m.IsDeleted),
             };
 

@@ -66,7 +66,7 @@ namespace Business.Concrete
         public async Task<PaginationResponse<UserListDto>> GetAll(PaginationRequest paginationRequest)
         {
             IQueryable<User> query = _userDal
-                .GetAllQueryable(u => u.OperationClaimId != (byte)OperationClaimType.Admin);
+                .GetAllQueryable(u => u.OperationClaimId != (byte)OperationClaimType.Admin && !u.IsDeleted);
 
 
             List<UserListDto> userListDtos = _mapper.Map<List<UserListDto>>

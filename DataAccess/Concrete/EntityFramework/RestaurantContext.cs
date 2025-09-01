@@ -26,6 +26,7 @@ namespace DataAccess.Concrete.EntityFramework
         public DbSet<PageContent> PageContents { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<HeadOffice> HeadOffices { get; set; }
+        public DbSet<OrderProduct> OrderProducts { get; set; }
 
 
 

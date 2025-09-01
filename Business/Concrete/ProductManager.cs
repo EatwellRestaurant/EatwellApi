@@ -188,11 +188,12 @@ namespace Business.Concrete
         }
 
 
-        public async Task<DataResponse<List<ProductDisplayDto>>> GetSelectedProducts()
+        public async Task<DataResponse<List<ProductDisplayDto>>> GetProductsBySelectionStatusAsync(bool isSelected)
         {
             List<Product> products = await _productDal
-                .GetAllQueryable(p => !p.IsDeleted && p.IsActive && p.IsSelected)
+                .GetAllQueryable(p => !p.IsDeleted && p.IsActive && p.IsSelected == isSelected)
                 .OrderBy(p => p.Order)
+                .ThenByDescending(p => p.CreateDate)
                 .ToListAsync();
 
             return new DataResponse<List<ProductDisplayDto>>(_mapper.Map<List<ProductDisplayDto>>(products), CommonMessages.EntityListed);
