@@ -4,6 +4,7 @@ using DataAccess.Concrete.EntityFramework;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(RestaurantContext))]
-    partial class RestaurantContextModelSnapshot : ModelSnapshot
+    [Migration("20250901150021_UpdateUsersVerificationFieldsAndAddSeedData")]
+    partial class UpdateUsersVerificationFieldsAndAddSeedData
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -33,7 +36,7 @@ namespace DataAccess.Migrations
                     b.Property<DateTime>("CreateDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2025, 9, 1, 19, 6, 24, 700, DateTimeKind.Local).AddTicks(924));
+                        .HasDefaultValue(new DateTime(2025, 9, 1, 18, 0, 21, 7, DateTimeKind.Local).AddTicks(9519));
 
                     b.Property<DateTime?>("DeleteDate")
                         .HasColumnType("datetime2");
@@ -542,79 +545,6 @@ namespace DataAccess.Migrations
                         });
                 });
 
-            modelBuilder.Entity("Entities.Concrete.Employee", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Address")
-                        .IsRequired()
-                        .HasMaxLength(500)
-                        .HasColumnType("nvarchar(500)");
-
-                    b.Property<int>("BranchId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("CityId")
-                        .HasColumnType("int");
-
-                    b.Property<byte>("EducationLevel")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("tinyint")
-                        .HasDefaultValue((byte)5);
-
-                    b.Property<byte>("EmploymentType")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("tinyint")
-                        .HasDefaultValue((byte)1);
-
-                    b.Property<byte>("Gender")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("tinyint")
-                        .HasDefaultValue((byte)1);
-
-                    b.Property<DateTime>("HireDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime?>("LeaveDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("OperationClaimId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Phone")
-                        .IsRequired()
-                        .HasMaxLength(14)
-                        .HasColumnType("nvarchar(14)");
-
-                    b.Property<decimal>("Salary")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
-                    b.Property<byte>("WorkStatus")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("tinyint")
-                        .HasDefaultValue((byte)1);
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("BranchId");
-
-                    b.HasIndex("CityId");
-
-                    b.HasIndex("OperationClaimId");
-
-                    b.HasIndex("UserId")
-                        .IsUnique();
-
-                    b.ToTable("Employees");
-                });
-
             modelBuilder.Entity("Entities.Concrete.Evaluation", b =>
                 {
                     b.Property<int>("Id")
@@ -769,7 +699,7 @@ namespace DataAccess.Migrations
                     b.Property<DateTime>("CreateDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2025, 9, 1, 19, 6, 24, 701, DateTimeKind.Local).AddTicks(6696));
+                        .HasDefaultValue(new DateTime(2025, 9, 1, 18, 0, 21, 9, DateTimeKind.Local).AddTicks(1815));
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
@@ -1185,41 +1115,6 @@ namespace DataAccess.Migrations
                     b.Navigation("Branch");
                 });
 
-            modelBuilder.Entity("Entities.Concrete.Employee", b =>
-                {
-                    b.HasOne("Entities.Concrete.Branch", "Branch")
-                        .WithMany("Employees")
-                        .HasForeignKey("BranchId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("Entities.Concrete.City", "City")
-                        .WithMany("Employees")
-                        .HasForeignKey("CityId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("Entities.Concrete.OperationClaim", "OperationClaim")
-                        .WithMany("Employees")
-                        .HasForeignKey("OperationClaimId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("Entities.Concrete.User", "User")
-                        .WithOne("Employee")
-                        .HasForeignKey("Entities.Concrete.Employee", "UserId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("Branch");
-
-                    b.Navigation("City");
-
-                    b.Navigation("OperationClaim");
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("Entities.Concrete.Evaluation", b =>
                 {
                     b.HasOne("Entities.Concrete.User", "User")
@@ -1343,14 +1238,10 @@ namespace DataAccess.Migrations
             modelBuilder.Entity("Entities.Concrete.City", b =>
                 {
                     b.Navigation("Branches");
-
-                    b.Navigation("Employees");
                 });
 
             modelBuilder.Entity("Entities.Concrete.OperationClaim", b =>
                 {
-                    b.Navigation("Employees");
-
                     b.Navigation("Users");
                 });
 
@@ -1359,8 +1250,6 @@ namespace DataAccess.Migrations
                     b.Navigation("BranchEmployees");
 
                     b.Navigation("BranchImages");
-
-                    b.Navigation("Employees");
 
                     b.Navigation("Orders");
 
@@ -1399,9 +1288,6 @@ namespace DataAccess.Migrations
 
             modelBuilder.Entity("Entities.Concrete.User", b =>
                 {
-                    b.Navigation("Employee")
-                        .IsRequired();
-
                     b.Navigation("Evaluations");
                 });
 #pragma warning restore 612, 618

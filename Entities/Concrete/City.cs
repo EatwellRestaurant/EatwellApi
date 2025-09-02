@@ -15,5 +15,6 @@ namespace Entities.Concrete
          
          
         public ICollection<Branch> Branches { get; set; }
+        public ICollection<Employee> Employees { get; set; }
     }
 }

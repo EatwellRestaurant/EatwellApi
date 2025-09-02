@@ -24,7 +24,6 @@ namespace Entities.Concrete
         /// Şubenin mevcut kurulum durumunu temsil eder.
         /// </summary>
         public BranchStatusEnum Status {  get; set; }
-
         public DateTime? EstimatedOpeningDate { get; set; }
 
 
@@ -37,7 +36,7 @@ namespace Entities.Concrete
         public ICollection<BranchImage> BranchImages { get; set; }
         public ICollection<Reservation> Reservations { get; set; }
         public ICollection<Table> Tables { get; set; }
-
+        public ICollection<Employee> Employees { get; set; }
 
     }
 }

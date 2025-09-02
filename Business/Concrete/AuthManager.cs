@@ -70,7 +70,7 @@ namespace Business.Concrete
                 throw new InvalidCredentialsException();
 
 
-            if (!user.Verification)
+            if (!user.Verification == true)
                 throw new EmailNotVerifiedException();
 
 
