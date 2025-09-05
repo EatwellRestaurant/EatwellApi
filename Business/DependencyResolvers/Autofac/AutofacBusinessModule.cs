@@ -76,6 +76,9 @@ namespace Business.DependencyResolvers.Autofac
 
             builder.RegisterType<HeadOfficeManager>().As<IHeadOfficeService>().InstancePerLifetimeScope();
             builder.RegisterType<EfHeadOfficeDal>().As<IHeadOfficeDal>().InstancePerLifetimeScope();
+            
+            builder.RegisterType<EmployeeManager>().As<IEmployeeService>().InstancePerLifetimeScope();
+            builder.RegisterType<EfEmployeeDal>().As<IEmployeeDal>().InstancePerLifetimeScope();
 
 
 

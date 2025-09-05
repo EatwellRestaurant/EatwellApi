@@ -1,7 +1,9 @@
 ﻿using Business.Abstract;
+using Core.Exceptions.General;
 using Core.ResponseModels;
 using Core.Utilities.Results;
 using DataAccess.Abstract;
+using DataAccess.Concrete.EntityFramework;
 using Entities.Concrete;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -23,14 +25,25 @@ namespace Business.Concrete
 
 
 
-        public async Task<DataResponse<string>> GetClaim(int operationClaimId)
+        public async Task<string> GetClaim(int operationClaimId)
         {
-             string operationClaimName = await _operationClaimDal
+             string? operationClaimName = await _operationClaimDal
                 .Where(o => o.Id == operationClaimId)
                 .Select(o => o.Name)
-                .SingleAsync();
+                .SingleOrDefaultAsync()
+                ?? 
+                throw new EntityNotFoundException("Yetki");
 
-            return new DataResponse<string>(operationClaimName);
+
+            return operationClaimName;
+        }
+
+
+
+        public async Task CheckIfOperationClaimIdExists(int operationClaimId)
+        {
+            if (!await _operationClaimDal.AnyAsync(o => o.Id == operationClaimId))
+                throw new EntityNotFoundException("Rol");
         }
     }
 }

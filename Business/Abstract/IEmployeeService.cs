@@ -1,6 +1,7 @@
 ﻿using Core.ResponseModels;
-using Core.Utilities.Results;
 using Entities.Concrete;
+using Entities.Dtos.Employee;
+using Service.Abstract;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,10 +10,8 @@ using System.Threading.Tasks;
 
 namespace Business.Abstract
 {
-    public interface IOperationClaimService
+    public interface IEmployeeService : IService<Employee>
     {
-        Task<string> GetClaim(int operationClaimId);
-
-        Task CheckIfOperationClaimIdExists(int operationClaimId);
+        Task<CreateSuccessResponse> Add(EmployeeUpsertDto employeeUpsertDto);
     }
 }

@@ -11,6 +11,5 @@ namespace Entities.Concrete
 
 
         public ICollection<User> Users { get; set; }
-        public ICollection<Employee> Employees { get; set; }
     }
 }

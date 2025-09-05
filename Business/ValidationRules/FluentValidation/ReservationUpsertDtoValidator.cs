@@ -18,13 +18,15 @@ namespace Business.ValidationRules.FluentValidation
                  .Cascade(CascadeMode.Stop)
                  .NotEmpty()
                  .WithMessage("Lütfen isminizi giriniz!")
-                 .MaximumLength(50)
+                 .MaximumLength(85)
                  .WithMessage("İsminizin uzunluğu en fazla 85 karakter olmalıdır!");
 
 
             RuleFor(r => r.Email)
                 .Cascade(CascadeMode.Stop)
                 .NotEmpty()
+                .WithMessage("Lütfen e-posta adresinizi giriniz!")
+                .NotNull()
                 .WithMessage("Lütfen e-posta adresinizi giriniz!")
                 .EmailAddress()
                 .WithMessage("Lütfen geçerli bir e-posta adresi giriniz!")

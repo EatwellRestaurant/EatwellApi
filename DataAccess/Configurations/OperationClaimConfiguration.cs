@@ -1,11 +1,6 @@
 ﻿using Entities.Concrete;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DataAccess.Configurations
 {
@@ -15,7 +10,12 @@ namespace DataAccess.Configurations
         {
             builder.HasData(
                 new OperationClaim { Id = 1, Name = "Admin" },
-                new OperationClaim { Id = 2, Name = "User" });
+                new OperationClaim { Id = 2, Name = "User" },
+                new OperationClaim { Id = 3, Name = "Manager" },
+                new OperationClaim { Id = 4, Name = "Chef" },
+                new OperationClaim { Id = 5, Name = "Waiter" },
+                new OperationClaim { Id = 6, Name = "Delivery" },
+                new OperationClaim { Id = 7, Name = "Cashier" });
         }
     }
 }

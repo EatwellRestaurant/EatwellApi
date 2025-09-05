@@ -6,15 +6,21 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Entities.Concrete
+namespace Entities.Dtos.Employee
 {
-    public class Employee : IEntity
+    public class EmployeeUpsertDto : IDto
     {
-        public int Id { get; set; }
+        public string FirstName { get; set; }
 
-        public int UserId { get; set; }
+        public string LastName { get; set; }
+
+        public string Password { get; set; }
+
+        public string Email { get; set; }
 
         public int BranchId { get; set; }
+
+        public int OperationClaimId { get; set; }
 
         public int CityId { get; set; }
 
@@ -35,18 +41,5 @@ namespace Entities.Concrete
         public EmploymentType EmploymentType { get; set; }
 
         public decimal Salary { get; set; }
-
-
-
-
-
-
-
-        public User User { get; set; }
-
-        public Branch Branch { get; set; }
-
-        public City City { get; set; }
-
     }
 }

@@ -31,5 +31,7 @@ namespace Business.Abstract
 
         Task<DataResponse<BranchOverviewDto>> GetBranchOverviewAsync();
 
+        Task CheckIfBranchIdExists(int branchId);
+
     }
 } 

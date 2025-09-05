@@ -15,5 +15,7 @@ namespace Business.Abstract
     public interface ICityService : IService<City>
     {
         Task<object> GetAll(PaginationRequest? paginationRequest);
+
+        Task CheckIfCityIdExists(int cityId);
     }
 }

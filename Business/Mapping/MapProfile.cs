@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
+using Core.Entities.Abstract;
 using Entities.Concrete;
 using Entities.Dtos.Branch;
 using Entities.Dtos.City;
+using Entities.Dtos.Employee;
 using Entities.Dtos.HeadOffice;
 using Entities.Dtos.MealCategory;
 using Entities.Dtos.Order;
@@ -25,6 +27,10 @@ namespace Business.Mapping
             CreateMap<UserUpdateDto, User>()
                 .ForMember(dest => dest.Password, opt => opt.Ignore())
                 .ForMember(dest => dest.UpdateDate, opt => opt.MapFrom(src => DateTime.Now));
+
+
+            CreateMap<EmployeeUpsertDto, User>()
+                .ForMember(dest => dest.Password, opt => opt.MapFrom(src => BCrypt.Net.BCrypt.HashPassword(src.Password)));
 
 
             CreateMap<User, UserListDto>();
@@ -168,6 +174,14 @@ namespace Business.Mapping
 
             CreateMap<HeadOffice, HeadOfficeDto>()
                 .ReverseMap();
+
+            #endregion
+
+
+
+            #region Employee        
+
+            CreateMap<EmployeeUpsertDto, Employee>();
 
             #endregion
 

@@ -45,7 +45,7 @@ namespace Business.Concrete
         [ValidationAspect(typeof(BranchInsertDtoValidator), Priority = 2)]
         public async Task<CreateSuccessResponse> Add(BranchInsertDto insertDto)
         {
-            await CheckIfCityIdExists(insertDto.CityId);
+            await _cityService.CheckIfCityIdExists(insertDto.CityId);
 
             await CheckIfBranchNameExists(insertDto.Name);
 
@@ -259,15 +259,15 @@ namespace Business.Concrete
 
 
 
-
-        #region BusinessRules
-
-        private async Task CheckIfCityIdExists(int cityId)
+        public async Task CheckIfBranchIdExists(int branchId)
         {
-            if (!await _cityService.AnyAsync(c => c.Id == cityId))
-                throw new EntityNotFoundException("Şehir");
+            if (!await _branchDal.AnyAsync(b => b.Id == branchId && !b.IsDeleted))
+                throw new EntityNotFoundException("Şube");
         }
 
+
+
+        #region BusinessRules
 
         private async Task CheckIfBranchNameExists(string branchName, int? branchId = null)
         {

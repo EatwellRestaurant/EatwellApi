@@ -6,6 +6,7 @@ using Core.Extensions;
 using Core.Requests;
 using Core.ResponseModels;
 using DataAccess.Abstract;
+using DataAccess.Concrete.EntityFramework;
 using Entities.Concrete;
 using Entities.Dtos.City;
 using Microsoft.EntityFrameworkCore;
@@ -40,6 +41,14 @@ namespace Business.Concrete
             return paginationRequest != null 
                 ? new PaginationResponse<CityWithBranchCountDto>(cityLists, paginationRequest, await query.CountAsync())
                 : new DataResponse<List<CityWithBranchCountDto>>(cityLists, CommonMessages.EntityListed);
+        }
+
+
+
+        public async Task CheckIfCityIdExists(int cityId)
+        {
+            if (!await _cityDal.AnyAsync(c => c.Id == cityId))
+                throw new EntityNotFoundException("Şehir");
         }
 
     }

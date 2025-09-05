@@ -2,17 +2,14 @@
 using Business.Abstract;
 using Business.BusinessAspects.Autofac;
 using Business.Constants.Messages;
-using Business.Constants.Messages.Entity;
 using Business.Security;
 using Business.ValidationRules.FluentValidation.User;
 using Core.Aspects.Autofac.Validation;
-using Core.Entities.Abstract;
 using Core.Exceptions.General;
 using Core.Exceptions.User;
 using Core.Extensions;
 using Core.Requests;
 using Core.ResponseModels;
-using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
 using Entities.Dtos.User;
@@ -49,16 +46,9 @@ namespace Business.Concrete
 
 
         public async Task<DataResponse<AccessToken>> CreateAccessToken(User user)
-        {
-            DataResponse<string> claims = await _operationClaimService.GetClaim(user.OperationClaimId);
-
-
-            if (!claims.Data.Any())
-                throw new ForbiddenException();
-
-
-            return new DataResponse<AccessToken>(_tokenHelper.CreateToken(user, claims.Data));
-        }
+            => new DataResponse<AccessToken>
+            (_tokenHelper.CreateToken(user, await _operationClaimService.GetClaim(user.OperationClaimId)));
+        
 
 
 

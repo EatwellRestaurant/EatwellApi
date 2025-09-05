@@ -4,6 +4,7 @@ using DataAccess.Concrete.EntityFramework;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(RestaurantContext))]
-    partial class RestaurantContextModelSnapshot : ModelSnapshot
+    [Migration("20250902073216_AddSeedDataToOperationClaim")]
+    partial class AddSeedDataToOperationClaim
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -33,7 +36,7 @@ namespace DataAccess.Migrations
                     b.Property<DateTime>("CreateDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2025, 9, 2, 10, 40, 14, 491, DateTimeKind.Local).AddTicks(6198));
+                        .HasDefaultValue(new DateTime(2025, 9, 2, 10, 32, 15, 909, DateTimeKind.Local).AddTicks(8834));
 
                     b.Property<DateTime?>("DeleteDate")
                         .HasColumnType("datetime2");
@@ -582,6 +585,9 @@ namespace DataAccess.Migrations
                     b.Property<DateTime?>("LeaveDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<int>("OperationClaimId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Phone")
                         .IsRequired()
                         .HasMaxLength(14)
@@ -603,6 +609,8 @@ namespace DataAccess.Migrations
                     b.HasIndex("BranchId");
 
                     b.HasIndex("CityId");
+
+                    b.HasIndex("OperationClaimId");
 
                     b.HasIndex("UserId")
                         .IsUnique();
@@ -789,7 +797,7 @@ namespace DataAccess.Migrations
                     b.Property<DateTime>("CreateDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2025, 9, 2, 10, 40, 14, 492, DateTimeKind.Local).AddTicks(8956));
+                        .HasDefaultValue(new DateTime(2025, 9, 2, 10, 32, 15, 911, DateTimeKind.Local).AddTicks(2955));
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
@@ -1219,6 +1227,12 @@ namespace DataAccess.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
+                    b.HasOne("Entities.Concrete.OperationClaim", "OperationClaim")
+                        .WithMany("Employees")
+                        .HasForeignKey("OperationClaimId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.HasOne("Entities.Concrete.User", "User")
                         .WithOne("Employee")
                         .HasForeignKey("Entities.Concrete.Employee", "UserId")
@@ -1228,6 +1242,8 @@ namespace DataAccess.Migrations
                     b.Navigation("Branch");
 
                     b.Navigation("City");
+
+                    b.Navigation("OperationClaim");
 
                     b.Navigation("User");
                 });
@@ -1361,6 +1377,8 @@ namespace DataAccess.Migrations
 
             modelBuilder.Entity("Entities.Concrete.OperationClaim", b =>
                 {
+                    b.Navigation("Employees");
+
                     b.Navigation("Users");
                 });
 
