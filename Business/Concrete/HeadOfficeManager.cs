@@ -8,6 +8,7 @@ using Core.ResponseModels;
 using DataAccess.Abstract;
 using Entities.Concrete;
 using Entities.Dtos.HeadOffice;
+using Entities.Enums.OperationClaim;
 
 namespace Business.Concrete
 {
@@ -36,7 +37,7 @@ namespace Business.Concrete
 
 
 
-        [SecuredOperation("admin", Priority = 1)]
+        [SecuredOperation(OperationClaimEnum.Admin, Priority = 1)]
         [ValidationAspect(typeof(HeadOfficeDtoValidator), Priority = 2)]
         public async Task<UpdateSuccessResponse> UpdateAsync(HeadOfficeDto headOfficeDto)
         {

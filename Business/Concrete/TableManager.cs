@@ -11,6 +11,7 @@ using DataAccess.Abstract;
 using DataAccess.Concrete.EntityFramework;
 using Entities.Concrete;
 using Entities.Dtos.Table;
+using Entities.Enums.OperationClaim;
 using Entities.Filters;
 using Microsoft.EntityFrameworkCore;
 using Service.Concrete;
@@ -38,7 +39,7 @@ namespace Business.Concrete
         }
 
 
-        [SecuredOperation("admin", Priority = 1)]
+        [SecuredOperation(OperationClaimEnum.Admin, Priority = 1)]
         [ValidationAspect(typeof(TableInsertDtoValidator), Priority = 2)]
         public async Task<CreateSuccessResponse> Add(TableInsertDto insertDto)
         {
@@ -54,7 +55,7 @@ namespace Business.Concrete
 
 
 
-        [SecuredOperation("admin", Priority = 1)]
+        [SecuredOperation(OperationClaimEnum.Admin, Priority = 1)]
         [ValidationAspect(typeof(TableUpdateDtoValidator), Priority = 2)]
         public async Task<UpdateSuccessResponse> Update(int tableId, TableUpdateDto updateDto)
         {
@@ -76,7 +77,7 @@ namespace Business.Concrete
 
 
 
-        [SecuredOperation("admin", Priority = 1)]
+        [SecuredOperation(OperationClaimEnum.Admin, Priority = 1)]
         public async Task<DeleteSuccessResponse> Delete(int tableId)
         {
             Table table = await GetByIdTableForDeleteAndUpdate(tableId);
@@ -95,7 +96,7 @@ namespace Business.Concrete
 
 
 
-        [SecuredOperation("admin", Priority = 1)]
+        [SecuredOperation(OperationClaimEnum.Admin, Priority = 1)]
         public async Task<DataResponse<List<TableListDto>>> GetAllForAdmin(int branchId) 
             => new DataResponse<List<TableListDto>>(_mapper.Map<List<TableListDto>>
                 (await _tableDal
@@ -106,7 +107,7 @@ namespace Business.Concrete
 
 
 
-        [SecuredOperation("admin", Priority = 1)]
+        [SecuredOperation(OperationClaimEnum.Admin, Priority = 1)]
         public async Task<DataResponse<TableListDto>> GetForAdmin(int tableId)
         {
             Table? table = await _tableDal

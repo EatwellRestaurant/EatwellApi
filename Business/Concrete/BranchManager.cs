@@ -13,6 +13,7 @@ using DataAccess.Abstract;
 using Entities.Concrete;
 using Entities.Dtos.Branch;
 using Entities.Enums;
+using Entities.Enums.OperationClaim;
 using Microsoft.EntityFrameworkCore;
 using Service.Concrete;
 using System.Globalization;
@@ -41,7 +42,7 @@ namespace Business.Concrete
 
 
 
-        [SecuredOperation("admin", Priority = 1)]
+        [SecuredOperation(OperationClaimEnum.Admin, Priority = 1)]
         [ValidationAspect(typeof(BranchInsertDtoValidator), Priority = 2)]
         public async Task<CreateSuccessResponse> Add(BranchInsertDto insertDto)
         {
@@ -59,7 +60,7 @@ namespace Business.Concrete
         }
 
 
-        [SecuredOperation("admin")]
+        [SecuredOperation(OperationClaimEnum.Admin)]
         public async Task<DeleteSuccessResponse> Delete(int branchId)
         {
             // Oluşturduğumuz sorguda rezervasyonların saat dilimini de dikkate alıyoruz ve
@@ -93,7 +94,7 @@ namespace Business.Concrete
 
 
 
-        [SecuredOperation("admin")]
+        [SecuredOperation(OperationClaimEnum.Admin)]
         public async Task<DataResponse<BranchDetailDto>> GetForAdmin(int branchId)
         {
             Branch? branch = await _branchDal
@@ -111,7 +112,7 @@ namespace Business.Concrete
 
 
 
-        [SecuredOperation("admin")]
+        [SecuredOperation(OperationClaimEnum.Admin)]
         public async Task<object> GetAllForAdmin(PaginationRequest? paginationRequest)
         {
             IQueryable<Branch> query = _branchDal
@@ -131,7 +132,7 @@ namespace Business.Concrete
 
 
 
-        [SecuredOperation("admin", Priority = 1)]
+        [SecuredOperation(OperationClaimEnum.Admin, Priority = 1)]
         public async Task<PaginationResponse<BranchListDto>> GetAllForAdminByCityId(int cityId, PaginationRequest paginationRequest)
         {
             if (!await _cityService.AnyAsync(c => c.Id == cityId))
@@ -151,7 +152,7 @@ namespace Business.Concrete
 
 
 
-        [SecuredOperation("admin", Priority = 1)]
+        [SecuredOperation(OperationClaimEnum.Admin, Priority = 1)]
         [ValidationAspect(typeof(BranchUpdateDtoValidator), Priority = 2)]
         public async Task<UpdateSuccessResponse> Update(int branchId, BranchUpdateDto updateDto)
         {
@@ -180,7 +181,7 @@ namespace Business.Concrete
 
 
 
-        [SecuredOperation("admin", Priority = 1)]
+        [SecuredOperation(OperationClaimEnum.Admin, Priority = 1)]
         public async Task<DataResponse<List<BranchSalesDto>>> GetAllBranchesMonthlySalesAsync()
             => new
             (await _branchDal
@@ -205,7 +206,7 @@ namespace Business.Concrete
 
 
 
-        [SecuredOperation("admin", Priority = 1)]
+        [SecuredOperation(OperationClaimEnum.Admin, Priority = 1)]
         public async Task<DataResponse<BranchOverviewDto>> GetBranchOverviewAsync() 
         {
             List<Branch> branches = await _branchDal

@@ -15,6 +15,7 @@ using Core.Utilities.Results;
 using DataAccess.Abstract;
 using Entities.Concrete;
 using Entities.Dtos.Reservation;
+using Entities.Enums.OperationClaim;
 using Entities.Filters;
 using Microsoft.EntityFrameworkCore;
 using Service.Concrete;
@@ -87,7 +88,7 @@ namespace Business.Concrete
 
 
 
-        [SecuredOperation("admin", Priority = 1)]
+        [SecuredOperation(OperationClaimEnum.Admin, Priority = 1)]
         public async Task<PaginationResponse<ReservationListDto>> GetAllForAdmin(int branchId, PaginationRequest paginationRequest, ReservationFilter filter)
         {
             IQueryable<Reservation> query = _reservationDal
@@ -116,7 +117,7 @@ namespace Business.Concrete
 
 
 
-        [SecuredOperation("admin")]
+        [SecuredOperation(OperationClaimEnum.Admin)]
         public async Task<DataResponse<int>> GetReservationCount(int? branchId)
             => new DataResponse<int>(await _reservationDal
                 .CountAsync(r => (branchId.HasValue ? r.BranchId == branchId : true) && !r.IsDeleted));

@@ -53,7 +53,7 @@ namespace Business.Concrete
 
 
 
-        [SecuredOperation("admin, manager", Priority = 1)]
+        [SecuredOperation(OperationClaimEnum.Admin, OperationClaimEnum.Manager, Priority = 1)]
         [ValidationAspect(typeof(EmployeeUpsertDtoValidator), Priority = 2)]
         public async Task<CreateSuccessResponse> Add(EmployeeUpsertDto employeeUpsertDto)
         {
@@ -95,7 +95,7 @@ namespace Business.Concrete
 
 
 
-        [SecuredOperation("manager")]
+        [SecuredOperation(OperationClaimEnum.Manager)]
         public async Task<PaginationResponse<EmployeeListDto>> GetAllForManagerAsync(PaginationRequest paginationRequest)
         {
             int userId = GetCurrentUserId();
@@ -116,7 +116,7 @@ namespace Business.Concrete
 
 
 
-        [SecuredOperation("admin")]
+        [SecuredOperation(OperationClaimEnum.Admin)]
         public async Task<PaginationResponse<EmployeeListDto>> GetAllForAdminAsync(PaginationRequest paginationRequest)
         {
             List<EmployeeListDto> employeeListDtos = await GetEmployeesByBranchAsync();

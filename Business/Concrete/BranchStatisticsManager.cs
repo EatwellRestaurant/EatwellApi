@@ -5,6 +5,7 @@ using Core.ResponseModels;
 using Entities.Dtos.Branch;
 using Entities.Dtos.HeadOffice;
 using Entities.Dtos.Order;
+using Entities.Enums.OperationClaim;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -35,7 +36,7 @@ namespace Business.Concrete
 
 
 
-        [SecuredOperation("admin")]
+        [SecuredOperation(OperationClaimEnum.Admin)]
         public async Task<DataResponse<StatisticsDto>> GetStatistics(int? branchId)
         {
             DataResponse<int> orderCount = await _orderService.GetOrderCount(branchId);

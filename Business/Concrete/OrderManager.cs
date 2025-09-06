@@ -13,6 +13,7 @@ using DataAccess.Abstract;
 using Entities.Concrete;
 using Entities.Dtos.Order;
 using Entities.Enums;
+using Entities.Enums.OperationClaim;
 using Microsoft.EntityFrameworkCore;
 using Service.Concrete;
 
@@ -46,7 +47,7 @@ namespace Business.Concrete
 
 
 
-        [SecuredOperation("employee", Priority = 1)]
+        [SecuredOperation(OperationClaimEnum.Waiter, OperationClaimEnum.Cashier, Priority = 1)]
         [ValidationAspect(typeof(OrderInsertDtoValidator), Priority = 2)]
         public async Task<CreateSuccessResponse> Add(OrderInsertDto orderInsertDto)
         {
@@ -132,7 +133,7 @@ namespace Business.Concrete
 
 
 
-        [SecuredOperation("employee", Priority = 1)]
+        [SecuredOperation(OperationClaimEnum.Waiter, OperationClaimEnum.Cashier, Priority = 1)]
         [ValidationAspect(typeof(OrderPaymentDtoValidator), Priority = 2)]
         public async Task<UpdateSuccessResponse> Pay(int orderId, OrderPaymentDto orderPaymentDto)
         {
@@ -158,14 +159,14 @@ namespace Business.Concrete
 
 
 
-        [SecuredOperation("admin")]
+        [SecuredOperation(OperationClaimEnum.Admin)]
         public async Task<DataResponse<int>> GetOrderCount(int? branchId) 
             => new DataResponse<int>(await _orderDal
                 .CountAsync(o => (branchId.HasValue ? o.BranchId == branchId : true) && !o.IsDeleted));
         
         
         
-        [SecuredOperation("admin")] 
+        [SecuredOperation(OperationClaimEnum.Admin)] 
         public async Task<DataResponse<decimal>> CalculateTotalSales(int? branchId) 
             => new DataResponse<decimal>(await _orderDal
                 .Where(o => (branchId.HasValue ? o.BranchId == branchId : true) && !o.IsDeleted)

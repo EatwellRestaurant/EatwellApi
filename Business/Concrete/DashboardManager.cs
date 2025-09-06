@@ -4,6 +4,7 @@ using Business.Constants.Messages;
 using Core.ResponseModels;
 using Entities.Dtos.Dashboard;
 using Entities.Enums;
+using Entities.Enums.OperationClaim;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,7 +25,7 @@ namespace Business.Concrete
         }
 
 
-        [SecuredOperation("admin")]
+        [SecuredOperation(OperationClaimEnum.Admin)]
         public async Task<DataResponse<DashboardStatisticsDto>> GetStatistics()
         {
             DashboardStatisticsDto statisticsDto = new()

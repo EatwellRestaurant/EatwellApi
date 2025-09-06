@@ -14,6 +14,7 @@ using DataAccess.Abstract;
 using Entities.Concrete;
 using Entities.Dtos.User;
 using Entities.Enums;
+using Entities.Enums.OperationClaim;
 using Microsoft.EntityFrameworkCore;
 using Service.Concrete;
 
@@ -52,7 +53,7 @@ namespace Business.Concrete
 
 
 
-        [SecuredOperation("admin")]
+        [SecuredOperation(OperationClaimEnum.Admin)]
         public async Task<PaginationResponse<UserListDto>> GetAll(PaginationRequest paginationRequest)
         {
             IQueryable<User> query = _userDal
@@ -69,7 +70,7 @@ namespace Business.Concrete
         }
 
 
-        [SecuredOperation("admin")]
+        [SecuredOperation(OperationClaimEnum.Admin)]
         public async Task<DataResponse<UserDetailDto>> Get(int userId)
         {
             User? user = await _userDal
@@ -84,7 +85,7 @@ namespace Business.Concrete
 
 
 
-        [SecuredOperation("user", Priority = 1)]
+        [SecuredOperation(OperationClaimEnum.User, Priority = 1)]
         [ValidationAspect(typeof(UserUpdateDtoValidator), Priority = 2)]
         public async Task<UpdateSuccessResponse> Update(int userId, UserUpdateDto updateDto)
         {
@@ -103,7 +104,7 @@ namespace Business.Concrete
 
 
          
-        [SecuredOperation("user", Priority = 1)]
+        [SecuredOperation(OperationClaimEnum.User, Priority = 1)]
         [ValidationAspect(typeof(UserPasswordUpdateDtoValidator), Priority = 2)]
         public async Task<UpdateSuccessResponse> UpdatePassword(int userId, UserPasswordUpdateDto updateDto)
         {
@@ -128,7 +129,7 @@ namespace Business.Concrete
 
 
 
-        [SecuredOperation("user")]
+        [SecuredOperation(OperationClaimEnum.User)]
         public async Task<DeleteSuccessResponse> Delete(int userId, UserDeleteDto deleteDto)
         {
             User user = await GetByIdUser(userId);

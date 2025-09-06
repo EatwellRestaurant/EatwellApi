@@ -17,6 +17,7 @@ using DataAccess.Concrete.EntityFramework;
 using Entities.Concrete;
 using Entities.Dtos.MealCategory;
 using Entities.Dtos.Product;
+using Entities.Enums.OperationClaim;
 using Microsoft.EntityFrameworkCore;
 using Service.Concrete;
 using System.Linq;
@@ -47,7 +48,7 @@ namespace Business.Concrete
         }
 
 
-        [SecuredOperation("admin", Priority = 1)]
+        [SecuredOperation(OperationClaimEnum.Admin, Priority = 1)]
         [ValidationAspect(typeof(ProductUpsertDtoValidator))]
         public async Task<CreateSuccessResponse> Add(ProductInsertDto insertDto)
         {
@@ -75,7 +76,7 @@ namespace Business.Concrete
         }
 
 
-        [SecuredOperation("admin")]
+        [SecuredOperation(OperationClaimEnum.Admin)]
         public async Task<DeleteSuccessResponse> SetDeleteOrRestore(int productId)
         {
             Product product = await GetByIdProductForDeleteAndUpdate(productId);
@@ -104,7 +105,7 @@ namespace Business.Concrete
         }
 
 
-        [SecuredOperation("admin", Priority = 1)]
+        [SecuredOperation(OperationClaimEnum.Waiter, OperationClaimEnum.Cashier, Priority = 1)]
         public async Task<DeleteSuccessResponse> Delete(int productId)
         {
             Product product = await GetByIdProductForDeleteAndUpdate(productId);
@@ -121,7 +122,7 @@ namespace Business.Concrete
         }
 
 
-        [SecuredOperation("admin", Priority = 1)]
+        [SecuredOperation(OperationClaimEnum.Waiter, OperationClaimEnum.Cashier, Priority = 1)]
         public async Task<DataResponse<ProductDetailDto>> GetForAdmin(int productId)
         {
             Product? product = await _productDal
@@ -135,7 +136,7 @@ namespace Business.Concrete
         }
 
 
-        [SecuredOperation("admin", Priority = 1)]
+        [SecuredOperation(OperationClaimEnum.Waiter, OperationClaimEnum.Cashier, Priority = 1)]
         public async Task<PaginationResponse<ProductAdminListDto>> GetAllForAdminByMealCategoryId(int mealCategoryId, PaginationRequest paginationRequest)
         {
             if (!await _mealCategoryService.AnyAsync(m => m.Id == mealCategoryId && !m.IsDeleted))
@@ -154,7 +155,7 @@ namespace Business.Concrete
         }
 
 
-        [SecuredOperation("admin", Priority = 1)]
+        [SecuredOperation(OperationClaimEnum.Admin, Priority = 1)]
         public async Task<PaginationResponse<ProductListWithMealCategoryDto>> GetAllForAdmin(PaginationRequest paginationRequest)
         {
             IQueryable<Product> query = _productDal
@@ -200,7 +201,7 @@ namespace Business.Concrete
         }
 
 
-        [SecuredOperation("admin", Priority = 1)]
+        [SecuredOperation(OperationClaimEnum.Admin, Priority = 1)]
         [ValidationAspect(typeof(ProductUpsertDtoValidator))]
         public async Task<UpdateSuccessResponse> Update(int productId, ProductUpdateDto updateDto)
         {
@@ -231,7 +232,7 @@ namespace Business.Concrete
 
 
 
-        [SecuredOperation("admin", Priority = 1)]
+        [SecuredOperation(OperationClaimEnum.Admin, Priority = 1)]
         public async Task<UpdateSuccessResponse> SaveSelectedProducts(List<SelectedProductDto> selectedProductDtos)
         {
             // Veri tabanında seçili ve aktif durumda olan ürünleri alıyoruz

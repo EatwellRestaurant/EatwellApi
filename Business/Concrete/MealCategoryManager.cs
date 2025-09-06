@@ -13,6 +13,7 @@ using Core.Utilities.FileHelper;
 using DataAccess.Abstract;
 using Entities.Concrete;
 using Entities.Dtos.MealCategory;
+using Entities.Enums.OperationClaim;
 using Microsoft.EntityFrameworkCore;
 using Service.Concrete;
 
@@ -39,7 +40,7 @@ namespace Business.Concrete
         }
 
 
-        [SecuredOperation("admin", Priority = 1)]
+        [SecuredOperation(OperationClaimEnum.Admin, Priority = 1)]
         [ValidationAspect(typeof(MealCategoryUpsertDtoValidator), Priority = 2)]
         public async Task<CreateSuccessResponse> Add(MealCategoryUpsertDto upsertDto)
         {
@@ -64,7 +65,7 @@ namespace Business.Concrete
 
 
 
-        [SecuredOperation("admin")]
+        [SecuredOperation(OperationClaimEnum.Admin)]
         public async Task<DeleteSuccessResponse> SetDeleteOrRestore(int mealCategoryId)
         {
             MealCategory mealCategory = await GetByIdMealCategoryForDeleteAndUpdate(mealCategoryId);
@@ -94,7 +95,7 @@ namespace Business.Concrete
 
 
 
-        [SecuredOperation("admin", Priority = 1)]
+        [SecuredOperation(OperationClaimEnum.Admin, Priority = 1)]
         public async Task<DeleteSuccessResponse> Delete(int mealCategoryId)
         {
             MealCategory? mealCategory = await _mealCategoryDal
@@ -130,7 +131,7 @@ namespace Business.Concrete
 
 
 
-        [SecuredOperation("admin")]
+        [SecuredOperation(OperationClaimEnum.Admin)]
         public async Task<DataResponse<MealCategoryDetailDto>> GetForAdmin(int mealCategoryId)
         {
             MealCategory? mealCategory = await _mealCategoryDal
@@ -144,7 +145,7 @@ namespace Business.Concrete
 
 
 
-        [SecuredOperation("admin")]
+        [SecuredOperation(OperationClaimEnum.Admin)]
         public async Task<object> GetAllForAdmin(PaginationRequest? paginationRequest)
         {
             IQueryable<MealCategory> query = _mealCategoryDal
@@ -179,7 +180,7 @@ namespace Business.Concrete
 
 
 
-        [SecuredOperation("admin", Priority = 1)]
+        [SecuredOperation(OperationClaimEnum.Admin, Priority = 1)]
         [ValidationAspect(typeof(MealCategoryUpsertDtoValidator), Priority = 2)]
         public async Task<UpdateSuccessResponse> Update(int mealCategoryId, MealCategoryUpsertDto upsertDto)
         {

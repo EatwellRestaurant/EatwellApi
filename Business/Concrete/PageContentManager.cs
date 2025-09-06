@@ -12,6 +12,7 @@ using Entities.Concrete;
 using Entities.Constants;
 using Entities.Dtos.PageContent;
 using Entities.Enums;
+using Entities.Enums.OperationClaim;
 
 namespace Business.Concrete
 {
@@ -31,7 +32,7 @@ namespace Business.Concrete
         }
 
 
-        [SecuredOperation("admin", Priority = 1)]
+        [SecuredOperation(OperationClaimEnum.Admin, Priority = 1)]
         [ValidationAspect(typeof(PageContentUpdateDtoValidator), Priority = 2)]
         public async Task<DataResponse<string?>> Update(PageContentUpdateDto pageContentUpdateDto)
         {
