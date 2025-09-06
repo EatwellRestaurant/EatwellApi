@@ -87,7 +87,7 @@ namespace DataAccess.Migrations
 
                     b.HasIndex("BranchId");
 
-                    b.ToTable("BranchEmployees");
+                    b.ToTable("BranchEmployees", (string)null);
                 });
 
             modelBuilder.Entity("Entities.Concrete.BranchImage", b =>
@@ -115,7 +115,7 @@ namespace DataAccess.Migrations
 
                     b.HasIndex("BranchId");
 
-                    b.ToTable("BranchImages");
+                    b.ToTable("BranchImages", (string)null);
                 });
 
             modelBuilder.Entity("Entities.Concrete.City", b =>
@@ -132,7 +132,7 @@ namespace DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Cities");
+                    b.ToTable("Cities", (string)null);
 
                     b.HasData(
                         new
@@ -607,7 +607,7 @@ namespace DataAccess.Migrations
                     b.HasIndex("UserId")
                         .IsUnique();
 
-                    b.ToTable("Employees");
+                    b.ToTable("Employees", (string)null);
                 });
 
             modelBuilder.Entity("Entities.Concrete.Evaluation", b =>
@@ -630,7 +630,7 @@ namespace DataAccess.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Evaluations");
+                    b.ToTable("Evaluations", (string)null);
                 });
 
             modelBuilder.Entity("Entities.Concrete.HeadOffice", b =>
@@ -684,7 +684,7 @@ namespace DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("HeadOffices");
+                    b.ToTable("HeadOffices", (string)null);
 
                     b.HasData(
                         new
@@ -717,7 +717,7 @@ namespace DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("OperationClaims");
+                    b.ToTable("OperationClaims", (string)null);
 
                     b.HasData(
                         new
@@ -775,7 +775,7 @@ namespace DataAccess.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("OrderProducts");
+                    b.ToTable("OrderProducts", (string)null);
                 });
 
             modelBuilder.Entity("Entities.Concrete.PageContent", b =>
@@ -811,7 +811,7 @@ namespace DataAccess.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("PageContents");
+                    b.ToTable("PageContents", (string)null);
 
                     b.HasData(
                         new
@@ -951,7 +951,7 @@ namespace DataAccess.Migrations
 
                     b.HasIndex("CityId");
 
-                    b.ToTable("Branches");
+                    b.ToTable("Branches", (string)null);
                 });
 
             modelBuilder.Entity("Entities.Concrete.MealCategory", b =>
@@ -979,7 +979,7 @@ namespace DataAccess.Migrations
                         .HasMaxLength(250)
                         .HasColumnType("nvarchar(250)");
 
-                    b.ToTable("MealCategories");
+                    b.ToTable("MealCategories", (string)null);
                 });
 
             modelBuilder.Entity("Entities.Concrete.Order", b =>
@@ -1015,7 +1015,7 @@ namespace DataAccess.Migrations
 
                     b.HasIndex("TableId");
 
-                    b.ToTable("Orders");
+                    b.ToTable("Orders", (string)null);
                 });
 
             modelBuilder.Entity("Entities.Concrete.Product", b =>
@@ -1057,7 +1057,7 @@ namespace DataAccess.Migrations
 
                     b.HasIndex("MealCategoryId");
 
-                    b.ToTable("Products");
+                    b.ToTable("Products", (string)null);
                 });
 
             modelBuilder.Entity("Entities.Concrete.Reservation", b =>
@@ -1098,7 +1098,7 @@ namespace DataAccess.Migrations
 
                     b.HasIndex("TableId");
 
-                    b.ToTable("Reservations");
+                    b.ToTable("Reservations", (string)null);
                 });
 
             modelBuilder.Entity("Entities.Concrete.Table", b =>
@@ -1121,7 +1121,7 @@ namespace DataAccess.Migrations
 
                     b.HasIndex("BranchId");
 
-                    b.ToTable("Tables");
+                    b.ToTable("Tables", (string)null);
                 });
 
             modelBuilder.Entity("Entities.Concrete.User", b =>
@@ -1167,7 +1167,7 @@ namespace DataAccess.Migrations
 
                     b.HasIndex("OperationClaimId");
 
-                    b.ToTable("Users");
+                    b.ToTable("Users", (string)null);
 
                     b.HasData(
                         new

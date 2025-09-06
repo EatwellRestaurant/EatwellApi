@@ -26,8 +26,6 @@ namespace Business.ValidationRules.FluentValidation
                 .Cascade(CascadeMode.Stop)
                 .NotEmpty()
                 .WithMessage("Lütfen e-posta adresinizi giriniz!")
-                .NotNull()
-                .WithMessage("Lütfen e-posta adresinizi giriniz!")
                 .EmailAddress()
                 .WithMessage("Lütfen geçerli bir e-posta adresi giriniz!")
                 .Matches(new Regex(@"\w+\.com$"))

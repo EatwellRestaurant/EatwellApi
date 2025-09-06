@@ -15,8 +15,6 @@ namespace Business.ValidationRules.FluentValidation.HeadOffice
         {
             RuleFor(h => h.Phone)
                 .Cascade(CascadeMode.Stop)
-                .NotNull()
-                .WithMessage("Lütfen ana telefon numarasını giriniz!")
                 .NotEmpty()
                 .WithMessage("Lütfen ana telefon numarasını giriniz!")
                 .Matches(new Regex(@"0\d{3}\ \d{3} \d{2} \d{2}"))
@@ -28,19 +26,12 @@ namespace Business.ValidationRules.FluentValidation.HeadOffice
                 .Cascade(CascadeMode.Stop)
                 .NotEmpty()
                 .WithMessage("Lütfen kurumsal e-posta bilgisini giriniz!")
-                .NotNull()
-                .WithMessage("Lütfen kurumsal e-posta bilgisini giriniz!")
                 .EmailAddress()
-                .WithMessage("Lütfen geçerli bir e-posta adresi giriniz!")
-                .Matches(new Regex(@"\w+\.com$"))
                 .WithMessage("Lütfen geçerli bir e-posta adresi giriniz!");
 
 
 
             RuleFor(h => h.Address)
-                .Cascade(CascadeMode.Stop)
-                .NotNull()
-                .WithMessage("Lütfen şirket adresini giriniz!")
                 .NotEmpty()
                 .WithMessage("Lütfen şirket adresini giriniz!");
 

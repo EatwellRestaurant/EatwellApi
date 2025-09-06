@@ -1,15 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace Entities.Enums.Employee
 {
     public enum WorkStatusType : byte
     {
-        Active = 1, 
+        [Display(Name = "Aktif")]
+        Active = 1,
+
+        [Display(Name = "İzinli")]
         OnLeave = 2,
+
+        [Display(Name = "İşten Ayrılmış")]
         Resigned = 3
 
     }

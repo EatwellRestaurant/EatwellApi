@@ -5,11 +5,15 @@ using Business.Constants.Messages;
 using Business.ValidationRules.FluentValidation.Employee;
 using Core.Aspects.Autofac.Validation;
 using Core.Exceptions.Employee;
+using Core.Extensions;
+using Core.Requests;
 using Core.ResponseModels;
 using DataAccess.Abstract;
 using Entities.Concrete;
 using Entities.Dtos.Employee;
+using Entities.Enums.OperationClaim;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using Service.Concrete;
 using System.Security.Claims;
 
@@ -91,11 +95,73 @@ namespace Business.Concrete
 
 
 
+        [SecuredOperation("manager")]
+        public async Task<PaginationResponse<EmployeeListDto>> GetAllForManagerAsync(PaginationRequest paginationRequest)
+        {
+            int userId = GetCurrentUserId();
+
+            int branchId = await _employeeDal
+                .Where(e => e.UserId == userId)
+                .Select(e => e.BranchId)
+                .SingleAsync();
+
+
+            await _branchService.CheckIfBranchIdExists(branchId);
+            List<EmployeeListDto> employeeListDtos = await GetEmployeesByBranchAsync(branchId, userId);
+
+
+            return new PaginationResponse<EmployeeListDto>(employeeListDtos, paginationRequest, employeeListDtos.Count);
+        }
+
+
+
+
+        [SecuredOperation("admin")]
+        public async Task<PaginationResponse<EmployeeListDto>> GetAllForAdminAsync(PaginationRequest paginationRequest)
+        {
+            List<EmployeeListDto> employeeListDtos = await GetEmployeesByBranchAsync();
+
+
+            return new PaginationResponse<EmployeeListDto>(employeeListDtos, paginationRequest, employeeListDtos.Count);
+        }
+
+
+
+
+
+
+        private async Task<List<EmployeeListDto>> GetEmployeesByBranchAsync(int? branchId = null, int? managerId = null)
+            =>  await _employeeDal
+                .GetAllQueryable(e =>
+                (!branchId.HasValue || e.BranchId == branchId)
+                && (!managerId.HasValue || e.UserId != managerId)
+                && !e.User.IsDeleted)
+                .Select(e => new EmployeeListDto
+                {
+                    Id = e.Id,
+                    FirstName = e.User.FirstName,
+                    LastName = e.User.LastName,
+                    Email = e.User.Email,
+                    Position = ((OperationClaimEnum)e.User.OperationClaim.Id).GetDisplayName(),
+                    BranchName = e.Branch.Name,
+                    HireDate = e.HireDate,
+                    Salary = e.Salary,
+                    WorkStatus = e.WorkStatus.GetDisplayName(),
+                })
+                .ToListAsync();
+
 
         private string GetCurrentUserRole()
         {
             return _httpContextAccessor.HttpContext.User
                 .Claims.First(c => c.Type == ClaimTypes.Role).Value.ToLower();
+        }
+
+
+        private int GetCurrentUserId()
+        {
+            return int.Parse(_httpContextAccessor.HttpContext.User
+                .Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value);
         }
     }
 }
