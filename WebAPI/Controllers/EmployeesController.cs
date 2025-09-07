@@ -18,9 +18,15 @@ namespace WebAPI.Controllers
 
 
 
-        [HttpPost]
-        public async Task<IActionResult> Add(EmployeeUpsertDto employeeUpsertDto)
-            => Ok(await _employeeService.Add(employeeUpsertDto));
+        [HttpPost] 
+        public async Task<IActionResult> AddForManagerAsync(EmployeeUpsertDto employeeUpsertDto)
+            => Ok(await _employeeService.AddForManagerAsync(employeeUpsertDto));
+        
+        
+        
+        [HttpPost] 
+        public async Task<IActionResult> AddForAdminAsync(EmployeeUpsertDtoForAdmin employeeUpsertDto)
+            => Ok(await _employeeService.AddForAdminAsync(employeeUpsertDto));
 
 
 

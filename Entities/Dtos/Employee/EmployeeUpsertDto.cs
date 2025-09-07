@@ -18,8 +18,6 @@ namespace Entities.Dtos.Employee
 
         public string Email { get; set; }
 
-        public int BranchId { get; set; }
-
         public int OperationClaimId { get; set; }
 
         public int CityId { get; set; }

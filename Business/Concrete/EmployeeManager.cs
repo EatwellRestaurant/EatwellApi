@@ -53,41 +53,59 @@ namespace Business.Concrete
 
 
 
-        [SecuredOperation(OperationClaimEnum.Admin, OperationClaimEnum.Manager, Priority = 1)]
+        [SecuredOperation(OperationClaimEnum.Manager, Priority = 1)]
         [ValidationAspect(typeof(EmployeeUpsertDtoValidator), Priority = 2)]
-        public async Task<CreateSuccessResponse> Add(EmployeeUpsertDto employeeUpsertDto)
+        public async Task<CreateSuccessResponse> AddForManagerAsync(EmployeeUpsertDto employeeUpsertDto)
         {
-            await _branchService.CheckIfBranchIdExists(employeeUpsertDto.BranchId);
+            int userId = GetCurrentUserId();
+            int branchId = await GetBranchIdByUserIdAsync(userId);
+
             
-            await _operationClaimService.CheckIfOperationClaimIdExists(employeeUpsertDto.OperationClaimId);
-            
-            await _cityService.CheckIfCityIdExists(employeeUpsertDto.CityId);
+            await ValidateEmployeeReferencesAsync(branchId, employeeUpsertDto);
 
 
-            string targetRole = await _operationClaimService.GetClaim(employeeUpsertDto.OperationClaimId);
-
-            string currentUserRole = GetCurrentUserRole();
-
-            if (currentUserRole == "manager")
+            OperationClaimEnum[] rolesToCheck = new[]
             {
-                if (targetRole.ToLower() == "admin")
-                    throw new UnauthorizedRoleAssignmentException("admin");
-
-                else if (targetRole.ToLower() == "manager")
-                    throw new UnauthorizedRoleAssignmentException("müdür");
-            }
+                OperationClaimEnum.Admin,
+                OperationClaimEnum.Manager,
+                OperationClaimEnum.User
+            };
 
 
-            await _userService.CheckIfUserEMail(employeeUpsertDto.Email);
+            await ValidateRoleAssignment(rolesToCheck, employeeUpsertDto.OperationClaimId, OperationClaimEnum.Manager);
+            await CreateEmployeeWithUserAsync(employeeUpsertDto, branchId);
 
-            User user = _mapper.Map<User>(employeeUpsertDto);
-            Employee employee = _mapper.Map<Employee>(employeeUpsertDto);
 
-            await _userService.AddAsync(user);
-            await _employeeDal.AddAsync(employee);
+            return new CreateSuccessResponse(CommonMessages.EntityAdded);
+        }
 
-            user.Employee = employee;
-            await _unitOfWork.SaveChangesAsync();
+
+
+
+        [SecuredOperation(OperationClaimEnum.Admin, Priority = 1)]
+        [ValidationAspect(typeof(EmployeeUpsertDtoForAdminValidator), Priority = 2)]
+        public async Task<CreateSuccessResponse> AddForAdminAsync(EmployeeUpsertDtoForAdmin employeeUpsertDto)
+        {
+            await ValidateEmployeeReferencesAsync(employeeUpsertDto.BranchId, employeeUpsertDto);
+
+
+            OperationClaimEnum[] rolesToCheck = new[]
+            {
+                OperationClaimEnum.Admin
+            };
+
+
+            string targetRole = await ValidateRoleAssignment(rolesToCheck, employeeUpsertDto.OperationClaimId, OperationClaimEnum.Admin);
+
+
+            if (string.Equals(targetRole, OperationClaimEnum.Manager.ToString(), StringComparison.OrdinalIgnoreCase)
+                && 
+                await _branchService.HasManagerAsync(employeeUpsertDto.BranchId))
+                throw new BranchAlreadyHasManagerException();
+            
+
+            await CreateEmployeeWithUserAsync(employeeUpsertDto, employeeUpsertDto.BranchId);
+
 
             return new CreateSuccessResponse(CommonMessages.EntityAdded);
         }
@@ -100,10 +118,7 @@ namespace Business.Concrete
         {
             int userId = GetCurrentUserId();
 
-            int branchId = await _employeeDal
-                .Where(e => e.UserId == userId)
-                .Select(e => e.BranchId)
-                .SingleAsync();
+            int branchId = await GetBranchIdByUserIdAsync(userId);
 
 
             await _branchService.CheckIfBranchIdExists(branchId);
@@ -130,38 +145,88 @@ namespace Business.Concrete
 
 
 
+
+        #region OtherMethods
+
         private async Task<List<EmployeeListDto>> GetEmployeesByBranchAsync(int? branchId = null, int? managerId = null)
-            =>  await _employeeDal
-                .GetAllQueryable(e =>
-                (!branchId.HasValue || e.BranchId == branchId)
-                && (!managerId.HasValue || e.UserId != managerId)
-                && !e.User.IsDeleted)
-                .Select(e => new EmployeeListDto
-                {
-                    Id = e.Id,
-                    FirstName = e.User.FirstName,
-                    LastName = e.User.LastName,
-                    Email = e.User.Email,
-                    Position = ((OperationClaimEnum)e.User.OperationClaim.Id).GetDisplayName(),
-                    BranchName = e.Branch.Name,
-                    HireDate = e.HireDate,
-                    Salary = e.Salary,
-                    WorkStatus = e.WorkStatus.GetDisplayName(),
-                })
-                .ToListAsync();
+           => await _employeeDal
+               .GetAllQueryable(e =>
+               (!branchId.HasValue || e.BranchId == branchId)
+               && (!managerId.HasValue || e.UserId != managerId)
+               && !e.User.IsDeleted)
+               .Select(e => new EmployeeListDto
+               {
+                   Id = e.Id,
+                   FirstName = e.User.FirstName,
+                   LastName = e.User.LastName,
+                   Email = e.User.Email,
+                   Position = ((OperationClaimEnum)e.User.OperationClaim.Id).GetDisplayName(),
+                   BranchName = e.Branch.Name,
+                   HireDate = e.HireDate,
+                   Salary = e.Salary,
+                   WorkStatus = e.WorkStatus.GetDisplayName(),
+               })
+               .ToListAsync();
 
 
-        private string GetCurrentUserRole()
+        private async Task<int> GetBranchIdByUserIdAsync(int userId)
+            => await _employeeDal
+            .Where(e => e.UserId == userId)
+            .Select(e => e.BranchId)
+            .SingleAsync();
+
+
+        private async Task ValidateEmployeeReferencesAsync(int branchId, EmployeeUpsertDto employeeUpsertDto)
         {
-            return _httpContextAccessor.HttpContext.User
-                .Claims.First(c => c.Type == ClaimTypes.Role).Value.ToLower();
+            await _branchService.CheckIfBranchIdExists(branchId);
+
+            await _userService.CheckIfUserEMail(employeeUpsertDto.Email);
+
+            await _operationClaimService.CheckIfOperationClaimIdExists(employeeUpsertDto.OperationClaimId);
+
+            await _cityService.CheckIfCityIdExists(employeeUpsertDto.CityId);
         }
 
 
+        private async Task<string> ValidateRoleAssignment(OperationClaimEnum[] rolesToCheck, int operationClaimId, OperationClaimEnum currentUserRole)
+        {
+            string targetRole = await _operationClaimService.GetClaim(operationClaimId);
+
+
+            OperationClaimEnum matchedRole = rolesToCheck
+                .FirstOrDefault(r => targetRole.Equals(r.ToString(), StringComparison.OrdinalIgnoreCase));
+
+
+            if (matchedRole != default)
+                throw new UnauthorizedRoleAssignmentException(currentUserRole.GetDisplayName(), matchedRole.GetDisplayName());
+
+
+            return targetRole;
+        }
+
+
+        private async Task CreateEmployeeWithUserAsync(EmployeeUpsertDto employeeUpsertDto, int branchId)
+        {
+            User user = _mapper.Map<User>(employeeUpsertDto);
+            Employee employee = _mapper.Map<Employee>(employeeUpsertDto);
+
+            await _userService.AddAsync(user);
+            await _employeeDal.AddAsync(employee);
+
+            user.Employee = employee;
+            employee.BranchId = branchId;
+
+            await _unitOfWork.SaveChangesAsync();
+        }
+
+         
         private int GetCurrentUserId()
         {
             return int.Parse(_httpContextAccessor.HttpContext.User
                 .Claims.First(c => c.Type == ClaimTypes.NameIdentifier).Value);
         }
+
+        #endregion
+
     }
 }

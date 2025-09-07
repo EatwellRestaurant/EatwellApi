@@ -268,6 +268,17 @@ namespace Business.Concrete
 
 
 
+
+        [SecuredOperation(OperationClaimEnum.Admin)]
+        public async Task<bool> HasManagerAsync(int branchId)
+            => await _branchDal
+            .Where(b => b.Id == branchId && !b.IsDeleted)
+            .AnyAsync(b => b.Employees
+                .Any(e => e.User.OperationClaim.Name == OperationClaimEnum.Manager.ToString()));
+
+
+
+
         #region BusinessRules
 
         private async Task CheckIfBranchNameExists(string branchName, int? branchId = null)

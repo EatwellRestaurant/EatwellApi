@@ -33,5 +33,7 @@ namespace Business.Abstract
 
         Task CheckIfBranchIdExists(int branchId);
 
+        Task<bool> HasManagerAsync(int branchId);
+
     }
 } 

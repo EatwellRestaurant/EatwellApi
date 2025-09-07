@@ -42,12 +42,6 @@ namespace Business.ValidationRules.FluentValidation.Employee
 
 
 
-            RuleFor(e => e.BranchId)
-                .NotEmpty()
-                .WithMessage("Lütfen şube seçiniz!");
-
-
-
             RuleFor(e => e.OperationClaimId)
                 .NotEmpty()
                 .WithMessage("Lütfen rol seçiniz!");
@@ -102,6 +96,22 @@ namespace Business.ValidationRules.FluentValidation.Employee
 
 
 
+            RuleFor(e => e.WorkStatus)
+                .Cascade(CascadeMode.Stop)
+                .NotEmpty()
+                .WithMessage("Lütfen çalışma durumunu seçiniz!")
+                .Must(e => Enum.IsDefined(typeof(WorkStatusType), e))
+                .WithMessage("Geçersiz çalışma durumu değeri!");
+
+
+
+            RuleFor(e => e.LeaveDate)
+                .NotEmpty()
+                .When(e => e.WorkStatus == WorkStatusType.Resigned)
+                .WithMessage("İşten ayrılan çalışanlar için ayrılma tarihi zorunludur!");
+
+
+            
             RuleFor(e => e.LeaveDate)
                 .Cascade(CascadeMode.Stop)
                 .GreaterThan(e => e.HireDate)
@@ -110,15 +120,6 @@ namespace Business.ValidationRules.FluentValidation.Employee
                 .LessThanOrEqualTo(DateTime.Today)
                 .When(e => e.LeaveDate.HasValue)
                 .WithMessage("Ayrılma tarihi bugünden ileri bir tarih olamaz!");
-
-
-
-            RuleFor(e => e.WorkStatus)
-                .Cascade(CascadeMode.Stop)
-                .NotEmpty()
-                .WithMessage("Lütfen çalışma durumunu seçiniz!")
-                .Must(e => Enum.IsDefined(typeof(WorkStatusType), e))
-                .WithMessage("Geçersiz çalışma durumu değeri!");
 
 
 

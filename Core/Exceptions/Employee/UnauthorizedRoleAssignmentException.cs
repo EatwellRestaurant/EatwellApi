@@ -10,9 +10,9 @@ namespace Core.Exceptions.Employee
     public class UnauthorizedRoleAssignmentException : BadRequestBaseException
     {
         /// <summary>
-        /// Müdür yetkisine sahip kullanıcı, {role} rolünde çalışan oluşturamaz!
+        /// {currentUserRole} yetkisine sahip kullanıcı, {targetRole} rolünde çalışan oluşturamaz!
         /// </summary>
-        public UnauthorizedRoleAssignmentException(string role) : base($"Müdür yetkisine sahip kullanıcı, {role} rolünde çalışan oluşturamaz!")
+        public UnauthorizedRoleAssignmentException(string currentUserRole, string targetRole) : base($"{currentUserRole} yetkisine sahip kullanıcı, {targetRole.ToLower()} rolünde çalışan oluşturamaz!")
         {
         }
     }

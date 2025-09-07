@@ -14,7 +14,7 @@ namespace Entities.Enums.OperationClaim
         [Display(Name = "Kullanıcı")]
         User = 2,
 
-        [Display(Name = "Yönetici")]
+        [Display(Name = "Müdür")]
         Manager = 3,
 
         [Display(Name = "Şef")]

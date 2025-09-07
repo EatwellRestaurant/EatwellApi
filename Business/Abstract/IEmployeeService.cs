@@ -13,7 +13,9 @@ namespace Business.Abstract
 {
     public interface IEmployeeService : IService<Employee>
     {
-        Task<CreateSuccessResponse> Add(EmployeeUpsertDto employeeUpsertDto);
+        Task<CreateSuccessResponse> AddForManagerAsync(EmployeeUpsertDto employeeUpsertDto);
+
+        Task<CreateSuccessResponse> AddForAdminAsync(EmployeeUpsertDtoForAdmin employeeUpsertDto);
 
         Task<PaginationResponse<EmployeeListDto>> GetAllForManagerAsync(PaginationRequest paginationRequest);
 
