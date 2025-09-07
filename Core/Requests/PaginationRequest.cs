@@ -8,21 +8,21 @@ namespace Core.Requests
 {
     public class PaginationRequest
     {
-        int pageNumber;
+        int _pageNumber = 1;
 
         public int PageNumber
         {
-            get => pageNumber;
-            set => pageNumber = value < 1 ? 1 : value;
+            get => _pageNumber;
+            set => _pageNumber = value < 1 ? 1 : value;
         }
 
 
-        int pageSize;
+        int _pageSize = 10;
 
         public int PageSize
         {
-            get => pageSize;
-            set => pageSize = value <= 30 ? value : 10;
+            get => _pageSize;
+            set => _pageSize = value <= 30 ? value : 10;
         }
 
     }

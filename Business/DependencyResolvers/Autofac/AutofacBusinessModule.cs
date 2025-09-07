@@ -31,6 +31,7 @@ namespace Business.DependencyResolvers.Autofac
             
             builder.RegisterType<DashboardManager>().As<IDashboardService>().InstancePerLifetimeScope();
             builder.RegisterType<BranchStatisticsManager>().As<IBranchStatisticsService>().InstancePerLifetimeScope();
+            builder.RegisterType<EmployeeStatisticsManager>().As<IEmployeeStatisticsService>().InstancePerLifetimeScope();
 
             builder.RegisterType<BranchManager>().As<IBranchService>().InstancePerLifetimeScope();
             builder.RegisterType<EfBranchDal>().As<IBranchDal>().InstancePerLifetimeScope();

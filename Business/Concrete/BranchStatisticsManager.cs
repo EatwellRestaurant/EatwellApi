@@ -4,13 +4,7 @@ using Business.Constants.Messages;
 using Core.ResponseModels;
 using Entities.Dtos.Branch;
 using Entities.Dtos.HeadOffice;
-using Entities.Dtos.Order;
 using Entities.Enums.OperationClaim;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Business.Concrete
 {
@@ -37,7 +31,7 @@ namespace Business.Concrete
 
 
         [SecuredOperation(OperationClaimEnum.Admin)]
-        public async Task<DataResponse<StatisticsDto>> GetStatistics(int? branchId)
+        public async Task<DataResponse<BranchStatisticsDto>> GetStatistics(int? branchId)
         {
             DataResponse<int> orderCount = await _orderService.GetOrderCount(branchId);
             DataResponse<int> reservationCount = await _reservationService.GetReservationCount(branchId);
@@ -46,7 +40,7 @@ namespace Business.Concrete
             DataResponse<BranchOverviewDto> branchOverview = await _branchService.GetBranchOverviewAsync();
             DataResponse<HeadOfficeDto> headOffice = await _headOfficeService.GetAsync();
 
-            return new DataResponse<StatisticsDto>(new StatisticsDto
+            return new DataResponse<BranchStatisticsDto>(new BranchStatisticsDto
             {
                 OrderCount = orderCount.Data,
                 ReservationCount = reservationCount.Data,

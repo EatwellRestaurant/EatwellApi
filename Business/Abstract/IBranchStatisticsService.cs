@@ -1,5 +1,5 @@
 ﻿using Core.ResponseModels;
-using Entities.Dtos.Order;
+using Entities.Dtos.Branch;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +10,6 @@ namespace Business.Abstract
 {
     public interface IBranchStatisticsService
     {
-        Task<DataResponse<StatisticsDto>> GetStatistics(int? branchId);
+        Task<DataResponse<BranchStatisticsDto>> GetStatistics(int? branchId);
     }
 }

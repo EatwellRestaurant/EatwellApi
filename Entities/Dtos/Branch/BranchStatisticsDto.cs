@@ -1,9 +1,8 @@
-﻿using Entities.Dtos.Branch;
-using Entities.Dtos.HeadOffice;
+﻿using Entities.Dtos.HeadOffice;
 
-namespace Entities.Dtos.Order
+namespace Entities.Dtos.Branch
 {
-    public class StatisticsDto
+    public class BranchStatisticsDto
     {
         public int OrderCount { get; set; }
         public int ReservationCount { get; set; }

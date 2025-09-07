@@ -2,6 +2,7 @@
 using Core.ResponseModels;
 using Entities.Concrete;
 using Entities.Dtos.Employee;
+using Entities.Enums.OperationClaim;
 using Service.Abstract;
 using System;
 using System.Collections.Generic;
@@ -20,5 +21,11 @@ namespace Business.Abstract
         Task<PaginationResponse<EmployeeListDto>> GetAllForManagerAsync(PaginationRequest paginationRequest);
 
         Task<PaginationResponse<EmployeeListDto>> GetAllForAdminAsync(PaginationRequest paginationRequest);
+
+        Task<DataResponse<int>> GetTotalEmployeeCount();
+
+        Task<DataResponse<int>> GetActiveEmployeeCount();
+
+        Task<DataResponse<int>> GetEmployeeCountByClaim(OperationClaimEnum operationClaimEnum);
     }
 }

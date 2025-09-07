@@ -1,0 +1,25 @@
+﻿using Business.Abstract;
+using Core.Requests;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+
+namespace WebAPI.Controllers
+{
+    [Route("api/[controller]")]
+    [ApiController]
+    public class EmployeeStatisticsController : ControllerBase
+    {
+        readonly IEmployeeStatisticsService _employeeStatisticsService;
+
+        public EmployeeStatisticsController(IEmployeeStatisticsService employeeStatisticsService)
+        {
+            _employeeStatisticsService = employeeStatisticsService;
+        }
+
+
+
+        [HttpGet]
+        public async Task<IActionResult> GetStatistics([FromQuery] PaginationRequest paginationRequest)
+            => Ok(await _employeeStatisticsService.GetStatistics(paginationRequest));
+    }
+}

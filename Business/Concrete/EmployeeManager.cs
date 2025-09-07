@@ -11,6 +11,7 @@ using Core.ResponseModels;
 using DataAccess.Abstract;
 using Entities.Concrete;
 using Entities.Dtos.Employee;
+using Entities.Enums.Employee;
 using Entities.Enums.OperationClaim;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
@@ -141,6 +142,29 @@ namespace Business.Concrete
         }
 
 
+
+
+        [SecuredOperation(OperationClaimEnum.Admin)]
+        public async Task<DataResponse<int>> GetTotalEmployeeCount()
+            => new DataResponse<int>(await _employeeDal
+               .CountAsync(e => !e.User.IsDeleted));
+        
+        
+        
+
+        [SecuredOperation(OperationClaimEnum.Admin)]
+        public async Task<DataResponse<int>> GetActiveEmployeeCount()
+            => new DataResponse<int>(await _employeeDal
+               .CountAsync(e => !e.User.IsDeleted && e.WorkStatus == WorkStatusType.Active));
+        
+        
+
+        
+        [SecuredOperation(OperationClaimEnum.Admin)]
+        public async Task<DataResponse<int>> GetEmployeeCountByClaim(OperationClaimEnum operationClaimEnum)
+            => new DataResponse<int>(await _employeeDal
+               .CountAsync(e => !e.User.IsDeleted && e.User.OperationClaimId == (int)operationClaimEnum));
+        
 
 
 
