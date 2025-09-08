@@ -5,13 +5,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Entities.Dtos.Branch
+namespace Entities.Dtos.Employee
 {
-    public class BaseBranchDto : IDto
+    public class WorkStatusDto : IDto
     {
-        public int Id { get; set; }
+        public byte Id { get; set; }
 
         public string Name { get; set; }
-
     }
 }

@@ -5,13 +5,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Entities.Dtos.Branch
+namespace Entities.Dtos.OperationClaim
 {
-    public class BaseBranchDto : IDto
+    public class OperationClaimListDto : IDto
     {
         public int Id { get; set; }
 
         public string Name { get; set; }
-
     }
 }

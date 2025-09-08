@@ -12,5 +12,7 @@ namespace Business.Abstract
     public interface IEmployeeStatisticsService
     {
         Task<DataResponse<EmployeeStatisticsDto>> GetStatistics(PaginationRequest paginationRequest);
+
+        Task<EmployeeFilterOptionsDto> GetEmployeeFilterOptionsAsync();
     }
 }

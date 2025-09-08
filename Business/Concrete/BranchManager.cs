@@ -207,7 +207,7 @@ namespace Business.Concrete
 
 
         [SecuredOperation(OperationClaimEnum.Admin, Priority = 1)]
-        public async Task<DataResponse<BranchOverviewDto>> GetBranchOverviewAsync() 
+        public async Task<DataResponse<BranchOverviewDto>> GetBranchOverviewAsync()
         {
             List<Branch> branches = await _branchDal
                 .GetAllQueryable(b => !b.IsDeleted)
@@ -231,9 +231,9 @@ namespace Business.Concrete
                 .Map<List<SalesBranchDto>>(activeBranches
                 .Where(b => b.Orders != null)
                 .ToList());
-            
-            
-            List<NonSalesBranchDto> nonSalesBranchDtos= _mapper
+
+
+            List<NonSalesBranchDto> nonSalesBranchDtos = _mapper
                 .Map<List<NonSalesBranchDto>>(activeBranches
                 .Where(b => b.Orders == null)
                 .ToList());
@@ -245,17 +245,17 @@ namespace Business.Concrete
                 .ToList());
 
 
-            return new DataResponse<BranchOverviewDto>(new() 
-            { 
+            return new DataResponse<BranchOverviewDto>(new()
+            {
                 ActiveBranchDto = new()
                 {
                     SalesBranchDtos = salesBranchDtos,
                     NonSalesBranchDtos = nonSalesBranchDtos,
-                }, 
-                PendingBranchDtos =  pendingBranchDtos 
-            }, 
+                },
+                PendingBranchDtos = pendingBranchDtos
+            },
             CommonMessages.EntityListed);
-        } 
+        }
 
 
 
@@ -275,6 +275,21 @@ namespace Business.Concrete
             .Where(b => b.Id == branchId && !b.IsDeleted)
             .AnyAsync(b => b.Employees
                 .Any(e => e.User.OperationClaim.Name == OperationClaimEnum.Manager.ToString()));
+
+
+
+
+        [SecuredOperation(OperationClaimEnum.Admin)]
+        public async Task<List<BaseBranchDto>> GetAllForAdminLookupAsync()
+            => await _branchDal
+            .GetAllQueryable(b => !b.IsDeleted)
+            .Select(b => new BaseBranchDto()
+            {
+                Id = b.Id,
+                Name = b.Name
+            })
+            .ToListAsync();
+
 
 
 

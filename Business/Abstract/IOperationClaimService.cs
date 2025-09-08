@@ -1,6 +1,7 @@
 ﻿using Core.ResponseModels;
 using Core.Utilities.Results;
 using Entities.Concrete;
+using Entities.Dtos.OperationClaim;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,5 +15,7 @@ namespace Business.Abstract
         Task<string> GetClaim(int operationClaimId);
 
         Task CheckIfOperationClaimIdExists(int operationClaimId);
+
+        Task<List<OperationClaimListDto>> GetAllAsync();
     }
 }

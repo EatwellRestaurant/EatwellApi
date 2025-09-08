@@ -35,5 +35,7 @@ namespace Business.Abstract
 
         Task<bool> HasManagerAsync(int branchId);
 
+        Task<List<BaseBranchDto>> GetAllForAdminLookupAsync();
+
     }
 } 

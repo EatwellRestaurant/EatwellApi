@@ -1,26 +1,28 @@
 ﻿using Business.Abstract;
 using Business.BusinessAspects.Autofac;
 using Business.Constants.Messages;
+using Core.Extensions;
 using Core.Requests;
 using Core.ResponseModels;
 using Entities.Dtos.Branch;
 using Entities.Dtos.Employee;
+using Entities.Dtos.OperationClaim;
+using Entities.Enums.Employee;
 using Entities.Enums.OperationClaim;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Business.Concrete
 {
     public class EmployeeStatisticsManager : IEmployeeStatisticsService
     {
         readonly IEmployeeService _employeeService;
+        readonly IOperationClaimService _operationClaimService;
+        readonly IBranchService _branchService;
 
-        public EmployeeStatisticsManager(IEmployeeService employeeService)
+        public EmployeeStatisticsManager(IEmployeeService employeeService, IOperationClaimService operationClaimService, IBranchService branchService)
         {
             _employeeService = employeeService;
+            _operationClaimService = operationClaimService;
+            _branchService = branchService;
         }
 
 
@@ -46,5 +48,35 @@ namespace Business.Concrete
                 }, 
                 CommonMessages.StatisticsFetch);
         }
+    
+    
+    
+
+
+        [SecuredOperation(OperationClaimEnum.Admin)] 
+        public async Task<EmployeeFilterOptionsDto> GetEmployeeFilterOptionsAsync()
+        {
+            List<WorkStatusDto> workStatusDtos = Enum.GetValues(typeof(WorkStatusType)) // WorkStatusType içindeki tüm enum değerlerini döndüren bir System.Array üretiyoruz
+            .Cast<WorkStatusType>() // Array içindeki öğeleri WorkStatusType türüne cast edip IEnumerable<WorkStatusType> haline getiriyoruz. Böylece LINQ uzantı metodlarını kullanabiliyoruz.
+            .Select(status => new WorkStatusDto
+            {
+                Id = (byte)status,
+                Name = status.GetDisplayName()
+            })
+            .ToList();
+
+
+            List<OperationClaimListDto> operationClaimListDtos = await _operationClaimService.GetAllAsync();
+            List<BaseBranchDto> branchDtos = await _branchService.GetAllForAdminLookupAsync();
+
+
+            return new()
+            {
+                WorkStatusDtos = workStatusDtos,
+                OperationClaimListDtos = operationClaimListDtos,
+                BranchDtos = branchDtos
+            };
+        }
+
     }
 }
