@@ -2,6 +2,7 @@
 using Business.Abstract;
 using Business.BusinessAspects.Autofac;
 using Business.Constants.Messages;
+using Business.Extensions;
 using Business.ValidationRules.FluentValidation.Employee;
 using Core.Aspects.Autofac.Validation;
 using Core.Exceptions.Employee;
@@ -61,7 +62,7 @@ namespace Business.Concrete
             int userId = GetCurrentUserId();
             int branchId = await GetBranchIdByUserIdAsync(userId);
 
-            
+
             await ValidateEmployeeReferencesAsync(branchId, employeeUpsertDto);
 
 
@@ -100,10 +101,10 @@ namespace Business.Concrete
 
 
             if (string.Equals(targetRole, OperationClaimEnum.Manager.ToString(), StringComparison.OrdinalIgnoreCase)
-                && 
+                &&
                 await _branchService.HasManagerAsync(employeeUpsertDto.BranchId))
                 throw new BranchAlreadyHasManagerException();
-            
+
 
             await CreateEmployeeWithUserAsync(employeeUpsertDto, employeeUpsertDto.BranchId);
 
@@ -123,7 +124,14 @@ namespace Business.Concrete
 
 
             await _branchService.CheckIfBranchIdExists(branchId);
-            List<EmployeeListDto> employeeListDtos = await GetEmployeesByBranchAsync(branchId, userId);
+
+            IQueryable<Employee> query = _employeeDal
+                .GetAllQueryable(e => !e.User.IsDeleted)
+                .FilterByBranchId(branchId)
+                .FilterByUserId(userId);
+
+
+            List<EmployeeListDto> employeeListDtos = await GetEmployeeListByBranchAsync(query, paginationRequest);
 
 
             return new PaginationResponse<EmployeeListDto>(employeeListDtos, paginationRequest, employeeListDtos.Count);
@@ -135,7 +143,50 @@ namespace Business.Concrete
         [SecuredOperation(OperationClaimEnum.Admin)]
         public async Task<PaginationResponse<EmployeeListDto>> GetAllForAdminAsync(PaginationRequest paginationRequest)
         {
-            List<EmployeeListDto> employeeListDtos = await GetEmployeesByBranchAsync();
+            IQueryable<Employee> query = _employeeDal
+                .GetAllQueryable(e => !e.User.IsDeleted);
+
+
+            List<EmployeeListDto> employeeListDtos = await GetEmployeeListByBranchAsync(query, paginationRequest);
+
+
+            return new PaginationResponse<EmployeeListDto>(employeeListDtos, paginationRequest, employeeListDtos.Count);
+        }
+
+
+
+
+        [SecuredOperation(OperationClaimEnum.Admin)]
+        public async Task<PaginationResponse<EmployeeListDto>> GetFilteredEmployeesForAdminAsync(PaginationRequest paginationRequest, EmployeeAdminFilterDto employeeAdminFilterDto)
+        {
+            IQueryable<Employee> query = _employeeDal
+                .GetAllQueryable(e => !e.User.IsDeleted)
+                .FilterByBranchId(employeeAdminFilterDto.BranchId)
+                .FilterByOperationClaimId(employeeAdminFilterDto.OperationClaimId)
+                .FilterByWorkStatus(employeeAdminFilterDto.WorkStatus)
+                .FilterByFullName(employeeAdminFilterDto.FullName);
+                
+
+            List<EmployeeListDto> employeeListDtos = await GetEmployeeListByBranchAsync(query, paginationRequest);
+
+
+            return new PaginationResponse<EmployeeListDto>(employeeListDtos, paginationRequest, employeeListDtos.Count);
+        } 
+        
+        
+
+        
+        [SecuredOperation(OperationClaimEnum.Manager)]
+        public async Task<PaginationResponse<EmployeeListDto>> GetFilteredEmployeesForManagerAsync(PaginationRequest paginationRequest, EmployeeFilterRequestDto employeeFilterRequestDto)
+        {
+            IQueryable<Employee> query = _employeeDal
+                .GetAllQueryable(e => !e.User.IsDeleted)
+                .FilterByOperationClaimId(employeeFilterRequestDto.OperationClaimId)
+                .FilterByWorkStatus(employeeFilterRequestDto.WorkStatus)
+                .FilterByFullName(employeeFilterRequestDto.FullName);
+                
+
+            List<EmployeeListDto> employeeListDtos = await GetEmployeeListByBranchAsync(query, paginationRequest);
 
 
             return new PaginationResponse<EmployeeListDto>(employeeListDtos, paginationRequest, employeeListDtos.Count);
@@ -148,23 +199,23 @@ namespace Business.Concrete
         public async Task<DataResponse<int>> GetTotalEmployeeCount()
             => new DataResponse<int>(await _employeeDal
                .CountAsync(e => !e.User.IsDeleted));
-        
-        
-        
+
+
+
 
         [SecuredOperation(OperationClaimEnum.Admin)]
         public async Task<DataResponse<int>> GetActiveEmployeeCount()
             => new DataResponse<int>(await _employeeDal
                .CountAsync(e => !e.User.IsDeleted && e.WorkStatus == WorkStatusType.Active));
-        
-        
 
-        
+
+
+
         [SecuredOperation(OperationClaimEnum.Admin)]
         public async Task<DataResponse<int>> GetEmployeeCountByClaim(OperationClaimEnum operationClaimEnum)
             => new DataResponse<int>(await _employeeDal
                .CountAsync(e => !e.User.IsDeleted && e.User.OperationClaimId == (int)operationClaimEnum));
-        
+
 
 
 
@@ -172,25 +223,25 @@ namespace Business.Concrete
 
         #region OtherMethods
 
-        private async Task<List<EmployeeListDto>> GetEmployeesByBranchAsync(int? branchId = null, int? managerId = null)
-           => await _employeeDal
-               .GetAllQueryable(e =>
-               (!branchId.HasValue || e.BranchId == branchId)
-               && (!managerId.HasValue || e.UserId != managerId)
-               && !e.User.IsDeleted)
-               .Select(e => new EmployeeListDto
-               {
-                   Id = e.Id,
-                   FirstName = e.User.FirstName,
-                   LastName = e.User.LastName,
-                   Email = e.User.Email,
-                   Position = ((OperationClaimEnum)e.User.OperationClaim.Id).GetDisplayName(),
-                   BranchName = e.Branch.Name,
-                   HireDate = e.HireDate,
-                   Salary = e.Salary,
-                   WorkStatus = e.WorkStatus.GetDisplayName(),
-               })
-               .ToListAsync();
+        private async Task<List<EmployeeListDto>> GetEmployeeListByBranchAsync(IQueryable<Employee> query, PaginationRequest paginationRequest)
+           => await query
+            .ApplyPagination(paginationRequest)
+            .OrderByDescending(e => e.Id)
+            .Select(e => new EmployeeListDto
+            {
+                Id = e.Id,
+                FirstName = e.User.FirstName,
+                LastName = e.User.LastName,
+                Email = e.User.Email,
+                PositionName = e.User.OperationClaim.Name,
+                PositionDisplayName = e.User.OperationClaim.DisplayName,
+                BranchName = e.Branch.Name,
+                HireDate = e.HireDate,
+                Salary = e.Salary,
+                WorkStatusName = e.WorkStatus.ToString(),
+                WorkStatusDisplayName = e.WorkStatus.GetDisplayName(),
+            })
+            .ToListAsync();
 
 
         private async Task<int> GetBranchIdByUserIdAsync(int userId)
@@ -243,7 +294,7 @@ namespace Business.Concrete
             await _unitOfWork.SaveChangesAsync();
         }
 
-         
+
         private int GetCurrentUserId()
         {
             return int.Parse(_httpContextAccessor.HttpContext.User

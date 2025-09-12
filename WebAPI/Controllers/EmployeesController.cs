@@ -39,6 +39,18 @@ namespace WebAPI.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAllForAdminAsync([FromQuery] PaginationRequest paginationRequest)
             => Ok(await _employeeService.GetAllForAdminAsync(paginationRequest));
+        
+        
+
+        [HttpGet] 
+        public async Task<IActionResult> GetFilteredEmployeesForAdminAsync([FromQuery] PaginationRequest paginationRequest, [FromQuery] EmployeeAdminFilterDto employeeAdminFilterDto)
+            => Ok(await _employeeService.GetFilteredEmployeesForAdminAsync(paginationRequest, employeeAdminFilterDto));
+        
+        
+        
+        [HttpGet]  
+        public async Task<IActionResult> GetFilteredEmployeesForManagerAsync([FromQuery] PaginationRequest paginationRequest, [FromQuery] EmployeeFilterRequestDto employeeFilterRequestDto)
+            => Ok(await _employeeService.GetFilteredEmployeesForManagerAsync(paginationRequest, employeeFilterRequestDto));
 
     }
 }

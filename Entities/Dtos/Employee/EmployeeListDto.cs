@@ -18,15 +18,19 @@ namespace Entities.Dtos.Employee
 
         public string Email { get; set; }
 
-        public string Position { get; set; }
+        public string PositionName { get; set; }
 
+        public string PositionDisplayName { get; set; }
+         
         public string BranchName { get; set; }
 
         public DateTime HireDate { get; set; }
 
         public decimal Salary { get; set; }
 
-        public string WorkStatus { get; set; }
+        public string WorkStatusName { get; set; }
+         
+        public string WorkStatusDisplayName { get; set; }
 
     }
 }

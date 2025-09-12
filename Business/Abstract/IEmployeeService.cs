@@ -27,5 +27,11 @@ namespace Business.Abstract
         Task<DataResponse<int>> GetActiveEmployeeCount();
 
         Task<DataResponse<int>> GetEmployeeCountByClaim(OperationClaimEnum operationClaimEnum);
+
+        Task<PaginationResponse<EmployeeListDto>> GetFilteredEmployeesForManagerAsync(PaginationRequest paginationRequest, EmployeeFilterRequestDto employeeFilterRequestDto);
+
+        Task<PaginationResponse<EmployeeListDto>> GetFilteredEmployeesForAdminAsync(PaginationRequest paginationRequest, EmployeeAdminFilterDto employeeAdminFilterDto);
+
+
     }
 }
