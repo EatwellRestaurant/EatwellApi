@@ -7,12 +7,13 @@ using System.Threading.Tasks;
 
 namespace Entities.Enums.Employee
 {
-    public enum GenderType : byte
+    public enum MaritalStatus : byte
     {
-        [Display(Name = "Erkek")]
-        Male = 1,
+        [Display(Name = "Bekar")]
+        Single = 1,
 
-        [Display(Name = "Kadın")]
-        Female = 2
+        [Display(Name = "Evli")]
+        Married = 2,
     }
+
 }

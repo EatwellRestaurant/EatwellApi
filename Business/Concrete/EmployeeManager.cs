@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using AutoMapper.QueryableExtensions;
 using Business.Abstract;
 using Business.BusinessAspects.Autofac;
 using Business.Constants.Messages;
@@ -6,12 +7,15 @@ using Business.Extensions;
 using Business.ValidationRules.FluentValidation.Employee;
 using Core.Aspects.Autofac.Validation;
 using Core.Exceptions.Employee;
+using Core.Exceptions.General;
 using Core.Extensions;
 using Core.Requests;
 using Core.ResponseModels;
+using Core.Utilities.FileHelper;
 using DataAccess.Abstract;
 using Entities.Concrete;
 using Entities.Dtos.Employee;
+using Entities.Dtos.Product;
 using Entities.Enums.Employee;
 using Entities.Enums.OperationClaim;
 using Microsoft.AspNetCore.Http;
@@ -31,6 +35,7 @@ namespace Business.Concrete
         readonly IOperationClaimService _operationClaimService;
         readonly IBranchService _branchService;
         readonly ICityService _cityService;
+        readonly IFileHelper _fileHelper;
 
         public EmployeeManager
             (IEmployeeDal employeeDal,
@@ -40,7 +45,8 @@ namespace Business.Concrete
             IHttpContextAccessor httpContextAccessor,
             IOperationClaimService operationClaimService,
             IBranchService branchService,
-            ICityService cityService)
+            ICityService cityService,
+            IFileHelper fileHelper)
             : base(employeeDal)
         {
             _employeeDal = employeeDal;
@@ -51,6 +57,7 @@ namespace Business.Concrete
             _operationClaimService = operationClaimService;
             _branchService = branchService;
             _cityService = cityService;
+            _fileHelper = fileHelper;
         }
 
 
@@ -157,6 +164,44 @@ namespace Business.Concrete
 
 
         [SecuredOperation(OperationClaimEnum.Admin)]
+        public async Task<DataResponse<EmployeeDetailDto>> GetForAdminAsync(int employeeId)
+        {
+            IQueryable<Employee> query = _employeeDal
+                .Where(e => e.Id == employeeId && !e.User.IsDeleted);
+
+
+            return new DataResponse<EmployeeDetailDto>(
+                _mapper.Map<EmployeeDetailDto>(await GetEmployeeWithManagerAsync(query)), 
+                CommonMessages.EntityFetch);
+        }
+
+
+
+
+        [SecuredOperation(OperationClaimEnum.Manager)]
+        public async Task<DataResponse<EmployeeDetailDto>> GetForManagerAsync(int employeeId)
+        {
+            int userId = GetCurrentUserId();
+            int branchId = await GetBranchIdByUserIdAsync(userId);
+
+            await _branchService.CheckIfBranchIdExists(branchId);
+
+
+            IQueryable<Employee> query = _employeeDal
+                .Where(e => e.Id == employeeId && !e.User.IsDeleted)
+                .FilterByBranchId(branchId)
+                .FilterByUserId(userId);
+
+            
+            return new DataResponse<EmployeeDetailDto>(
+                _mapper.Map<EmployeeDetailDto>(await GetEmployeeWithManagerAsync(query)), 
+                CommonMessages.EntityFetch);
+        }
+
+
+
+
+        [SecuredOperation(OperationClaimEnum.Admin)]
         public async Task<PaginationResponse<EmployeeListDto>> GetFilteredEmployeesForAdminAsync(PaginationRequest paginationRequest, EmployeeAdminFilterDto employeeAdminFilterDto)
         {
             IQueryable<Employee> query = _employeeDal
@@ -165,17 +210,17 @@ namespace Business.Concrete
                 .FilterByOperationClaimId(employeeAdminFilterDto.OperationClaimId)
                 .FilterByWorkStatus(employeeAdminFilterDto.WorkStatus)
                 .FilterByFullName(employeeAdminFilterDto.FullName);
-                
+
 
             List<EmployeeListDto> employeeListDtos = await GetEmployeeListByBranchAsync(query, paginationRequest);
 
 
             return new PaginationResponse<EmployeeListDto>(employeeListDtos, paginationRequest, employeeListDtos.Count);
-        } 
-        
-        
+        }
 
-        
+
+
+
         [SecuredOperation(OperationClaimEnum.Manager)]
         public async Task<PaginationResponse<EmployeeListDto>> GetFilteredEmployeesForManagerAsync(PaginationRequest paginationRequest, EmployeeFilterRequestDto employeeFilterRequestDto)
         {
@@ -184,7 +229,7 @@ namespace Business.Concrete
                 .FilterByOperationClaimId(employeeFilterRequestDto.OperationClaimId)
                 .FilterByWorkStatus(employeeFilterRequestDto.WorkStatus)
                 .FilterByFullName(employeeFilterRequestDto.FullName);
-                
+
 
             List<EmployeeListDto> employeeListDtos = await GetEmployeeListByBranchAsync(query, paginationRequest);
 
@@ -244,6 +289,56 @@ namespace Business.Concrete
             .ToListAsync();
 
 
+        private async Task<Employee> GetEmployeeWithManagerAsync(IQueryable<Employee> query)
+            => await query
+            .Select(e => new Employee()
+            {
+                ImagePath = e.ImagePath,
+                Phone = e.Phone,
+                HireDate = e.HireDate,
+                Salary = e.Salary,
+                BirthDate = e.BirthDate,
+                NationalId = e.NationalId,
+                Gender = e.Gender,
+                MaritalStatus = e.MaritalStatus,
+                Address = e.Address,
+                EmploymentType = e.EmploymentType,
+                EducationLevel = e.EducationLevel,
+                MilitaryStatus = e.MilitaryStatus,
+                WorkStatus = e.WorkStatus,
+                Branch = new Branch()
+                {
+                    Name = e.Branch.Name,
+                    Employees = e.Branch.Employees
+                        .Where(e => e.User.OperationClaimId == (int)OperationClaimEnum.Manager)
+                        .Select(e => new Employee()
+                        {
+                            User = new User()
+                            {
+                                OperationClaimId = e.User.OperationClaimId,
+                                FirstName = e.User.FirstName,
+                                LastName = e.User.LastName,
+                            },
+                        })
+                        .ToList()
+                },
+                User = new User()
+                {
+                    FirstName = e.User.FirstName,
+                    LastName = e.User.LastName,
+                    Email = e.User.Email,
+                    OperationClaim = new OperationClaim()
+                    {
+                        Name = e.User.OperationClaim.Name,
+                        DisplayName = e.User.OperationClaim.DisplayName
+                    }
+                }
+            })
+            .AsNoTracking()
+            .SingleOrDefaultAsync()
+            ?? throw new EntityNotFoundException("Çalışan");
+
+
         private async Task<int> GetBranchIdByUserIdAsync(int userId)
             => await _employeeDal
             .Where(e => e.UserId == userId)
@@ -284,6 +379,14 @@ namespace Business.Concrete
         {
             User user = _mapper.Map<User>(employeeUpsertDto);
             Employee employee = _mapper.Map<Employee>(employeeUpsertDto);
+
+
+            if (employeeUpsertDto.Image != null)
+            {
+                ImageRespone imageRespone = await _fileHelper.Upload(employeeUpsertDto.Image);
+                employee.ImagePath = imageRespone.Path;
+                employee.ImageName = imageRespone.Name;
+            }
 
             await _userService.AddAsync(user);
             await _employeeDal.AddAsync(employee);

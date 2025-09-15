@@ -1,5 +1,6 @@
 ﻿using Core.Entities.Abstract;
 using Entities.Enums.Employee;
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,6 +15,8 @@ namespace Entities.Dtos.Employee
 
         public string LastName { get; set; }
 
+        public IFormFile? Image { get; set; }
+
         public string Password { get; set; }
 
         public string Email { get; set; }
@@ -22,6 +25,12 @@ namespace Entities.Dtos.Employee
 
         public int CityId { get; set; }
 
+        public string NationalId { get; set; }
+
+        public DateTime BirthDate { get; set; }
+
+        public MaritalStatus MaritalStatus { get; set; }
+
         public string Address { get; set; }
 
         public string Phone { get; set; }
@@ -29,6 +38,8 @@ namespace Entities.Dtos.Employee
         public GenderType Gender { get; set; }
 
         public EducationLevelType EducationLevel { get; set; }
+
+        public MilitaryStatus? MilitaryStatus { get; set; }
 
         public DateTime HireDate { get; set; }
 

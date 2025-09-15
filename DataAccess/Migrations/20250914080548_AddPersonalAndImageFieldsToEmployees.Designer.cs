@@ -4,6 +4,7 @@ using DataAccess.Concrete.EntityFramework;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(RestaurantContext))]
-    partial class RestaurantContextModelSnapshot : ModelSnapshot
+    [Migration("20250914080548_AddPersonalAndImageFieldsToEmployees")]
+    partial class AddPersonalAndImageFieldsToEmployees
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -33,7 +36,7 @@ namespace DataAccess.Migrations
                     b.Property<DateTime>("CreateDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2025, 9, 14, 16, 20, 19, 173, DateTimeKind.Local).AddTicks(658));
+                        .HasDefaultValue(new DateTime(2025, 9, 14, 11, 5, 47, 783, DateTimeKind.Local).AddTicks(697));
 
                     b.Property<DateTime?>("DeleteDate")
                         .HasColumnType("datetime2");
@@ -596,9 +599,6 @@ namespace DataAccess.Migrations
                         .HasColumnType("tinyint")
                         .HasDefaultValue((byte)1);
 
-                    b.Property<byte?>("MilitaryStatus")
-                        .HasColumnType("tinyint");
-
                     b.Property<string>("NationalId")
                         .IsRequired()
                         .HasMaxLength(11)
@@ -822,7 +822,7 @@ namespace DataAccess.Migrations
                     b.Property<DateTime>("CreateDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2025, 9, 14, 16, 20, 19, 174, DateTimeKind.Local).AddTicks(6935));
+                        .HasDefaultValue(new DateTime(2025, 9, 14, 11, 5, 47, 784, DateTimeKind.Local).AddTicks(4619));
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");

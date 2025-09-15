@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Core.Entities.Abstract;
+using Core.Extensions;
 using Entities.Concrete;
 using Entities.Dtos.Branch;
 using Entities.Dtos.City;
@@ -14,6 +15,8 @@ using Entities.Dtos.Reservation;
 using Entities.Dtos.Table;
 using Entities.Dtos.User;
 using Entities.Enums;
+using Entities.Enums.Employee;
+using Entities.Enums.OperationClaim;
 using Microsoft.EntityFrameworkCore.SqlServer.Internal;
 
 namespace Business.Mapping
@@ -91,8 +94,8 @@ namespace Business.Mapping
 
 
             CreateMap<BranchInsertDto, Branch>();
-            
-            
+
+
             CreateMap<BranchUpdateDto, Branch>();
 
 
@@ -113,7 +116,7 @@ namespace Business.Mapping
 
 
             CreateMap<Reservation, ReservationDetailDto>()
-                .IncludeBase<Reservation,ReservationListDto>();
+                .IncludeBase<Reservation, ReservationListDto>();
 
 
             #endregion
@@ -127,7 +130,7 @@ namespace Business.Mapping
 
             CreateMap<TableUpdateDto, Table>();
 
-            
+
             CreateMap<Table, TableListDto>();
 
             #endregion
@@ -183,6 +186,62 @@ namespace Business.Mapping
             #region Employee        
 
             CreateMap<EmployeeUpsertDto, Employee>();
+
+
+            CreateMap<Employee, EmployeeDetailDto>()
+                .ForMember(dest => dest.FirstName, opt => opt.MapFrom(src => src.User.FirstName))
+                .ForMember(dest => dest.LastName, opt => opt.MapFrom(src => src.User.LastName))
+                .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.User.Email))
+                .ForMember(dest => dest.Gender, opt => opt.MapFrom(src => src.Gender.GetDisplayName()))
+                .ForMember(dest => dest.MilitaryStatus, opt => opt.MapFrom(src => src.MilitaryStatus.GetDisplayName()))
+                .ForMember(dest => dest.MaritalStatus, opt => opt.MapFrom(src => src.MaritalStatus.GetDisplayName()))
+                .ForMember(dest => dest.PositionName, opt => opt.MapFrom(src => src.User.OperationClaim.Name))
+                .ForMember(dest => dest.PositionDisplayName, opt => opt.MapFrom(src => src.User.OperationClaim.DisplayName))
+                .ForMember(dest => dest.MaritalStatus, opt => opt.MapFrom(src => src.MaritalStatus.GetDisplayName()))
+                .ForMember(dest => dest.EmploymentType, opt => opt.MapFrom(src => src.EmploymentType.GetDisplayName()))
+                .ForMember(dest => dest.EducationLevel, opt => opt.MapFrom(src => src.EducationLevel.GetDisplayName()))
+                .ForMember(dest => dest.WorkStatusName, opt => opt.MapFrom(src => src.WorkStatus.ToString()))
+                .ForMember(dest => dest.WorkStatusDisplayName, opt => opt.MapFrom(src => src.WorkStatus.GetDisplayName()))
+                .AfterMap((src, dest) =>
+                {
+                    DateTime today = DateTime.Now;
+
+                    int years = today.Year - src.HireDate.Year;
+                    int months = today.Month - src.HireDate.Month;
+                    int days = today.Day - src.HireDate.Day;
+
+                    if (days < 0)
+                    {
+                        months--;
+
+                        days += DateTime.DaysInMonth(today.AddMonths(-1).Year, today.AddMonths(-1).Month);
+                    }
+
+                    if (months < 0)
+                    {
+                        years--;
+                        months += 12;
+                    }
+
+                    // ExperienceDuration string'ini oluşturuyoruz
+                    var parts = new List<string>();
+
+                    if (years > 0) parts.Add($"{years} yıl");
+                    if (months > 0) parts.Add($"{months} ay");
+                    if (days > 0) parts.Add($"{days} gün");
+
+                    dest.ExperienceDuration = parts.Count > 0 ? string.Join(" ", parts) : "Bugün işe başladı.";
+
+
+                    User? manager = src.Branch?.Employees
+                        .Select(e => e.User)
+                        .SingleOrDefault();
+
+
+                    dest.Manager = manager != null
+                        ? $"{manager.FirstName} {manager.LastName}"
+                        : "Atanmış bir yönetici bulunmamaktadır.";
+                });
 
             #endregion
 

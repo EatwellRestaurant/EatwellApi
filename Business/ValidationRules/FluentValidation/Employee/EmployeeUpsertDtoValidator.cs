@@ -1,6 +1,8 @@
 ﻿using Entities.Dtos.Employee;
 using Entities.Enums.Employee;
 using FluentValidation;
+using Microsoft.AspNetCore.Http;
+using System.Linq;
 using System.Text.RegularExpressions;
 
 namespace Business.ValidationRules.FluentValidation.Employee
@@ -24,6 +26,13 @@ namespace Business.ValidationRules.FluentValidation.Employee
                .WithMessage("Lütfen soy isim giriniz!")
                .MaximumLength(50)
                .WithMessage("Soy isim uzunluğu en fazla 50 karakter olmalıdır!");
+
+
+
+            RuleFor(e => e.Image)
+               .Must(BeAValidImage)
+               .When(e => e.Image != null)
+               .WithMessage("Yalnızca jpg, jpeg, webp veya png formatında dosya yükleyebilirsiniz!");
 
 
 
@@ -54,6 +63,35 @@ namespace Business.ValidationRules.FluentValidation.Employee
 
 
 
+            RuleFor(e => e.NationalId)
+                .Cascade(CascadeMode.Stop)
+                .NotEmpty()
+                .WithMessage("Lütfen TC Kimlik numarasını giriniz!")
+                .Length(11)
+                .WithMessage("TC Kimlik numarası 11 haneli olmalıdır!")
+                .Matches("^[1-9][0-9]{10}$")
+                .WithMessage("Geçerli bir TC Kimlik numarası giriniz!");
+
+
+
+            RuleFor(e => e.BirthDate)
+                .Cascade(CascadeMode.Stop)
+                .NotEmpty()
+                .WithMessage("Lütfen doğum tarihini giriniz!")
+                .LessThanOrEqualTo(DateTime.Now)
+                .WithMessage("Doğum tarihi bugünden büyük olamaz!");
+
+
+
+            RuleFor(e => e.MaritalStatus)
+                .Cascade(CascadeMode.Stop)
+                .NotEmpty()
+                .WithMessage("Lütfen medeni durum seçiniz!")
+                .Must(e => Enum.IsDefined(typeof(MaritalStatus), e))
+                .WithMessage("Geçerli bir medeni durum seçiniz!");
+
+
+
             RuleFor(e => e.Address)
                 .NotEmpty()
                 .WithMessage("Lütfen adres bilgisini giriniz!");
@@ -74,7 +112,7 @@ namespace Business.ValidationRules.FluentValidation.Employee
                 .NotEmpty()
                 .WithMessage("Lütfen cinsiyet seçiniz!")
                 .Must(e => Enum.IsDefined(typeof(GenderType), e))
-                .WithMessage("Geçersiz cinsiyet değeri!");
+                .WithMessage("Geçerli bir cinsiyet seçiniz!");
 
 
 
@@ -83,7 +121,18 @@ namespace Business.ValidationRules.FluentValidation.Employee
                 .NotEmpty()
                 .WithMessage("Lütfen eğitim durumunu seçiniz!")
                 .Must(e => Enum.IsDefined(typeof(EducationLevelType), e))
-                .WithMessage("Geçersiz eğitim durumu değeri!");
+                .WithMessage("Geçerli bir eğitim durumu seçiniz!");
+
+
+
+            When(e => e.Gender != GenderType.Female, () =>
+            {
+                RuleFor(e => e.MilitaryStatus)
+                    .NotEmpty()
+                    .WithMessage("Lütfen askerlik durumunu seçiniz!")
+                    .Must(e => e.HasValue && Enum.IsDefined(typeof(MilitaryStatus), e.Value))
+                    .WithMessage("Geçerli bir askerlik durumu seçiniz!");
+            });
 
 
 
@@ -101,7 +150,7 @@ namespace Business.ValidationRules.FluentValidation.Employee
                 .NotEmpty()
                 .WithMessage("Lütfen çalışma durumunu seçiniz!")
                 .Must(e => Enum.IsDefined(typeof(WorkStatusType), e))
-                .WithMessage("Geçersiz çalışma durumu değeri!");
+                .WithMessage("Geçerli bir çalışma durumu seçiniz!");
 
 
 
@@ -111,7 +160,7 @@ namespace Business.ValidationRules.FluentValidation.Employee
                 .WithMessage("İşten ayrılan çalışanlar için ayrılma tarihi zorunludur!");
 
 
-            
+
             RuleFor(e => e.LeaveDate)
                 .Cascade(CascadeMode.Stop)
                 .GreaterThan(e => e.HireDate)
@@ -128,13 +177,23 @@ namespace Business.ValidationRules.FluentValidation.Employee
                 .NotEmpty()
                 .WithMessage("Lütfen istihdam türünü seçiniz!")
                 .Must(e => Enum.IsDefined(typeof(EmploymentType), e))
-                .WithMessage("Geçersiz istihdam türü değeri!");
+                .WithMessage("Geçerli bir istihdam türü seçiniz!");
 
 
 
             RuleFor(e => e.Salary)
                 .NotEmpty()
                 .WithMessage("Lütfen maaş bilgisini giriniz!");
+        }
+
+
+        private bool BeAValidImage(IFormFile? file)
+        {
+            string[] allowedExtensions = new[] { ".jpg", ".jpeg", ".png", ".webp" };
+         
+            string extension = Path.GetExtension(file.FileName).ToLower();
+            
+            return allowedExtensions.Contains(extension);
         }
     }
 }

@@ -19,10 +19,12 @@ namespace DataAccess.Configurations
 
             builder.Property(e => e.Address).HasMaxLength(500);
             builder.Property(e => e.Phone).HasMaxLength(14);
+            builder.Property(e => e.NationalId).HasMaxLength(11);
             builder.Property(e => e.Gender).HasDefaultValue(GenderType.Male);
             builder.Property(e => e.EducationLevel).HasDefaultValue(EducationLevelType.Bachelor);
             builder.Property(e => e.WorkStatus).HasDefaultValue(WorkStatusType.Active);
             builder.Property(e => e.EmploymentType).HasDefaultValue(EmploymentType.FullTime);
+            builder.Property(e => e.MaritalStatus).HasDefaultValue(MaritalStatus.Single);
 
 
             builder.HasOne(e => e.User).WithOne(u => u.Employee).HasForeignKey<Employee>(e => e.UserId).OnDelete(DeleteBehavior.Restrict);

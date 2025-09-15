@@ -105,7 +105,7 @@ namespace Business.Concrete
         }
 
 
-        [SecuredOperation(OperationClaimEnum.Waiter, OperationClaimEnum.Cashier, Priority = 1)]
+        [SecuredOperation( OperationClaimEnum.Admin, Priority = 1)]
         public async Task<DeleteSuccessResponse> Delete(int productId)
         {
             Product product = await GetByIdProductForDeleteAndUpdate(productId);
@@ -122,7 +122,7 @@ namespace Business.Concrete
         }
 
 
-        [SecuredOperation(OperationClaimEnum.Waiter, OperationClaimEnum.Cashier, Priority = 1)]
+        [SecuredOperation(OperationClaimEnum.Waiter, OperationClaimEnum.Cashier, OperationClaimEnum.Admin, Priority = 1)]
         public async Task<DataResponse<ProductDetailDto>> GetForAdmin(int productId)
         {
             Product? product = await _productDal
@@ -136,7 +136,7 @@ namespace Business.Concrete
         }
 
 
-        [SecuredOperation(OperationClaimEnum.Waiter, OperationClaimEnum.Cashier, Priority = 1)]
+        [SecuredOperation(OperationClaimEnum.Waiter, OperationClaimEnum.Cashier, OperationClaimEnum.Admin, Priority = 1)]
         public async Task<PaginationResponse<ProductAdminListDto>> GetAllForAdminByMealCategoryId(int mealCategoryId, PaginationRequest paginationRequest)
         {
             if (!await _mealCategoryService.AnyAsync(m => m.Id == mealCategoryId && !m.IsDeleted))

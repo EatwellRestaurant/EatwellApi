@@ -15,7 +15,7 @@ namespace Business.Extensions
         
         
         public static IQueryable<Employee> FilterByUserId(this IQueryable<Employee> query, int? userId)
-            => query.Where(e => !userId.HasValue || e.UserId == userId);
+            => query.Where(e => !userId.HasValue || e.UserId != userId);
         
         
         public static IQueryable<Employee> FilterByWorkStatus(this IQueryable<Employee> query, WorkStatusType? workStatus)

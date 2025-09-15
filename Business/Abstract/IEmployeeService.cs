@@ -32,6 +32,9 @@ namespace Business.Abstract
 
         Task<PaginationResponse<EmployeeListDto>> GetFilteredEmployeesForAdminAsync(PaginationRequest paginationRequest, EmployeeAdminFilterDto employeeAdminFilterDto);
 
+        Task<DataResponse<EmployeeDetailDto>> GetForAdminAsync(int employeeId);
+
+        Task<DataResponse<EmployeeDetailDto>> GetForManagerAsync(int employeeId);
 
     }
 }

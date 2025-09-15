@@ -19,13 +19,13 @@ namespace WebAPI.Controllers
 
 
         [HttpPost] 
-        public async Task<IActionResult> AddForManagerAsync(EmployeeUpsertDto employeeUpsertDto)
+        public async Task<IActionResult> AddForManagerAsync([FromForm] EmployeeUpsertDto employeeUpsertDto)
             => Ok(await _employeeService.AddForManagerAsync(employeeUpsertDto));
         
         
         
         [HttpPost] 
-        public async Task<IActionResult> AddForAdminAsync(EmployeeUpsertDtoForAdmin employeeUpsertDto)
+        public async Task<IActionResult> AddForAdminAsync([FromForm] EmployeeUpsertDtoForAdmin employeeUpsertDto)
             => Ok(await _employeeService.AddForAdminAsync(employeeUpsertDto));
 
 
@@ -52,5 +52,16 @@ namespace WebAPI.Controllers
         public async Task<IActionResult> GetFilteredEmployeesForManagerAsync([FromQuery] PaginationRequest paginationRequest, [FromQuery] EmployeeFilterRequestDto employeeFilterRequestDto)
             => Ok(await _employeeService.GetFilteredEmployeesForManagerAsync(paginationRequest, employeeFilterRequestDto));
 
+
+
+        [HttpGet("{employeeId}")]
+        public async Task<IActionResult> GetForAdmin(int employeeId)
+            => Ok(await _employeeService.GetForAdminAsync(employeeId));
+        
+        
+        
+        [HttpGet("{employeeId}")]
+        public async Task<IActionResult> GetForManager(int employeeId)
+            => Ok(await _employeeService.GetForManagerAsync(employeeId));
     }
 }
