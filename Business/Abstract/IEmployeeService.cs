@@ -3,6 +3,7 @@ using Core.ResponseModels;
 using Entities.Concrete;
 using Entities.Dtos.Employee;
 using Entities.Enums.OperationClaim;
+using Microsoft.AspNetCore.Http;
 using Service.Abstract;
 using System;
 using System.Collections.Generic;
@@ -14,6 +15,8 @@ namespace Business.Abstract
 {
     public interface IEmployeeService : IService<Employee>
     {
+        Task<CreateSuccessResponse> UploadImageAsync(int employeeId, IFormFile image);
+
         Task<CreateSuccessResponse> AddForManagerAsync(EmployeeUpsertDto employeeUpsertDto);
 
         Task<CreateSuccessResponse> AddForAdminAsync(EmployeeUpsertDtoForAdmin employeeUpsertDto);

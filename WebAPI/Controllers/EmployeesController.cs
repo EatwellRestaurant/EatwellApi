@@ -18,14 +18,20 @@ namespace WebAPI.Controllers
 
 
 
+        [HttpPost("{employeeId}")]
+        public async Task<IActionResult> UploadImageAsync(int employeeId, [FromForm] IFormFile image)
+            => Ok(await _employeeService.UploadImageAsync(employeeId, image));
+
+         
+
         [HttpPost] 
-        public async Task<IActionResult> AddForManagerAsync([FromForm] EmployeeUpsertDto employeeUpsertDto)
+        public async Task<IActionResult> AddForManagerAsync(EmployeeUpsertDto employeeUpsertDto)
             => Ok(await _employeeService.AddForManagerAsync(employeeUpsertDto));
         
         
         
         [HttpPost] 
-        public async Task<IActionResult> AddForAdminAsync([FromForm] EmployeeUpsertDtoForAdmin employeeUpsertDto)
+        public async Task<IActionResult> AddForAdminAsync(EmployeeUpsertDtoForAdmin employeeUpsertDto)
             => Ok(await _employeeService.AddForAdminAsync(employeeUpsertDto));
 
 

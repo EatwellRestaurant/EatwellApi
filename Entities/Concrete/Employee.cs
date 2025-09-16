@@ -60,5 +60,7 @@ namespace Entities.Concrete
 
         public City City { get; set; }
 
+        public ICollection<ShiftDay> ShiftDays { get; set; }
+
     }
 }

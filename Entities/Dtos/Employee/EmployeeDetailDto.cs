@@ -1,4 +1,5 @@
 ﻿using Core.Entities.Abstract;
+using Entities.Dtos.ShiftDay;
 using Entities.Enums.Employee;
 using System;
 using System.Collections.Generic;
@@ -55,6 +56,8 @@ namespace Entities.Dtos.Employee
         public string ExperienceDuration { get; set; }
 
         public string Manager { get; set; }
+
+        public List<ShiftDayDto> ShiftDayDtos { get; set; }
 
     }
 }

@@ -80,6 +80,9 @@ namespace Business.DependencyResolvers.Autofac
             
             builder.RegisterType<EmployeeManager>().As<IEmployeeService>().InstancePerLifetimeScope();
             builder.RegisterType<EfEmployeeDal>().As<IEmployeeDal>().InstancePerLifetimeScope();
+            
+            builder.RegisterType<ShiftDayManager>().As<IShiftDayService>().InstancePerLifetimeScope();
+            builder.RegisterType<EfShiftDayDal>().As<IShiftDayDal>().InstancePerLifetimeScope();
 
 
 

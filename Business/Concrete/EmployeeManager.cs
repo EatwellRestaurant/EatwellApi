@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using AutoMapper.QueryableExtensions;
 using Business.Abstract;
 using Business.BusinessAspects.Autofac;
 using Business.Constants.Messages;
@@ -7,6 +6,7 @@ using Business.Extensions;
 using Business.ValidationRules.FluentValidation.Employee;
 using Core.Aspects.Autofac.Validation;
 using Core.Exceptions.Employee;
+using Core.Exceptions.File;
 using Core.Exceptions.General;
 using Core.Extensions;
 using Core.Requests;
@@ -15,7 +15,6 @@ using Core.Utilities.FileHelper;
 using DataAccess.Abstract;
 using Entities.Concrete;
 using Entities.Dtos.Employee;
-using Entities.Dtos.Product;
 using Entities.Enums.Employee;
 using Entities.Enums.OperationClaim;
 using Microsoft.AspNetCore.Http;
@@ -36,6 +35,7 @@ namespace Business.Concrete
         readonly IBranchService _branchService;
         readonly ICityService _cityService;
         readonly IFileHelper _fileHelper;
+        readonly IShiftDayService _shiftDayService;
 
         public EmployeeManager
             (IEmployeeDal employeeDal,
@@ -46,7 +46,8 @@ namespace Business.Concrete
             IOperationClaimService operationClaimService,
             IBranchService branchService,
             ICityService cityService,
-            IFileHelper fileHelper)
+            IFileHelper fileHelper,
+            IShiftDayService shiftDayService)
             : base(employeeDal)
         {
             _employeeDal = employeeDal;
@@ -58,6 +59,36 @@ namespace Business.Concrete
             _branchService = branchService;
             _cityService = cityService;
             _fileHelper = fileHelper;
+            _shiftDayService = shiftDayService;
+        }
+
+        
+
+        [SecuredOperation(OperationClaimEnum.Manager, OperationClaimEnum.Admin)]
+        public async Task<CreateSuccessResponse> UploadImageAsync(int employeeId, IFormFile image)
+        {
+            Employee? employee = await _employeeDal
+                .GetAsync(e => e.Id == employeeId && !e.User.IsDeleted);
+
+
+            if (employee == null)
+                throw new EntityNotFoundException("Çalışan");
+
+
+            // Maksimum boyut: 2 MB
+            const long maxFileSize = 2 * 1024 * 1024;
+
+            if (image.Length > maxFileSize)
+                throw new FileSizeExceededException();
+
+
+            ImageRespone imageRespone = await _fileHelper.Upload(image);
+            employee.ImagePath = imageRespone.Path;
+            employee.ImageName = imageRespone.Name;
+
+            await _unitOfWork.SaveChangesAsync();
+
+            return new CreateSuccessResponse(CommonMessages.EntityAdded);
         }
 
 
@@ -82,10 +113,10 @@ namespace Business.Concrete
 
 
             await ValidateRoleAssignment(rolesToCheck, employeeUpsertDto.OperationClaimId, OperationClaimEnum.Manager);
-            await CreateEmployeeWithUserAsync(employeeUpsertDto, branchId);
+            int employeeId = await CreateEmployeeWithUserAsync(employeeUpsertDto, branchId);
 
 
-            return new CreateSuccessResponse(CommonMessages.EntityAdded);
+            return new CreateSuccessResponse(CommonMessages.EntityAdded, employeeId);
         }
 
 
@@ -113,10 +144,10 @@ namespace Business.Concrete
                 throw new BranchAlreadyHasManagerException();
 
 
-            await CreateEmployeeWithUserAsync(employeeUpsertDto, employeeUpsertDto.BranchId);
+            int employeeId = await CreateEmployeeWithUserAsync(employeeUpsertDto, employeeUpsertDto.BranchId);
 
 
-            return new CreateSuccessResponse(CommonMessages.EntityAdded);
+            return new CreateSuccessResponse(CommonMessages.EntityAdded, employeeId);
         }
 
 
@@ -306,6 +337,7 @@ namespace Business.Concrete
                 EducationLevel = e.EducationLevel,
                 MilitaryStatus = e.MilitaryStatus,
                 WorkStatus = e.WorkStatus,
+                ShiftDays = e.ShiftDays,
                 Branch = new Branch()
                 {
                     Name = e.Branch.Name,
@@ -355,6 +387,8 @@ namespace Business.Concrete
             await _operationClaimService.CheckIfOperationClaimIdExists(employeeUpsertDto.OperationClaimId);
 
             await _cityService.CheckIfCityIdExists(employeeUpsertDto.CityId);
+
+            _shiftDayService.ValidateShiftDays(employeeUpsertDto.ShiftDayDtos.ToHashSet());
         }
 
 
@@ -375,26 +409,20 @@ namespace Business.Concrete
         }
 
 
-        private async Task CreateEmployeeWithUserAsync(EmployeeUpsertDto employeeUpsertDto, int branchId)
+        private async Task<int> CreateEmployeeWithUserAsync(EmployeeUpsertDto employeeUpsertDto, int branchId)
         {
             User user = _mapper.Map<User>(employeeUpsertDto);
             Employee employee = _mapper.Map<Employee>(employeeUpsertDto);
-
-
-            if (employeeUpsertDto.Image != null)
-            {
-                ImageRespone imageRespone = await _fileHelper.Upload(employeeUpsertDto.Image);
-                employee.ImagePath = imageRespone.Path;
-                employee.ImageName = imageRespone.Name;
-            }
-
-            await _userService.AddAsync(user);
-            await _employeeDal.AddAsync(employee);
-
-            user.Employee = employee;
+            List<ShiftDay> shiftDays = _mapper.Map<List<ShiftDay>>(employeeUpsertDto.ShiftDayDtos);
+            
+            employee.User = user;
+            employee.ShiftDays = shiftDays;
             employee.BranchId = branchId;
 
+            await _employeeDal.AddAsync(employee);
             await _unitOfWork.SaveChangesAsync();
+
+            return employee.Id;
         }
 
 

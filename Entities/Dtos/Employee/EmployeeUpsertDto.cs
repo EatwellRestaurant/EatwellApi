@@ -1,4 +1,5 @@
 ﻿using Core.Entities.Abstract;
+using Entities.Dtos.ShiftDay;
 using Entities.Enums.Employee;
 using Microsoft.AspNetCore.Http;
 using System;
@@ -14,8 +15,6 @@ namespace Entities.Dtos.Employee
         public string FirstName { get; set; }
 
         public string LastName { get; set; }
-
-        public IFormFile? Image { get; set; }
 
         public string Password { get; set; }
 
@@ -50,5 +49,7 @@ namespace Entities.Dtos.Employee
         public EmploymentType EmploymentType { get; set; }
 
         public decimal Salary { get; set; }
+
+        public ICollection<ShiftDayDto> ShiftDayDtos { get; set; }
     }
 }

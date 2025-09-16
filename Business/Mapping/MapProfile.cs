@@ -12,6 +12,7 @@ using Entities.Dtos.Order;
 using Entities.Dtos.PageContent;
 using Entities.Dtos.Product;
 using Entities.Dtos.Reservation;
+using Entities.Dtos.ShiftDay;
 using Entities.Dtos.Table;
 using Entities.Dtos.User;
 using Entities.Enums;
@@ -185,7 +186,8 @@ namespace Business.Mapping
 
             #region Employee        
 
-            CreateMap<EmployeeUpsertDto, Employee>();
+            CreateMap<EmployeeUpsertDto, Employee>()
+                .ForMember(dest => dest.MilitaryStatus, opt => opt.MapFrom(src => src.Gender == GenderType.Female ? null : src.MilitaryStatus));
 
 
             CreateMap<Employee, EmployeeDetailDto>()
@@ -193,7 +195,7 @@ namespace Business.Mapping
                 .ForMember(dest => dest.LastName, opt => opt.MapFrom(src => src.User.LastName))
                 .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.User.Email))
                 .ForMember(dest => dest.Gender, opt => opt.MapFrom(src => src.Gender.GetDisplayName()))
-                .ForMember(dest => dest.MilitaryStatus, opt => opt.MapFrom(src => src.MilitaryStatus.GetDisplayName()))
+                .ForMember(dest => dest.MilitaryStatus, opt => opt.MapFrom(src => src.MilitaryStatus != null ? src.MilitaryStatus.GetDisplayName() : null))
                 .ForMember(dest => dest.MaritalStatus, opt => opt.MapFrom(src => src.MaritalStatus.GetDisplayName()))
                 .ForMember(dest => dest.PositionName, opt => opt.MapFrom(src => src.User.OperationClaim.Name))
                 .ForMember(dest => dest.PositionDisplayName, opt => opt.MapFrom(src => src.User.OperationClaim.DisplayName))
@@ -202,6 +204,7 @@ namespace Business.Mapping
                 .ForMember(dest => dest.EducationLevel, opt => opt.MapFrom(src => src.EducationLevel.GetDisplayName()))
                 .ForMember(dest => dest.WorkStatusName, opt => opt.MapFrom(src => src.WorkStatus.ToString()))
                 .ForMember(dest => dest.WorkStatusDisplayName, opt => opt.MapFrom(src => src.WorkStatus.GetDisplayName()))
+                .ForMember(dest => dest.ShiftDayDtos, opt => opt.MapFrom(src => src.ShiftDays))
                 .AfterMap((src, dest) =>
                 {
                     DateTime today = DateTime.Now;
@@ -245,6 +248,14 @@ namespace Business.Mapping
 
             #endregion
 
+
+
+            #region ShiftDay  
+
+            CreateMap<ShiftDayDto, ShiftDay>()
+                .ReverseMap();
+
+            #endregion
 
         }
     }

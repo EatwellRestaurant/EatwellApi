@@ -1,4 +1,5 @@
-﻿using Entities.Dtos.Employee;
+﻿using Business.ValidationRules.FluentValidation.ShiftDay;
+using Entities.Dtos.Employee;
 using Entities.Enums.Employee;
 using FluentValidation;
 using Microsoft.AspNetCore.Http;
@@ -26,13 +27,6 @@ namespace Business.ValidationRules.FluentValidation.Employee
                .WithMessage("Lütfen soy isim giriniz!")
                .MaximumLength(50)
                .WithMessage("Soy isim uzunluğu en fazla 50 karakter olmalıdır!");
-
-
-
-            RuleFor(e => e.Image)
-               .Must(BeAValidImage)
-               .When(e => e.Image != null)
-               .WithMessage("Yalnızca jpg, jpeg, webp veya png formatında dosya yükleyebilirsiniz!");
 
 
 
@@ -184,6 +178,17 @@ namespace Business.ValidationRules.FluentValidation.Employee
             RuleFor(e => e.Salary)
                 .NotEmpty()
                 .WithMessage("Lütfen maaş bilgisini giriniz!");
+
+
+
+            RuleFor(s => s.ShiftDayDtos)
+                .Must(s => s.Count > 0)
+                .WithMessage("Vardiya listesi boş olamaz!");
+
+
+
+            RuleForEach(s => s.ShiftDayDtos)
+                .SetValidator(new ShiftDayDtoValidator());
         }
 
 
@@ -191,7 +196,7 @@ namespace Business.ValidationRules.FluentValidation.Employee
         {
             string[] allowedExtensions = new[] { ".jpg", ".jpeg", ".png", ".webp" };
          
-            string extension = Path.GetExtension(file.FileName).ToLower();
+            string? extension = Path.GetExtension(file?.FileName)?.ToLower();
             
             return allowedExtensions.Contains(extension);
         }

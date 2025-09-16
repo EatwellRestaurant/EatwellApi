@@ -28,6 +28,8 @@ namespace DataAccess.Concrete.EntityFramework
         public DbSet<HeadOffice> HeadOffices { get; set; }
         public DbSet<OrderProduct> OrderProducts { get; set; }
         public DbSet<Employee> Employees { get; set; }
+        public DbSet<Shift> Shifts { get; set; }
+        public DbSet<ShiftDay> ShiftDays { get; set; }
 
 
 
