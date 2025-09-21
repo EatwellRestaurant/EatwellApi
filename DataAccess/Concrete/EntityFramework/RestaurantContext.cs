@@ -30,6 +30,10 @@ namespace DataAccess.Concrete.EntityFramework
         public DbSet<Employee> Employees { get; set; }
         public DbSet<Shift> Shifts { get; set; }
         public DbSet<ShiftDay> ShiftDays { get; set; }
+        public DbSet<Year> Years { get; set; }
+        public DbSet<Permission> Permissions { get; set; }
+        public DbSet<LeaveRight> LeaveRights { get; set; }
+        public DbSet<LeaveType> LeaveTypes { get; set; }
 
 
 

@@ -54,13 +54,14 @@ namespace Entities.Concrete
 
 
 
-        public User User { get; set; }
+        public User User { get; set; } 
 
         public Branch Branch { get; set; }
 
         public City City { get; set; }
 
         public ICollection<ShiftDay> ShiftDays { get; set; }
+        public ICollection<Permission> Permissions { get; set; }
 
     }
 }

@@ -5,11 +5,6 @@ using Entities.Dtos.Employee;
 using Entities.Enums.OperationClaim;
 using Microsoft.AspNetCore.Http;
 using Service.Abstract;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Business.Abstract
 {
@@ -38,6 +33,8 @@ namespace Business.Abstract
         Task<DataResponse<EmployeeDetailDto>> GetForAdminAsync(int employeeId);
 
         Task<DataResponse<EmployeeDetailDto>> GetForManagerAsync(int employeeId);
+
+        Task CheckIfEmployeeIdExists(int employeeId);
 
     }
 }

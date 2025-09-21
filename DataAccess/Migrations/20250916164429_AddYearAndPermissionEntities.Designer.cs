@@ -4,6 +4,7 @@ using DataAccess.Concrete.EntityFramework;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(RestaurantContext))]
-    partial class RestaurantContextModelSnapshot : ModelSnapshot
+    [Migration("20250916164429_AddYearAndPermissionEntities")]
+    partial class AddYearAndPermissionEntities
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -33,7 +36,7 @@ namespace DataAccess.Migrations
                     b.Property<DateTime>("CreateDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2025, 9, 21, 12, 26, 48, 513, DateTimeKind.Local).AddTicks(148));
+                        .HasDefaultValue(new DateTime(2025, 9, 16, 19, 44, 29, 176, DateTimeKind.Local).AddTicks(5750));
 
                     b.Property<DateTime?>("DeleteDate")
                         .HasColumnType("datetime2");
@@ -725,175 +728,6 @@ namespace DataAccess.Migrations
                         });
                 });
 
-            modelBuilder.Entity("Entities.Concrete.LeaveRight", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<byte>("DayCount")
-                        .HasColumnType("tinyint");
-
-                    b.Property<int>("LeaveTypeId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("SeniorityRange")
-                        .IsRequired()
-                        .HasMaxLength(10)
-                        .HasColumnType("nvarchar(10)");
-
-                    b.Property<int>("YearId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("LeaveRights");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            DayCount = (byte)14,
-                            LeaveTypeId = 1,
-                            SeniorityRange = "0-1",
-                            YearId = 1
-                        },
-                        new
-                        {
-                            Id = 2,
-                            DayCount = (byte)20,
-                            LeaveTypeId = 1,
-                            SeniorityRange = "5-15",
-                            YearId = 1
-                        },
-                        new
-                        {
-                            Id = 3,
-                            DayCount = (byte)26,
-                            LeaveTypeId = 1,
-                            SeniorityRange = "15",
-                            YearId = 1
-                        },
-                        new
-                        {
-                            Id = 4,
-                            DayCount = (byte)5,
-                            LeaveTypeId = 2,
-                            SeniorityRange = "*",
-                            YearId = 1
-                        },
-                        new
-                        {
-                            Id = 5,
-                            DayCount = (byte)30,
-                            LeaveTypeId = 3,
-                            SeniorityRange = "*",
-                            YearId = 1
-                        },
-                        new
-                        {
-                            Id = 6,
-                            DayCount = (byte)10,
-                            LeaveTypeId = 4,
-                            SeniorityRange = "*",
-                            YearId = 1
-                        },
-                        new
-                        {
-                            Id = 7,
-                            DayCount = (byte)112,
-                            LeaveTypeId = 5,
-                            SeniorityRange = "*",
-                            YearId = 1
-                        },
-                        new
-                        {
-                            Id = 8,
-                            DayCount = (byte)5,
-                            LeaveTypeId = 6,
-                            SeniorityRange = "*",
-                            YearId = 1
-                        },
-                        new
-                        {
-                            Id = 9,
-                            DayCount = (byte)3,
-                            LeaveTypeId = 7,
-                            SeniorityRange = "*",
-                            YearId = 1
-                        },
-                        new
-                        {
-                            Id = 10,
-                            DayCount = (byte)5,
-                            LeaveTypeId = 8,
-                            SeniorityRange = "*",
-                            YearId = 1
-                        });
-                });
-
-            modelBuilder.Entity("Entities.Concrete.LeaveType", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("nvarchar(200)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("LeaveTypes");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Name = "Yıllık İzin"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Name = "Mazeret İzni"
-                        },
-                        new
-                        {
-                            Id = 3,
-                            Name = "Ücretsiz İzin"
-                        },
-                        new
-                        {
-                            Id = 4,
-                            Name = "Hastalık İzni"
-                        },
-                        new
-                        {
-                            Id = 5,
-                            Name = "Doğum İzni"
-                        },
-                        new
-                        {
-                            Id = 6,
-                            Name = "Babalık İzni"
-                        },
-                        new
-                        {
-                            Id = 7,
-                            Name = "Evlilik İzni"
-                        },
-                        new
-                        {
-                            Id = 8,
-                            Name = "Cenaze İzni"
-                        });
-                });
-
             modelBuilder.Entity("Entities.Concrete.OperationClaim", b =>
                 {
                     b.Property<int>("Id")
@@ -991,7 +825,7 @@ namespace DataAccess.Migrations
                     b.Property<DateTime>("CreateDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2025, 9, 21, 12, 26, 48, 514, DateTimeKind.Local).AddTicks(5297));
+                        .HasDefaultValue(new DateTime(2025, 9, 16, 19, 44, 29, 178, DateTimeKind.Local).AddTicks(2328));
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
@@ -1323,8 +1157,8 @@ namespace DataAccess.Migrations
                     b.Property<DateTime>("EndDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("LeaveTypeId")
-                        .HasColumnType("int");
+                    b.Property<byte>("LeaveType")
+                        .HasColumnType("tinyint");
 
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("datetime2");
@@ -1336,8 +1170,6 @@ namespace DataAccess.Migrations
                         .HasColumnType("int");
 
                     b.HasIndex("EmployeeId");
-
-                    b.HasIndex("LeaveTypeId");
 
                     b.HasIndex("YearId");
 
@@ -1519,15 +1351,6 @@ namespace DataAccess.Migrations
                         .HasColumnType("nvarchar(4)");
 
                     b.ToTable("Years");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 2,
-                            CreateDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            IsDeleted = false,
-                            Name = "2025"
-                        });
                 });
 
             modelBuilder.Entity("Entities.Concrete.BranchEmployee", b =>
@@ -1674,12 +1497,6 @@ namespace DataAccess.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("Entities.Concrete.LeaveType", "LeaveType")
-                        .WithMany("Permissions")
-                        .HasForeignKey("LeaveTypeId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
                     b.HasOne("Entities.Concrete.Year", "Year")
                         .WithMany("Permissions")
                         .HasForeignKey("YearId")
@@ -1687,8 +1504,6 @@ namespace DataAccess.Migrations
                         .IsRequired();
 
                     b.Navigation("Employee");
-
-                    b.Navigation("LeaveType");
 
                     b.Navigation("Year");
                 });
@@ -1757,11 +1572,6 @@ namespace DataAccess.Migrations
                     b.Navigation("Permissions");
 
                     b.Navigation("ShiftDays");
-                });
-
-            modelBuilder.Entity("Entities.Concrete.LeaveType", b =>
-                {
-                    b.Navigation("Permissions");
                 });
 
             modelBuilder.Entity("Entities.Concrete.OperationClaim", b =>

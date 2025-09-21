@@ -10,6 +10,7 @@ using Entities.Dtos.MealCategory;
 using Entities.Dtos.OperationClaim;
 using Entities.Dtos.Order;
 using Entities.Dtos.PageContent;
+using Entities.Dtos.Permission;
 using Entities.Dtos.Product;
 using Entities.Dtos.Reservation;
 using Entities.Dtos.ShiftDay;
@@ -254,6 +255,15 @@ namespace Business.Mapping
 
             CreateMap<ShiftDayDto, ShiftDay>()
                 .ReverseMap();
+
+            #endregion
+
+
+
+            #region Permission
+
+            CreateMap<PermissionUpsertDto, Permission>()
+                .ForMember(dest => dest.Status, opt => opt.MapFrom(src => StatusType.Pending));
 
             #endregion
 

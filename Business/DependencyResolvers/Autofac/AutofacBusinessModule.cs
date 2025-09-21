@@ -83,6 +83,15 @@ namespace Business.DependencyResolvers.Autofac
             
             builder.RegisterType<ShiftDayManager>().As<IShiftDayService>().InstancePerLifetimeScope();
             builder.RegisterType<EfShiftDayDal>().As<IShiftDayDal>().InstancePerLifetimeScope();
+            
+            builder.RegisterType<PermissionManager>().As<IPermissionService>().InstancePerLifetimeScope();
+            builder.RegisterType<EfPermissionDal>().As<IPermissionDal>().InstancePerLifetimeScope();
+
+            builder.RegisterType<YearManager>().As<IYearService>().InstancePerLifetimeScope();
+            builder.RegisterType<EfYearDal>().As<IYearDal>().InstancePerLifetimeScope();
+            
+            builder.RegisterType<LeaveRightManager>().As<ILeaveRightService>().InstancePerLifetimeScope();
+            builder.RegisterType<EfLeaveRightDal>().As<ILeaveRightDal>().InstancePerLifetimeScope();
 
 
 

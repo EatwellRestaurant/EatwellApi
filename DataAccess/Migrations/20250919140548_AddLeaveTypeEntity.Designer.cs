@@ -4,6 +4,7 @@ using DataAccess.Concrete.EntityFramework;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(RestaurantContext))]
-    partial class RestaurantContextModelSnapshot : ModelSnapshot
+    [Migration("20250919140548_AddLeaveTypeEntity")]
+    partial class AddLeaveTypeEntity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -33,7 +36,7 @@ namespace DataAccess.Migrations
                     b.Property<DateTime>("CreateDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2025, 9, 21, 12, 26, 48, 513, DateTimeKind.Local).AddTicks(148));
+                        .HasDefaultValue(new DateTime(2025, 9, 19, 17, 5, 48, 447, DateTimeKind.Local).AddTicks(6541));
 
                     b.Property<DateTime?>("DeleteDate")
                         .HasColumnType("datetime2");
@@ -991,7 +994,7 @@ namespace DataAccess.Migrations
                     b.Property<DateTime>("CreateDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2025, 9, 21, 12, 26, 48, 514, DateTimeKind.Local).AddTicks(5297));
+                        .HasDefaultValue(new DateTime(2025, 9, 19, 17, 5, 48, 449, DateTimeKind.Local).AddTicks(4699));
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
@@ -1194,6 +1197,21 @@ namespace DataAccess.Migrations
                     b.HasIndex("EmployeeId");
 
                     b.ToTable("ShiftDays");
+                });
+
+            modelBuilder.Entity("Entities.Concrete.YearLeaveRight", b =>
+                {
+                    b.Property<int>("YearId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("LeaveRightId")
+                        .HasColumnType("int");
+
+                    b.HasKey("YearId", "LeaveRightId");
+
+                    b.HasIndex("LeaveRightId");
+
+                    b.ToTable("YearLeaveRights");
                 });
 
             modelBuilder.Entity("Entities.Concrete.Branch", b =>
@@ -1628,6 +1646,25 @@ namespace DataAccess.Migrations
                     b.Navigation("Shift");
                 });
 
+            modelBuilder.Entity("Entities.Concrete.YearLeaveRight", b =>
+                {
+                    b.HasOne("Entities.Concrete.LeaveRight", "LeaveRight")
+                        .WithMany("YearLeaveRights")
+                        .HasForeignKey("LeaveRightId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Entities.Concrete.Year", "Year")
+                        .WithMany("YearLeaveRights")
+                        .HasForeignKey("YearId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("LeaveRight");
+
+                    b.Navigation("Year");
+                });
+
             modelBuilder.Entity("Entities.Concrete.Branch", b =>
                 {
                     b.HasOne("Entities.Concrete.City", "City")
@@ -1759,6 +1796,11 @@ namespace DataAccess.Migrations
                     b.Navigation("ShiftDays");
                 });
 
+            modelBuilder.Entity("Entities.Concrete.LeaveRight", b =>
+                {
+                    b.Navigation("YearLeaveRights");
+                });
+
             modelBuilder.Entity("Entities.Concrete.LeaveType", b =>
                 {
                     b.Navigation("Permissions");
@@ -1828,6 +1870,8 @@ namespace DataAccess.Migrations
             modelBuilder.Entity("Entities.Concrete.Year", b =>
                 {
                     b.Navigation("Permissions");
+
+                    b.Navigation("YearLeaveRights");
                 });
 #pragma warning restore 612, 618
         }

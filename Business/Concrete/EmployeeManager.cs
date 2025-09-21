@@ -295,6 +295,14 @@ namespace Business.Concrete
 
 
 
+        public async Task CheckIfEmployeeIdExists(int employeeId)
+        {
+            if (!await _employeeDal.AnyAsync(e => e.Id == employeeId && !e.User.IsDeleted))
+                throw new EntityNotFoundException("Çalışan");
+        } 
+        
+
+
 
 
         #region OtherMethods
