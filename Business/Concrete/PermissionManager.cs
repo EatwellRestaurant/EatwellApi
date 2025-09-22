@@ -46,8 +46,11 @@ namespace Business.Concrete
         [ValidationAspect(typeof(PermissionUpsertDtoValidator), Priority = 2)]
         public async Task<CreateSuccessResponse> Add(PermissionUpsertDto permissionUpsertDto)
         {
-            await _employeeService.CheckIfEmployeeIdExists(permissionUpsertDto.EmployeeId);
-            await _yearService.CheckIfYearIdExists(permissionUpsertDto.YearId);
+            await _employeeService.CheckIfEmployeeIdExists((int)permissionUpsertDto.EmployeeId!);
+            string year = await _yearService.CheckIfYearIdExists(permissionUpsertDto.YearId);
+
+            if (year != permissionUpsertDto.StartDate.Year.ToString() || year != permissionUpsertDto.EndDate.Year.ToString())
+                throw new YearMismatchException();
 
             var employeeLeaveData = await _employeeService
                 .Where(e => e.Id == permissionUpsertDto.EmployeeId && !e.User.IsDeleted)
@@ -101,6 +104,25 @@ namespace Business.Concrete
             return new CreateSuccessResponse(CommonMessages.EntityAdded);
         }
 
+
+
+        [SecuredOperation(OperationClaimEnum.Admin)]  
+        public async Task<DataResponse<List<PermissionListDto>>> GetAllByEmployeeAndYearAsync(int employeeId, int yearId)
+        {
+            await _employeeService.CheckIfEmployeeIdExists(employeeId);
+            await _yearService.CheckIfYearIdExists(yearId);
+
+            List<Permission> permissions = await _permissionDal
+                .Where(p => p.EmployeeId == employeeId && p.YearId == yearId && !p.IsDeleted)
+                .Include(p => p.LeaveType)
+                .AsNoTracking()
+                .ToListAsync();
+
+
+            return new DataResponse<List<PermissionListDto>>(
+                _mapper.Map<List<PermissionListDto>>(permissions), 
+                CommonMessages.EntityListed);
+        }
 
     }
 }

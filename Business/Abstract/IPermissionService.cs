@@ -11,5 +11,7 @@ namespace Business.Abstract
     public interface IPermissionService
     {
         Task<CreateSuccessResponse> Add(PermissionUpsertDto permissionUpsertDto);
+
+        Task<DataResponse<List<PermissionListDto>>> GetAllByEmployeeAndYearAsync(int employeeId, int yearId);
     }
 }

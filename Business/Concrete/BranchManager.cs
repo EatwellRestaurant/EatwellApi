@@ -12,7 +12,7 @@ using Core.ResponseModels;
 using DataAccess.Abstract;
 using Entities.Concrete;
 using Entities.Dtos.Branch;
-using Entities.Enums;
+using Entities.Enums.Branch;
 using Entities.Enums.OperationClaim;
 using Microsoft.EntityFrameworkCore;
 using Service.Concrete;

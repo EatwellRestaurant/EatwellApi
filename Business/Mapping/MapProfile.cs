@@ -19,6 +19,7 @@ using Entities.Dtos.User;
 using Entities.Enums;
 using Entities.Enums.Employee;
 using Entities.Enums.OperationClaim;
+using Entities.Enums.Permission;
 using Microsoft.EntityFrameworkCore.SqlServer.Internal;
 
 namespace Business.Mapping
@@ -88,7 +89,8 @@ namespace Business.Mapping
             CreateMap<Branch, NonSalesBranchDto>();
 
 
-            CreateMap<Branch, PendingBranchDto>();
+            CreateMap<Branch, PendingBranchDto>()
+                .ForMember(dest => dest.StatusName, opt => opt.MapFrom(src => src.Status.GetDisplayName()));
 
 
             CreateMap<Branch, BranchListWithCityDto>()
@@ -206,6 +208,7 @@ namespace Business.Mapping
                 .ForMember(dest => dest.WorkStatusName, opt => opt.MapFrom(src => src.WorkStatus.ToString()))
                 .ForMember(dest => dest.WorkStatusDisplayName, opt => opt.MapFrom(src => src.WorkStatus.GetDisplayName()))
                 .ForMember(dest => dest.ShiftDayDtos, opt => opt.MapFrom(src => src.ShiftDays))
+                .ForMember(dest => dest.PermissionListDtos, opt => opt.MapFrom(src => src.Permissions))
                 .AfterMap((src, dest) =>
                 {
                     DateTime today = DateTime.Now;
@@ -264,6 +267,11 @@ namespace Business.Mapping
 
             CreateMap<PermissionUpsertDto, Permission>()
                 .ForMember(dest => dest.Status, opt => opt.MapFrom(src => StatusType.Pending));
+
+
+            CreateMap<Permission, PermissionListDto>()
+                .ForMember(dest => dest.StatusName, opt => opt.MapFrom(src => src.Status.GetDisplayName()))
+                .ForMember(dest => dest.LeaveTypeName, opt => opt.MapFrom(src => src.LeaveType.Name));
 
             #endregion
 

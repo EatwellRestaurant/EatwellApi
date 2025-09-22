@@ -36,6 +36,7 @@ namespace Business.Concrete
         readonly ICityService _cityService;
         readonly IFileHelper _fileHelper;
         readonly IShiftDayService _shiftDayService;
+        readonly IYearService _yearService;
 
         public EmployeeManager
             (IEmployeeDal employeeDal,
@@ -47,7 +48,8 @@ namespace Business.Concrete
             IBranchService branchService,
             ICityService cityService,
             IFileHelper fileHelper,
-            IShiftDayService shiftDayService)
+            IShiftDayService shiftDayService,
+            IYearService yearService)
             : base(employeeDal)
         {
             _employeeDal = employeeDal;
@@ -60,9 +62,10 @@ namespace Business.Concrete
             _cityService = cityService;
             _fileHelper = fileHelper;
             _shiftDayService = shiftDayService;
+            _yearService = yearService;
         }
 
-        
+
 
         [SecuredOperation(OperationClaimEnum.Manager, OperationClaimEnum.Admin)]
         public async Task<CreateSuccessResponse> UploadImageAsync(int employeeId, IFormFile image)
@@ -200,9 +203,10 @@ namespace Business.Concrete
             IQueryable<Employee> query = _employeeDal
                 .Where(e => e.Id == employeeId && !e.User.IsDeleted);
 
-
+            int yearId = await _yearService.GetCurrentYearIdAsync();
+             
             return new DataResponse<EmployeeDetailDto>(
-                _mapper.Map<EmployeeDetailDto>(await GetEmployeeWithManagerAsync(query)), 
+                _mapper.Map<EmployeeDetailDto>(await GetEmployeeWithManagerAsync(query, yearId)), 
                 CommonMessages.EntityFetch);
         }
 
@@ -223,9 +227,12 @@ namespace Business.Concrete
                 .FilterByBranchId(branchId)
                 .FilterByUserId(userId);
 
-            
+
+            int yearId = await _yearService.GetCurrentYearIdAsync();
+
+
             return new DataResponse<EmployeeDetailDto>(
-                _mapper.Map<EmployeeDetailDto>(await GetEmployeeWithManagerAsync(query)), 
+                _mapper.Map<EmployeeDetailDto>(await GetEmployeeWithManagerAsync(query, yearId)), 
                 CommonMessages.EntityFetch);
         }
 
@@ -328,7 +335,7 @@ namespace Business.Concrete
             .ToListAsync();
 
 
-        private async Task<Employee> GetEmployeeWithManagerAsync(IQueryable<Employee> query)
+        private async Task<Employee> GetEmployeeWithManagerAsync(IQueryable<Employee> query, int yearId)
             => await query
             .Select(e => new Employee()
             {
@@ -346,6 +353,19 @@ namespace Business.Concrete
                 MilitaryStatus = e.MilitaryStatus,
                 WorkStatus = e.WorkStatus,
                 ShiftDays = e.ShiftDays,
+                Permissions = e.Permissions
+                .Where(p => p.YearId == yearId && !p.IsDeleted)
+                .Select(p => new Permission()
+                {
+                    Id = p.Id,
+                    LeaveTypeId = p.LeaveTypeId,
+                    LeaveType = new LeaveType() { Name = p.LeaveType.Name },
+                    StartDate = p.StartDate,
+                    EndDate = p.EndDate,
+                    Description = p.Description,
+                    Status = p.Status
+                })
+                .ToList(),
                 Branch = new Branch()
                 {
                     Name = e.Branch.Name,

@@ -1,5 +1,5 @@
 ﻿using Core.Entities.Abstract;
-using Entities.Enums;
+using Entities.Enums.Branch;
 using System;
 using System.Collections.Generic;
 using System.Linq;

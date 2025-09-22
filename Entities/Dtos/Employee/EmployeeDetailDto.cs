@@ -1,4 +1,5 @@
 ﻿using Core.Entities.Abstract;
+using Entities.Dtos.Permission;
 using Entities.Dtos.ShiftDay;
 using Entities.Enums.Employee;
 using System;
@@ -58,6 +59,8 @@ namespace Entities.Dtos.Employee
         public string Manager { get; set; }
 
         public List<ShiftDayDto> ShiftDayDtos { get; set; }
+
+        public List<PermissionListDto> PermissionListDtos { get; set; }
 
     }
 }

@@ -10,7 +10,7 @@ namespace Entities.Dtos.Permission
 {
     public class PermissionUpsertDto : IDto
     {
-        public int EmployeeId { get; set; }
+        public int? EmployeeId { get; set; }
 
         public int YearId { get; set; }
 

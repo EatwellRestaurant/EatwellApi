@@ -1,6 +1,8 @@
 ﻿using Business.Abstract;
 using Core.Exceptions.General;
 using DataAccess.Abstract;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Azure;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,10 +22,34 @@ namespace Business.Concrete
 
 
 
-        public async Task CheckIfYearIdExists(int yearId)
+        public async Task<string> CheckIfYearIdExists(int yearId)
         {
-            if(!await _yearDal.AnyAsync(y => y.Id == yearId && !y.IsDeleted))
-                throw new EntityNotFoundException("Yıl");
+            string? year =  await _yearDal
+                .Where(y => y.Id == yearId && !y.IsDeleted)
+                .AsNoTracking()
+                .Select(y => y.Name)
+                .SingleOrDefaultAsync();
+
+            if(year == null)
+                throw new EntityNotFoundException("Yıl"); 
+
+            return year;
+        }
+
+
+
+
+        public async Task<int> GetCurrentYearIdAsync()
+        {
+            string year = DateTime.Now.Year.ToString();
+
+            int? yearId = await _yearDal
+                .Where(y => y.Name == year && !y.IsDeleted)
+                .AsNoTracking()
+                .Select(y => y.Id)
+                .SingleOrDefaultAsync();
+
+            return yearId.Value;
         }
     }
 }

@@ -8,6 +8,8 @@ namespace Business.Abstract
 {
     public interface IYearService 
     {
-        Task CheckIfYearIdExists(int yearId);
+        Task<string> CheckIfYearIdExists(int yearId);
+
+        Task<int> GetCurrentYearIdAsync();
     }
 }

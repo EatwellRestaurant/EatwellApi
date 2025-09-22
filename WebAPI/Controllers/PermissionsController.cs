@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace WebAPI.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/employees/{employeeId}/permissions")]
     [ApiController]
     public class PermissionsController : ControllerBase
     {
@@ -20,7 +20,17 @@ namespace WebAPI.Controllers
 
 
         [HttpPost]
-        public async Task<IActionResult> Add(PermissionUpsertDto permissionUpsertDto)
-            => Ok(await _permissionService.Add(permissionUpsertDto));
+        public async Task<IActionResult> Add(int employeeId, [FromBody] PermissionUpsertDto permissionUpsertDto)
+        {
+            permissionUpsertDto.EmployeeId = employeeId;
+            
+            return Ok(await _permissionService.Add(permissionUpsertDto));
+        }
+        
+
+        
+        [HttpGet]
+        public async Task<IActionResult> GetAllByEmployeeAndYearAsync(int employeeId, int yearId)
+            => Ok(await _permissionService.GetAllByEmployeeAndYearAsync(employeeId, yearId));
     }
 }
