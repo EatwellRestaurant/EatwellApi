@@ -12,6 +12,6 @@ namespace Business.Abstract
     {
         Task<CreateSuccessResponse> Add(PermissionUpsertDto permissionUpsertDto);
 
-        Task<DataResponse<List<PermissionListDto>>> GetAllByEmployeeAndYearAsync(int employeeId, int yearId);
+        Task<DataResponse<List<PermissionListDto>>> GetAllByEmployeeAndYearAsync(int employeeId, PermissionFilterRequestDto permissionFilterRequestDto);
     }
 }

@@ -363,8 +363,10 @@ namespace Business.Concrete
                     StartDate = p.StartDate,
                     EndDate = p.EndDate,
                     Description = p.Description,
-                    Status = p.Status
+                    Status = p.Status,
+                    CreateDate = p.CreateDate
                 })
+                .OrderByDescending(p => p.CreateDate)
                 .ToList(),
                 Branch = new Branch()
                 {

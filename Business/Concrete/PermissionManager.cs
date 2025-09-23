@@ -2,6 +2,7 @@
 using Business.Abstract;
 using Business.BusinessAspects.Autofac;
 using Business.Constants.Messages;
+using Business.Extensions;
 using Business.ValidationRules.FluentValidation.Permission;
 using Core.Aspects.Autofac.Validation;
 using Core.Exceptions.Permission;
@@ -23,6 +24,7 @@ namespace Business.Concrete
         readonly IMapper _mapper;
         readonly IUnitOfWork _unitOfWork;
         readonly ILeaveRightService _leaveRightService;
+        readonly ILeaveTypeService _leaveTypeService;
 
         public PermissionManager
             (IPermissionDal permissionDal,
@@ -30,7 +32,8 @@ namespace Business.Concrete
             IYearService yearService,
             IMapper mapper,
             IUnitOfWork unitOfWork,
-            ILeaveRightService leaveRightService)
+            ILeaveRightService leaveRightService,
+            ILeaveTypeService leaveTypeService)
         {
             _permissionDal = permissionDal;
             _employeeService = employeeService;
@@ -38,6 +41,7 @@ namespace Business.Concrete
             _mapper = mapper;
             _unitOfWork = unitOfWork;
             _leaveRightService = leaveRightService;
+            _leaveTypeService = leaveTypeService;
         }
 
 
@@ -57,7 +61,7 @@ namespace Business.Concrete
                 .Select(e => new
                 {
                     Permission = e.Permissions
-                        .Where(p => (p.StartDate <= permissionUpsertDto.StartDate 
+                        .Where(p => (p.StartDate <= permissionUpsertDto.StartDate
                         && p.EndDate >= permissionUpsertDto.EndDate)
                         && !p.IsDeleted),
 
@@ -89,7 +93,7 @@ namespace Business.Concrete
 
             LeaveRight leaveRights = await _leaveRightService
                 .GetLeaveRightByTypeAsync(permissionUpsertDto.LeaveTypeId, permissionUpsertDto.YearId, leaveUsageInfo.ExperienceInYears);
-            
+
 
             double requestedLeaveDays = (permissionUpsertDto.EndDate.Date - permissionUpsertDto.StartDate.Date).TotalDays + 1;
 
@@ -106,21 +110,36 @@ namespace Business.Concrete
 
 
 
-        [SecuredOperation(OperationClaimEnum.Admin)]  
-        public async Task<DataResponse<List<PermissionListDto>>> GetAllByEmployeeAndYearAsync(int employeeId, int yearId)
+        [SecuredOperation(OperationClaimEnum.Admin)]
+        public async Task<DataResponse<List<PermissionListDto>>> GetAllByEmployeeAndYearAsync(int employeeId, PermissionFilterRequestDto permissionFilterRequestDto)
         {
             await _employeeService.CheckIfEmployeeIdExists(employeeId);
-            await _yearService.CheckIfYearIdExists(yearId);
+
+
+            if (!permissionFilterRequestDto.YearId.HasValue)
+                permissionFilterRequestDto.YearId = await _yearService.GetCurrentYearIdAsync();   
+            
+            
+            await _yearService.CheckIfYearIdExists((int)permissionFilterRequestDto.YearId);
+
+
+            if (permissionFilterRequestDto.LeaveTypeId.HasValue)
+                await _leaveTypeService.CheckIfLeaveTypeIdExists((int)permissionFilterRequestDto.LeaveTypeId);
+
 
             List<Permission> permissions = await _permissionDal
-                .Where(p => p.EmployeeId == employeeId && p.YearId == yearId && !p.IsDeleted)
+                .Where(p => !p.IsDeleted)
+                .FilterByEmployeeId(employeeId)
+                .FilterByYearId((int)permissionFilterRequestDto.YearId)
+                .FilterByLeaveTypeId(permissionFilterRequestDto.LeaveTypeId)
                 .Include(p => p.LeaveType)
                 .AsNoTracking()
+                .OrderByDescending(p => p.CreateDate)
                 .ToListAsync();
 
 
             return new DataResponse<List<PermissionListDto>>(
-                _mapper.Map<List<PermissionListDto>>(permissions), 
+                _mapper.Map<List<PermissionListDto>>(permissions),
                 CommonMessages.EntityListed);
         }
 

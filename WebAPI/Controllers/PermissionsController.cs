@@ -1,4 +1,5 @@
 ﻿using Business.Abstract;
+using Entities.Concrete;
 using Entities.Dtos.Permission;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -30,7 +31,8 @@ namespace WebAPI.Controllers
 
         
         [HttpGet]
-        public async Task<IActionResult> GetAllByEmployeeAndYearAsync(int employeeId, int yearId)
-            => Ok(await _permissionService.GetAllByEmployeeAndYearAsync(employeeId, yearId));
+        public async Task<IActionResult> GetAllByEmployeeAndYearAsync(int employeeId, [FromQuery] PermissionFilterRequestDto permissionFilterRequestDto)
+            => Ok(await _permissionService.GetAllByEmployeeAndYearAsync(employeeId, permissionFilterRequestDto));
+        
     }
 }

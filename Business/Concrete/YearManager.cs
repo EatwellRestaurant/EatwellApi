@@ -1,13 +1,12 @@
 ﻿using Business.Abstract;
+using Business.BusinessAspects.Autofac;
+using Business.Constants.Messages;
 using Core.Exceptions.General;
+using Core.ResponseModels;
 using DataAccess.Abstract;
+using Entities.Dtos.Year;
+using Entities.Enums.OperationClaim;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Azure;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Business.Concrete
 {
@@ -51,5 +50,31 @@ namespace Business.Concrete
 
             return yearId.Value;
         }
+
+        
+
+
+        [SecuredOperation(OperationClaimEnum.Admin)]
+        public async Task<DataResponse<List<YearListDto>>> GetAllAsync()
+        {
+            List<YearListDto> yearListDtos = await _yearDal
+                .Where(y => !y.IsDeleted)
+                .AsNoTracking()
+                .Select(y => new YearListDto()
+                {
+                    Id = y.Id,
+                    Name = y.Name,
+                })
+                .ToListAsync();
+
+
+            return new DataResponse<List<YearListDto>>(
+                yearListDtos
+                .OrderByDescending(y => int.Parse(y.Name))
+                .ToList(), 
+                CommonMessages.EntityListed);
+        }
+
+
     }
 }

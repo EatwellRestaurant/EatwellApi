@@ -92,6 +92,9 @@ namespace Business.DependencyResolvers.Autofac
             
             builder.RegisterType<LeaveRightManager>().As<ILeaveRightService>().InstancePerLifetimeScope();
             builder.RegisterType<EfLeaveRightDal>().As<ILeaveRightDal>().InstancePerLifetimeScope();
+            
+            builder.RegisterType<LeaveTypeManager>().As<ILeaveTypeService>().InstancePerLifetimeScope();
+            builder.RegisterType<EfLeaveTypeDal>().As<ILeaveTypeDal>().InstancePerLifetimeScope();
 
 
 

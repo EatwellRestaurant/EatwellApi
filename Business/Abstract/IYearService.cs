@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Core.ResponseModels;
+using Entities.Dtos.Year;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,5 +13,7 @@ namespace Business.Abstract
         Task<string> CheckIfYearIdExists(int yearId);
 
         Task<int> GetCurrentYearIdAsync();
+
+        Task<DataResponse<List<YearListDto>>> GetAllAsync();
     }
 }
