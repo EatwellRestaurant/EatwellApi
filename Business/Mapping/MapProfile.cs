@@ -5,6 +5,9 @@ using Entities.Concrete;
 using Entities.Dtos.Branch;
 using Entities.Dtos.City;
 using Entities.Dtos.Employee;
+using Entities.Dtos.EmployeeBonus;
+using Entities.Dtos.EmployeeDeduction;
+using Entities.Dtos.EmployeeSalary;
 using Entities.Dtos.HeadOffice;
 using Entities.Dtos.MealCategory;
 using Entities.Dtos.OperationClaim;
@@ -193,6 +196,9 @@ namespace Business.Mapping
                 .ForMember(dest => dest.MilitaryStatus, opt => opt.MapFrom(src => src.Gender == GenderType.Female ? null : src.MilitaryStatus));
 
 
+            ICollection<EmployeeDeduction>? employeeDeductions = null;
+            ICollection<EmployeeBonus>? employeeBonus = null;
+
             CreateMap<Employee, EmployeeDetailDto>()
                 .ForMember(dest => dest.FirstName, opt => opt.MapFrom(src => src.User.FirstName))
                 .ForMember(dest => dest.LastName, opt => opt.MapFrom(src => src.User.LastName))
@@ -209,8 +215,14 @@ namespace Business.Mapping
                 .ForMember(dest => dest.WorkStatusDisplayName, opt => opt.MapFrom(src => src.WorkStatus.GetDisplayName()))
                 .ForMember(dest => dest.ShiftDayDtos, opt => opt.MapFrom(src => src.ShiftDays))
                 .ForMember(dest => dest.PermissionListDtos, opt => opt.MapFrom(src => src.Permissions))
-                .AfterMap((src, dest) =>
+                .ForMember(dest => dest.EmployeeBonusListDtos, opt => opt.MapFrom(src => src.EmployeeBonuses))
+                .ForMember(dest => dest.EmployeeDeductionListDtos, opt => opt.MapFrom(src => src.EmployeeDeductions))
+                .ForMember(dest => dest.EmployeeSalaryListDtos, opt => opt.MapFrom(src => src.EmployeeSalaries))
+                .BeforeMap((src, dest) =>
                 {
+                    employeeDeductions = src.EmployeeDeductions;
+                    employeeBonus = src.EmployeeBonuses;
+
                     DateTime today = DateTime.Now;
 
                     int years = today.Year - src.HireDate.Year;
@@ -249,6 +261,48 @@ namespace Business.Mapping
                         ? $"{manager.FirstName} {manager.LastName}"
                         : "Atanmış bir yönetici bulunmamaktadır.";
                 });
+
+            #endregion
+
+
+
+            #region EmployeeSalary
+
+            CreateMap<EmployeeSalary, EmployeeSalaryListDto>()
+                .AfterMap((src, dest) =>
+                {
+                    decimal employeeBonusAmount = employeeBonus!
+                    .Where(e => e.Year == src.Year && e.Month == src.Month)
+                    .Sum(e => e.Amount);
+                     
+
+                    decimal employeeDeductionAmount = employeeDeductions!
+                    .Where(e => e.Year == src.Year && e.Month == src.Month)
+                    .Sum(e => e.Amount);
+
+
+                    dest.NetSalary = src.GrossSalary + employeeBonusAmount - employeeDeductionAmount;
+                });
+
+            #endregion
+
+
+
+            #region EmployeeBonus
+
+            CreateMap<EmployeeBonus, EmployeeBonusListDto>()
+                .ForMember(dest => dest.BonusType, opt => opt.MapFrom(src => src.BonusType.GetDisplayName()))
+                .ForMember(dest => dest.PaymentStatusName, opt => opt.MapFrom(src => src.PaymentStatus.GetDisplayName()));
+
+            #endregion
+
+
+
+            #region EmployeeDeduction
+
+            CreateMap<EmployeeDeduction, EmployeeDeductionListDto>()
+                .ForMember(dest => dest.DeductionType, opt => opt.MapFrom(src => src.DeductionType.GetDisplayName()))
+                .ForMember(dest => dest.PaymentStatusName, opt => opt.MapFrom(src => src.PaymentStatus.GetDisplayName()));
 
             #endregion
 

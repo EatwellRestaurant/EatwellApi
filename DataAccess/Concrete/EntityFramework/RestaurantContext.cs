@@ -33,7 +33,10 @@ namespace DataAccess.Concrete.EntityFramework
         public DbSet<Year> Years { get; set; }
         public DbSet<Permission> Permissions { get; set; }
         public DbSet<LeaveRight> LeaveRights { get; set; }
-        public DbSet<LeaveType> LeaveTypes { get; set; }
+        public DbSet<LeaveType> LeaveTypes { get; set; } 
+        public DbSet<EmployeeSalary> EmployeeSalaries { get; set; }
+        public DbSet<EmployeeBonus> EmployeeBonuses { get; set; }
+        public DbSet<EmployeeDeduction> EmployeeDeductions { get; set; }
 
 
 

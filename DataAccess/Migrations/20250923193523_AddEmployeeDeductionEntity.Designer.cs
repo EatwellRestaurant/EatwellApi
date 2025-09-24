@@ -4,6 +4,7 @@ using DataAccess.Concrete.EntityFramework;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(RestaurantContext))]
-    partial class RestaurantContextModelSnapshot : ModelSnapshot
+    [Migration("20250923193523_AddEmployeeDeductionEntity")]
+    partial class AddEmployeeDeductionEntity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -33,7 +36,7 @@ namespace DataAccess.Migrations
                     b.Property<DateTime>("CreateDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2025, 9, 24, 10, 23, 23, 538, DateTimeKind.Local).AddTicks(9847));
+                        .HasDefaultValue(new DateTime(2025, 9, 23, 22, 35, 23, 151, DateTimeKind.Local).AddTicks(4369));
 
                     b.Property<DateTime?>("DeleteDate")
                         .HasColumnType("datetime2");
@@ -991,7 +994,7 @@ namespace DataAccess.Migrations
                     b.Property<DateTime>("CreateDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2025, 9, 24, 10, 23, 23, 540, DateTimeKind.Local).AddTicks(8632));
+                        .HasDefaultValue(new DateTime(2025, 9, 23, 22, 35, 23, 153, DateTimeKind.Local).AddTicks(9428));
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
@@ -1249,8 +1252,8 @@ namespace DataAccess.Migrations
                 {
                     b.HasBaseType("Entities.Concrete.BaseEntity");
 
-                    b.Property<decimal>("Amount")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<double>("Amount")
+                        .HasColumnType("float");
 
                     b.Property<int>("BonusType")
                         .ValueGeneratedOnAdd()
@@ -1273,12 +1276,7 @@ namespace DataAccess.Migrations
 
                     b.HasIndex("EmployeeId");
 
-                    b.ToTable("EmployeeBonuses", t =>
-                        {
-                            t.HasCheckConstraint("CK_EmployeeBonus_Month", "[Month] >= 1 AND [Month] <= 12");
-
-                            t.HasCheckConstraint("CK_EmployeeBonus_Year", "[Year] >= 1900 AND [Year] <= 2100");
-                        });
+                    b.ToTable("EmployeeBonuses");
                 });
 
             modelBuilder.Entity("Entities.Concrete.EmployeeDeduction", b =>
@@ -1307,50 +1305,37 @@ namespace DataAccess.Migrations
 
                     b.HasIndex("EmployeeId");
 
-                    b.ToTable("EmployeeDeductions", t =>
-                        {
-                            t.HasCheckConstraint("CK_EmployeeDeduction_Month", "[Month] >= 1 AND [Month] <= 12");
-
-                            t.HasCheckConstraint("CK_EmployeeDeduction_Year", "[Year] >= 1900 AND [Year] <= 2100");
-                        });
+                    b.ToTable("EmployeeDeductions");
                 });
 
             modelBuilder.Entity("Entities.Concrete.EmployeeSalary", b =>
                 {
                     b.HasBaseType("Entities.Concrete.BaseEntity");
 
-                    b.Property<decimal>("BaseSalary")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<double>("BaseSalary")
+                        .HasColumnType("float");
 
-                    b.Property<decimal?>("EducationAllowance")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<double?>("EducationAllowance")
+                        .HasColumnType("float");
 
                     b.Property<int>("EmployeeId")
                         .HasColumnType("int");
 
-                    b.Property<decimal>("GrossSalary")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<double>("GrossSalary")
+                        .HasColumnType("float");
 
-                    b.Property<decimal?>("MealAllowance")
-                        .HasColumnType("decimal(18,2)");
+                    b.Property<double?>("MealAllowance")
+                        .HasColumnType("float");
 
-                    b.Property<byte>("Month")
-                        .HasColumnType("tinyint");
+                    b.Property<double>("NetSalary")
+                        .HasColumnType("float");
 
-                    b.Property<decimal?>("TransportAllowance")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<short>("Year")
-                        .HasColumnType("smallint");
+                    b.Property<double?>("TransportAllowance")
+                        .HasColumnType("float");
 
                     b.HasIndex("EmployeeId");
 
-                    b.ToTable("EmployeeSalaries", t =>
-                        {
-                            t.HasCheckConstraint("CK_EmployeeSalary_Month", "[Month] >= 1 AND [Month] <= 12");
-
-                            t.HasCheckConstraint("CK_EmployeeSalary_Year", "[Year] >= 1900 AND [Year] <= 2100");
-                        });
+                    b.ToTable("EmployeeSalaries");
                 });
 
             modelBuilder.Entity("Entities.Concrete.MealCategory", b =>

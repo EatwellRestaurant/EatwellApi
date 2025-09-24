@@ -368,21 +368,59 @@ namespace Business.Concrete
                 })
                 .OrderByDescending(p => p.CreateDate)
                 .ToList(),
+                EmployeeDeductions = e.EmployeeDeductions
+                .Where(e => !e.IsDeleted)
+                .OrderByDescending(e => e.CreateDate)
+                .Take(6)
+                .Select(e => new EmployeeDeduction()
+                {
+                    Id = e.Id,
+                    DeductionType = e.DeductionType,
+                    Amount = e.Amount,
+                    PaymentStatus = e.PaymentStatus
+                })
+                .ToList(),
+                EmployeeBonuses = e.EmployeeBonuses
+                .Where(e => !e.IsDeleted)
+                .OrderByDescending(e => e.CreateDate)
+                .Take(6)
+                .Select(e => new EmployeeBonus()
+                {
+                    Id = e.Id,
+                    BonusType = e.BonusType,
+                    Amount = e.Amount,
+                    PaymentStatus = e.PaymentStatus
+                })
+                .ToList(),
+                EmployeeSalaries = e.EmployeeSalaries
+                .Where(e => !e.IsDeleted)
+                .OrderByDescending(e => e.CreateDate)
+                .Take(6)
+                .Select(e => new EmployeeSalary()
+                {
+                    Id = e.Id,
+                    BaseSalary = e.BaseSalary,
+                    GrossSalary = e.GrossSalary,
+                    MealAllowance = e.MealAllowance,
+                    TransportAllowance = e.TransportAllowance,
+                    EducationAllowance = e.EducationAllowance,
+                })
+                .ToList(),
                 Branch = new Branch()
                 {
                     Name = e.Branch.Name,
                     Employees = e.Branch.Employees
-                        .Where(e => e.User.OperationClaimId == (int)OperationClaimEnum.Manager)
-                        .Select(e => new Employee()
+                    .Where(e => e.User.OperationClaimId == (int)OperationClaimEnum.Manager)
+                    .Select(e => new Employee()
+                    {
+                        User = new User()
                         {
-                            User = new User()
-                            {
-                                OperationClaimId = e.User.OperationClaimId,
-                                FirstName = e.User.FirstName,
-                                LastName = e.User.LastName,
-                            },
-                        })
-                        .ToList()
+                            OperationClaimId = e.User.OperationClaimId,
+                            FirstName = e.User.FirstName,
+                            LastName = e.User.LastName,
+                        },
+                    })
+                    .ToList()
                 },
                 User = new User()
                 {

@@ -1,4 +1,7 @@
 ﻿using Core.Entities.Abstract;
+using Entities.Dtos.EmployeeBonus;
+using Entities.Dtos.EmployeeDeduction;
+using Entities.Dtos.EmployeeSalary;
 using Entities.Dtos.Permission;
 using Entities.Dtos.ShiftDay;
 using Entities.Enums.Employee;
@@ -61,6 +64,13 @@ namespace Entities.Dtos.Employee
         public List<ShiftDayDto> ShiftDayDtos { get; set; }
 
         public List<PermissionListDto> PermissionListDtos { get; set; }
+
+        public List<EmployeeSalaryListDto> EmployeeSalaryListDtos { get; set; }
+
+        public List<EmployeeBonusListDto> EmployeeBonusListDtos { get; set; }
+         
+        public List<EmployeeDeductionListDto> EmployeeDeductionListDtos { get; set; }
+
 
     }
 }

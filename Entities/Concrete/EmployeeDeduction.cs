@@ -1,0 +1,30 @@
+﻿using Entities.Enums.Employee;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Entities.Concrete
+{
+    public class EmployeeDeduction : BaseEntity
+    {
+        public int EmployeeId { get; set; }
+
+        public DeductionType DeductionType { get; set; }
+
+        public decimal Amount { get; set; }
+
+        public PaymentStatusEnum PaymentStatus { get; set; }
+
+        public short Year { get; set; }
+
+        public byte Month { get; set; }
+
+
+
+
+        public Employee Employee { get; set; }
+
+    }
+}
