@@ -8,14 +8,9 @@ namespace DataAccess.Configurations
     {
         public void Configure(EntityTypeBuilder<EmployeeSalary> builder)
         {
-            builder.ToTable(t =>
-            {
-                t.HasCheckConstraint("CK_EmployeeSalary_Year", "[Year] >= 1900 AND [Year] <= 2100");
-                t.HasCheckConstraint("CK_EmployeeSalary_Month", "[Month] >= 1 AND [Month] <= 12");
-            });
-
 
             builder.HasOne(e => e.Employee).WithMany(e => e.EmployeeSalaries).HasForeignKey(e => e.EmployeeId).OnDelete(DeleteBehavior.Restrict);
+            builder.HasOne(e => e.Month).WithMany(m => m.EmployeeSalaries).HasForeignKey(e => e.MonthId).OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

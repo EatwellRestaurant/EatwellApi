@@ -26,7 +26,7 @@ namespace Entities.Dtos.Employee
 
         public DateTime HireDate { get; set; }
 
-        public decimal Salary { get; set; }
+        public decimal? Salary { get; set; }
 
         public string WorkStatusName { get; set; }
          

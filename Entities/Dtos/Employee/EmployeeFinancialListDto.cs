@@ -1,26 +1,36 @@
 ﻿using Core.Entities.Abstract;
+using Entities.Dtos.EmployeeBonus;
+using Entities.Dtos.EmployeeDeduction;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Entities.Dtos.EmployeeSalary
+namespace Entities.Dtos.Employee
 {
-    public class EmployeeSalaryListDto : IDto
+    public class EmployeeFinancialListDto : IDto
     {
         public int Id { get; set; }
+
+        public string Year { get; set; }
+
+        public string Month { get; set; }
 
         public decimal BaseSalary { get; set; }
 
         public decimal GrossSalary { get; set; }
 
-        public decimal NetSalary { get; set; } 
+        public decimal NetSalary { get; set; }
 
         public decimal? MealAllowance { get; set; }
 
         public decimal? TransportAllowance { get; set; }
 
         public decimal? EducationAllowance { get; set; }
+
+        public List<EmployeeDeductionListDto> EmployeeDeductionListDtos { get; set; }
+
+        public List<EmployeeBonusListDto> EmployeeBonusListDtos { get; set; }
     }
 }

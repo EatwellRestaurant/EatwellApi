@@ -37,8 +37,6 @@ namespace Entities.Concrete
 
         public EmploymentType EmploymentType { get; set; }
 
-        public decimal Salary { get; set; }
-
         public string? ImagePath { get; set; }
 
         public string? ImageName { get; set; }

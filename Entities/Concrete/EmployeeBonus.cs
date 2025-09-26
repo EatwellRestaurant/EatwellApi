@@ -11,20 +11,20 @@ namespace Entities.Concrete
     {
         public int EmployeeId { get; set; }
 
+        public int MonthId { get; set; }
+
         public BonusType BonusType { get; set; }
 
         public decimal Amount { get; set; }
 
         public PaymentStatusEnum PaymentStatus { get; set; }
 
-        public short Year { get; set; }
-
-        public byte Month { get; set; }
 
 
 
 
         public Employee Employee { get; set; }
+        public Month Month { get; set; }
 
     }
 }

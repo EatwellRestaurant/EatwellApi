@@ -10,6 +10,8 @@ namespace Entities.Concrete
     {
         public int EmployeeId { get; set; }
 
+        public int MonthId { get; set; }
+
         public decimal BaseSalary { get; set; }
         
         public decimal GrossSalary { get; set; }
@@ -20,14 +22,12 @@ namespace Entities.Concrete
 
         public decimal? EducationAllowance { get; set; }
 
-        public short Year { get; set; }
-
-        public byte Month { get; set; }
 
 
 
 
         public Employee Employee { get; set; }
+        public Month Month { get; set; }
 
     }
 }

@@ -169,7 +169,8 @@ namespace Business.Concrete
             IQueryable<Employee> query = _employeeDal
                 .GetAllQueryable(e => !e.User.IsDeleted)
                 .FilterByBranchId(branchId)
-                .FilterByUserId(userId);
+                .FilterByUserId(userId)
+                .Include(e => e.EmployeeSalaries.Where(e => !e.IsDeleted));
 
 
             List<EmployeeListDto> employeeListDtos = await GetEmployeeListByBranchAsync(query, paginationRequest);
@@ -185,7 +186,8 @@ namespace Business.Concrete
         public async Task<PaginationResponse<EmployeeListDto>> GetAllForAdminAsync(PaginationRequest paginationRequest)
         {
             IQueryable<Employee> query = _employeeDal
-                .GetAllQueryable(e => !e.User.IsDeleted);
+                .GetAllQueryable(e => !e.User.IsDeleted)
+                .Include(e => e.EmployeeSalaries.Where(e => !e.IsDeleted));
 
 
             List<EmployeeListDto> employeeListDtos = await GetEmployeeListByBranchAsync(query, paginationRequest);
@@ -247,7 +249,8 @@ namespace Business.Concrete
                 .FilterByBranchId(employeeAdminFilterDto.BranchId)
                 .FilterByOperationClaimId(employeeAdminFilterDto.OperationClaimId)
                 .FilterByWorkStatus(employeeAdminFilterDto.WorkStatus)
-                .FilterByFullName(employeeAdminFilterDto.FullName);
+                .FilterByFullName(employeeAdminFilterDto.FullName)
+                .Include(e => e.EmployeeSalaries.Where(e => !e.IsDeleted));
 
 
             List<EmployeeListDto> employeeListDtos = await GetEmployeeListByBranchAsync(query, paginationRequest);
@@ -266,7 +269,8 @@ namespace Business.Concrete
                 .GetAllQueryable(e => !e.User.IsDeleted)
                 .FilterByOperationClaimId(employeeFilterRequestDto.OperationClaimId)
                 .FilterByWorkStatus(employeeFilterRequestDto.WorkStatus)
-                .FilterByFullName(employeeFilterRequestDto.FullName);
+                .FilterByFullName(employeeFilterRequestDto.FullName)
+                .Include(e => e.EmployeeSalaries.Where(e => !e.IsDeleted));
 
 
             List<EmployeeListDto> employeeListDtos = await GetEmployeeListByBranchAsync(query, paginationRequest);
@@ -328,7 +332,13 @@ namespace Business.Concrete
                 PositionDisplayName = e.User.OperationClaim.DisplayName,
                 BranchName = e.Branch.Name,
                 HireDate = e.HireDate,
-                Salary = e.Salary,
+                Salary = e.EmployeeSalaries
+                .OrderByDescending(e => e.CreateDate)
+                .FirstOrDefault() != null 
+                ? e.EmployeeSalaries
+                .OrderByDescending(e => e.CreateDate)
+                .First().GrossSalary
+                : null,
                 WorkStatusName = e.WorkStatus.ToString(),
                 WorkStatusDisplayName = e.WorkStatus.GetDisplayName(),
             })
@@ -342,7 +352,6 @@ namespace Business.Concrete
                 ImagePath = e.ImagePath,
                 Phone = e.Phone,
                 HireDate = e.HireDate,
-                Salary = e.Salary,
                 BirthDate = e.BirthDate,
                 NationalId = e.NationalId,
                 Gender = e.Gender,
@@ -368,30 +377,6 @@ namespace Business.Concrete
                 })
                 .OrderByDescending(p => p.CreateDate)
                 .ToList(),
-                EmployeeDeductions = e.EmployeeDeductions
-                .Where(e => !e.IsDeleted)
-                .OrderByDescending(e => e.CreateDate)
-                .Take(6)
-                .Select(e => new EmployeeDeduction()
-                {
-                    Id = e.Id,
-                    DeductionType = e.DeductionType,
-                    Amount = e.Amount,
-                    PaymentStatus = e.PaymentStatus
-                })
-                .ToList(),
-                EmployeeBonuses = e.EmployeeBonuses
-                .Where(e => !e.IsDeleted)
-                .OrderByDescending(e => e.CreateDate)
-                .Take(6)
-                .Select(e => new EmployeeBonus()
-                {
-                    Id = e.Id,
-                    BonusType = e.BonusType,
-                    Amount = e.Amount,
-                    PaymentStatus = e.PaymentStatus
-                })
-                .ToList(),
                 EmployeeSalaries = e.EmployeeSalaries
                 .Where(e => !e.IsDeleted)
                 .OrderByDescending(e => e.CreateDate)
@@ -404,6 +389,32 @@ namespace Business.Concrete
                     MealAllowance = e.MealAllowance,
                     TransportAllowance = e.TransportAllowance,
                     EducationAllowance = e.EducationAllowance,
+                    Month = new Month()
+                    {
+                        Name = e.Month.Name,
+                        Year = new Year () { Name = e.Month.Year.Name },
+                        EmployeeBonuses = e.Month.EmployeeBonuses
+                        .Where(e => !e.IsDeleted)
+                        .Select(eb => new EmployeeBonus()
+                        {
+                            Id = eb.Id,
+                            BonusType = eb.BonusType,
+                            Amount = eb.Amount,
+                            PaymentStatus = eb.PaymentStatus
+                        })
+                        .ToList(),
+
+                        EmployeeDeductions = e.Month.EmployeeDeductions
+                        .Where(e => !e.IsDeleted)
+                        .Select(ed => new EmployeeDeduction()
+                        {
+                            Id = ed.Id,
+                            DeductionType = ed.DeductionType,
+                            Amount = ed.Amount,
+                            PaymentStatus = ed.PaymentStatus
+                        })
+                        .ToList()
+                    }
                 })
                 .ToList(),
                 Branch = new Branch()

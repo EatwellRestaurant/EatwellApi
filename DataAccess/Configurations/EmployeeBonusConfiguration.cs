@@ -12,14 +12,9 @@ namespace DataAccess.Configurations
             builder.Property(e => e.BonusType).HasDefaultValue(BonusType.Special);
             builder.Property(e => e.PaymentStatus).HasDefaultValue(PaymentStatusEnum.Pending);
             
-            builder.ToTable(t =>
-            {
-                t.HasCheckConstraint("CK_EmployeeBonus_Year", "[Year] >= 1900 AND [Year] <= 2100");
-                t.HasCheckConstraint("CK_EmployeeBonus_Month", "[Month] >= 1 AND [Month] <= 12");
-            });
-
 
             builder.HasOne(e => e.Employee).WithMany(e => e.EmployeeBonuses).HasForeignKey(e => e.EmployeeId).OnDelete(DeleteBehavior.Restrict);
+            builder.HasOne(e => e.Month).WithMany(m => m.EmployeeBonuses).HasForeignKey(e => e.MonthId).OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

@@ -7,7 +7,6 @@ using Entities.Dtos.City;
 using Entities.Dtos.Employee;
 using Entities.Dtos.EmployeeBonus;
 using Entities.Dtos.EmployeeDeduction;
-using Entities.Dtos.EmployeeSalary;
 using Entities.Dtos.HeadOffice;
 using Entities.Dtos.MealCategory;
 using Entities.Dtos.OperationClaim;
@@ -196,9 +195,6 @@ namespace Business.Mapping
                 .ForMember(dest => dest.MilitaryStatus, opt => opt.MapFrom(src => src.Gender == GenderType.Female ? null : src.MilitaryStatus));
 
 
-            ICollection<EmployeeDeduction>? employeeDeductions = null;
-            ICollection<EmployeeBonus>? employeeBonus = null;
-
             CreateMap<Employee, EmployeeDetailDto>()
                 .ForMember(dest => dest.FirstName, opt => opt.MapFrom(src => src.User.FirstName))
                 .ForMember(dest => dest.LastName, opt => opt.MapFrom(src => src.User.LastName))
@@ -215,13 +211,13 @@ namespace Business.Mapping
                 .ForMember(dest => dest.WorkStatusDisplayName, opt => opt.MapFrom(src => src.WorkStatus.GetDisplayName()))
                 .ForMember(dest => dest.ShiftDayDtos, opt => opt.MapFrom(src => src.ShiftDays))
                 .ForMember(dest => dest.PermissionListDtos, opt => opt.MapFrom(src => src.Permissions))
-                .ForMember(dest => dest.EmployeeBonusListDtos, opt => opt.MapFrom(src => src.EmployeeBonuses))
-                .ForMember(dest => dest.EmployeeDeductionListDtos, opt => opt.MapFrom(src => src.EmployeeDeductions))
                 .ForMember(dest => dest.EmployeeSalaryListDtos, opt => opt.MapFrom(src => src.EmployeeSalaries))
-                .BeforeMap((src, dest) =>
+                .AfterMap((src, dest) =>
                 {
-                    employeeDeductions = src.EmployeeDeductions;
-                    employeeBonus = src.EmployeeBonuses;
+                    dest.Salary = src.EmployeeSalaries
+                    .OrderByDescending(e => e.Id)
+                    .FirstOrDefault()?
+                    .GrossSalary;
 
                     DateTime today = DateTime.Now;
 
@@ -268,17 +264,19 @@ namespace Business.Mapping
 
             #region EmployeeSalary
 
-            CreateMap<EmployeeSalary, EmployeeSalaryListDto>()
+            CreateMap<EmployeeSalary, EmployeeFinancialListDto>()
+                .ForMember(dest => dest.Month, opt => opt.MapFrom(src => src.Month.Name))
+                .ForMember(dest => dest.Year, opt => opt.MapFrom(src => src.Month.Year.Name))
+                .ForMember(dest => dest.EmployeeDeductionListDtos, opt => opt.MapFrom(src => src.Month.EmployeeDeductions))
+                .ForMember(dest => dest.EmployeeBonusListDtos, opt => opt.MapFrom(src => src.Month.EmployeeBonuses))
                 .AfterMap((src, dest) =>
                 {
-                    decimal employeeBonusAmount = employeeBonus!
-                    .Where(e => e.Year == src.Year && e.Month == src.Month)
-                    .Sum(e => e.Amount);
+                    decimal employeeBonusAmount = dest.EmployeeBonusListDtos
+                        .Sum(e => e.Amount);
                      
 
-                    decimal employeeDeductionAmount = employeeDeductions!
-                    .Where(e => e.Year == src.Year && e.Month == src.Month)
-                    .Sum(e => e.Amount);
+                    decimal employeeDeductionAmount = dest.EmployeeDeductionListDtos
+                        .Sum(e => e.Amount);
 
 
                     dest.NetSalary = src.GrossSalary + employeeBonusAmount - employeeDeductionAmount;

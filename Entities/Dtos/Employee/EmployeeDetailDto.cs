@@ -1,7 +1,6 @@
 ﻿using Core.Entities.Abstract;
 using Entities.Dtos.EmployeeBonus;
 using Entities.Dtos.EmployeeDeduction;
-using Entities.Dtos.EmployeeSalary;
 using Entities.Dtos.Permission;
 using Entities.Dtos.ShiftDay;
 using Entities.Enums.Employee;
@@ -31,7 +30,7 @@ namespace Entities.Dtos.Employee
 
         public DateTime? LeaveDate { get; set; }
 
-        public decimal Salary { get; set; }
+        public decimal? Salary { get; set; }
 
         public DateTime BirthDate { get; set; }
 
@@ -65,11 +64,7 @@ namespace Entities.Dtos.Employee
 
         public List<PermissionListDto> PermissionListDtos { get; set; }
 
-        public List<EmployeeSalaryListDto> EmployeeSalaryListDtos { get; set; }
-
-        public List<EmployeeBonusListDto> EmployeeBonusListDtos { get; set; }
-         
-        public List<EmployeeDeductionListDto> EmployeeDeductionListDtos { get; set; }
+        public List<EmployeeFinancialListDto> EmployeeSalaryListDtos { get; set; }
 
 
     }
