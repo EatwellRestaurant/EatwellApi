@@ -389,6 +389,7 @@ namespace Business.Concrete
                     MealAllowance = e.MealAllowance,
                     TransportAllowance = e.TransportAllowance,
                     EducationAllowance = e.EducationAllowance,
+                    PaymentStatus = e.PaymentStatus,
                     Month = new Month()
                     {
                         Name = e.Month.Name,

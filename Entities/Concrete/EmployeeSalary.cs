@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Entities.Enums.Employee;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -21,6 +22,8 @@ namespace Entities.Concrete
         public decimal? TransportAllowance { get; set; }
 
         public decimal? EducationAllowance { get; set; }
+
+        public PaymentStatusEnum PaymentStatus { get; set; }
 
 
 

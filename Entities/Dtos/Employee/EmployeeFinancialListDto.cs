@@ -1,11 +1,7 @@
 ﻿using Core.Entities.Abstract;
 using Entities.Dtos.EmployeeBonus;
 using Entities.Dtos.EmployeeDeduction;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Entities.Enums.Employee;
 
 namespace Entities.Dtos.Employee
 {
@@ -19,15 +15,23 @@ namespace Entities.Dtos.Employee
 
         public decimal BaseSalary { get; set; }
 
-        public decimal GrossSalary { get; set; }
-
         public decimal NetSalary { get; set; }
+
+        public PaymentStatusEnum PaymentStatus { get; set; }
+
+        public string PaymentStatusName { get; set; }
 
         public decimal? MealAllowance { get; set; }
 
         public decimal? TransportAllowance { get; set; }
 
         public decimal? EducationAllowance { get; set; }
+
+        public decimal? AdditionalPayments { get; set; }
+
+        public decimal? Bonuses { get; set; }
+
+        public decimal? Deductions { get; set; }
 
         public List<EmployeeDeductionListDto> EmployeeDeductionListDtos { get; set; }
 

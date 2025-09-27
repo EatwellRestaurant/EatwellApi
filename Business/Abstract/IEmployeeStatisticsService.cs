@@ -1,6 +1,7 @@
 ﻿using Core.Requests;
 using Core.ResponseModels;
 using Entities.Dtos.Employee;
+using Entities.Dtos.EmployeeSalary;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,5 +15,7 @@ namespace Business.Abstract
         Task<DataResponse<EmployeeStatisticsDto>> GetStatistics(PaginationRequest paginationRequest);
 
         Task<EmployeeFilterOptionsDto> GetEmployeeFilterOptionsAsync();
+
+        Task<EmployeeSalaryFilterOptionsDto> GetEmployeeSalaryFilterOptionsAsync(int employeeId);
     }
 }

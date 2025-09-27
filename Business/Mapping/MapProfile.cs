@@ -267,6 +267,7 @@ namespace Business.Mapping
             CreateMap<EmployeeSalary, EmployeeFinancialListDto>()
                 .ForMember(dest => dest.Month, opt => opt.MapFrom(src => src.Month.Name))
                 .ForMember(dest => dest.Year, opt => opt.MapFrom(src => src.Month.Year.Name))
+                .ForMember(dest => dest.PaymentStatusName, opt => opt.MapFrom(src => src.PaymentStatus.GetDisplayName()))
                 .ForMember(dest => dest.EmployeeDeductionListDtos, opt => opt.MapFrom(src => src.Month.EmployeeDeductions))
                 .ForMember(dest => dest.EmployeeBonusListDtos, opt => opt.MapFrom(src => src.Month.EmployeeBonuses))
                 .AfterMap((src, dest) =>
@@ -280,6 +281,9 @@ namespace Business.Mapping
 
 
                     dest.NetSalary = src.GrossSalary + employeeBonusAmount - employeeDeductionAmount;
+                    dest.Bonuses = employeeBonusAmount;
+                    dest.Deductions = employeeDeductionAmount;
+                    dest.AdditionalPayments = (dest.MealAllowance ?? 0) + (dest.TransportAllowance ?? 0) + (dest.EducationAllowance ?? 0);
                 });
 
             #endregion

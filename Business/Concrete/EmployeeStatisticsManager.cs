@@ -6,7 +6,9 @@ using Core.Requests;
 using Core.ResponseModels;
 using Entities.Dtos.Branch;
 using Entities.Dtos.Employee;
+using Entities.Dtos.EmployeeSalary;
 using Entities.Dtos.OperationClaim;
+using Entities.Dtos.Year;
 using Entities.Enums.Employee;
 using Entities.Enums.OperationClaim;
 
@@ -17,12 +19,18 @@ namespace Business.Concrete
         readonly IEmployeeService _employeeService;
         readonly IOperationClaimService _operationClaimService;
         readonly IBranchService _branchService;
+        readonly IEmployeeSalaryService _employeeSalaryService;
 
-        public EmployeeStatisticsManager(IEmployeeService employeeService, IOperationClaimService operationClaimService, IBranchService branchService)
+        public EmployeeStatisticsManager
+            (IEmployeeService employeeService, 
+            IOperationClaimService operationClaimService, 
+            IBranchService branchService, 
+            IEmployeeSalaryService employeeSalaryService)
         {
             _employeeService = employeeService;
             _operationClaimService = operationClaimService;
             _branchService = branchService;
+            _employeeSalaryService = employeeSalaryService;
         }
 
 
@@ -75,6 +83,32 @@ namespace Business.Concrete
                 WorkStatusDtos = workStatusDtos,
                 OperationClaimListDtos = operationClaimListDtos,
                 BranchDtos = branchDtos
+            };
+        }
+
+
+
+
+        [SecuredOperation(OperationClaimEnum.Admin)]
+        public async Task<EmployeeSalaryFilterOptionsDto> GetEmployeeSalaryFilterOptionsAsync(int employeeId)
+        {
+            List<PaymentStatusDto> paymentStatusDtos = Enum.GetValues(typeof(PaymentStatusEnum))
+            .Cast<PaymentStatusEnum>() 
+            .Select(status => new PaymentStatusDto
+            {
+                Id = (byte)status,
+                Name = status.GetDisplayName()
+            })
+            .ToList();
+
+
+            List<YearListDto> yearListDtos = await _employeeSalaryService.GetEmployeeSalaryYearsAsync(employeeId);
+
+
+            return new()
+            {
+                PaymentStatusDtos = paymentStatusDtos,
+                YearListDtos = yearListDtos
             };
         }
 

@@ -27,5 +27,11 @@ namespace WebAPI.Controllers
         [HttpGet]
         public async Task<IActionResult> GetEmployeeFilterOptionsAsync()
             => Ok(await _employeeStatisticsService.GetEmployeeFilterOptionsAsync());
+        
+        
+        
+        [HttpGet("{employeeId}")]
+        public async Task<IActionResult> GetEmployeeSalaryFilterOptionsAsync(int employeeId)
+            => Ok(await _employeeStatisticsService.GetEmployeeSalaryFilterOptionsAsync(employeeId));
     }
 }

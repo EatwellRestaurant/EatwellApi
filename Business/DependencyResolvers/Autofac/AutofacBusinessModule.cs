@@ -96,6 +96,9 @@ namespace Business.DependencyResolvers.Autofac
             builder.RegisterType<LeaveTypeManager>().As<ILeaveTypeService>().InstancePerLifetimeScope();
             builder.RegisterType<EfLeaveTypeDal>().As<ILeaveTypeDal>().InstancePerLifetimeScope();
 
+            builder.RegisterType<EmployeeSalaryManager>().As<IEmployeeSalaryService>().InstancePerLifetimeScope();
+            builder.RegisterType<EfEmployeeSalaryDal>().As<IEmployeeSalaryDal>().InstancePerLifetimeScope();
+
 
 
             var assembly = System.Reflection.Assembly.GetExecutingAssembly();

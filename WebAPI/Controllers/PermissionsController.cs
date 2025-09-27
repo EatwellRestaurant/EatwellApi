@@ -31,8 +31,9 @@ namespace WebAPI.Controllers
 
         
         [HttpGet]
-        public async Task<IActionResult> GetAllByEmployeeAndYearAsync(int employeeId, [FromQuery] PermissionFilterRequestDto permissionFilterRequestDto)
-            => Ok(await _permissionService.GetAllByEmployeeAndYearAsync(employeeId, permissionFilterRequestDto));
+        public async Task<IActionResult> GetEmployeePermissionsFilteredAsync(int employeeId, [FromQuery] PermissionFilterRequestDto permissionFilterRequestDto)
+            => Ok(await _permissionService.GetEmployeePermissionsFilteredAsync(employeeId, permissionFilterRequestDto));
         
     }
 }
+ 

@@ -111,17 +111,17 @@ namespace Business.Concrete
 
 
         [SecuredOperation(OperationClaimEnum.Admin)]
-        public async Task<DataResponse<List<PermissionListDto>>> GetAllByEmployeeAndYearAsync(int employeeId, PermissionFilterRequestDto permissionFilterRequestDto)
+        public async Task<DataResponse<List<PermissionListDto>>> GetEmployeePermissionsFilteredAsync(int employeeId, PermissionFilterRequestDto permissionFilterRequestDto)
         {
             await _employeeService.CheckIfEmployeeIdExists(employeeId);
 
 
             if (!permissionFilterRequestDto.YearId.HasValue)
-                permissionFilterRequestDto.YearId = await _yearService.GetCurrentYearIdAsync();   
+                permissionFilterRequestDto.YearId = await _yearService.GetCurrentYearIdAsync();
+            else
+                await _yearService.CheckIfYearIdExists((int)permissionFilterRequestDto.YearId);
             
             
-            await _yearService.CheckIfYearIdExists((int)permissionFilterRequestDto.YearId);
-
 
             if (permissionFilterRequestDto.LeaveTypeId.HasValue)
                 await _leaveTypeService.CheckIfLeaveTypeIdExists((int)permissionFilterRequestDto.LeaveTypeId);
