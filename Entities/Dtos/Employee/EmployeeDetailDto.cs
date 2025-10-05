@@ -64,8 +64,6 @@ namespace Entities.Dtos.Employee
 
         public List<PermissionListDto> PermissionListDtos { get; set; }
 
-        public List<EmployeeFinancialListDto> EmployeeSalaryListDtos { get; set; }
-
 
     }
 }

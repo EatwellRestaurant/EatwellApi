@@ -30,7 +30,7 @@ namespace Business.Concrete
         {
             DashboardStatisticsDto statisticsDto = new()
             {
-                UserCount = await _userService.CountAsync(u => u.OperationClaimId != (byte)OperationClaimType.Admin && !u.IsDeleted),
+                UserCount = await _userService.CountAsync(u => u.OperationClaimId != (int)OperationClaimEnum.Admin && !u.IsDeleted),
                 MealCategoryCount = await _mealCategoryService.CountAsync(m => !m.IsDeleted),
             };
 

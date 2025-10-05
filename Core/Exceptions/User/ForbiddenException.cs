@@ -15,5 +15,10 @@ namespace Core.Exceptions.User
         public ForbiddenException() : base("Yetkiniz yok!")
         {
         }
+
+
+        public ForbiddenException(string message) : base(message) 
+        { 
+        }
     }
 }

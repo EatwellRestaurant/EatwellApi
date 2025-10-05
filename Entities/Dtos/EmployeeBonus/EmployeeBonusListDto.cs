@@ -12,7 +12,9 @@ namespace Entities.Dtos.EmployeeBonus
     {
         public int Id { get; set; }
 
-        public string BonusType { get; set; }
+        public BonusType BonusType { get; set; }
+
+        public string BonusTypeName { get; set; }
          
         public decimal Amount { get; set; }
 

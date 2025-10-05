@@ -211,11 +211,9 @@ namespace Business.Mapping
                 .ForMember(dest => dest.WorkStatusDisplayName, opt => opt.MapFrom(src => src.WorkStatus.GetDisplayName()))
                 .ForMember(dest => dest.ShiftDayDtos, opt => opt.MapFrom(src => src.ShiftDays))
                 .ForMember(dest => dest.PermissionListDtos, opt => opt.MapFrom(src => src.Permissions))
-                .ForMember(dest => dest.EmployeeSalaryListDtos, opt => opt.MapFrom(src => src.EmployeeSalaries))
                 .AfterMap((src, dest) =>
                 {
                     dest.Salary = src.EmployeeSalaries
-                    .OrderByDescending(e => e.Id)
                     .FirstOrDefault()?
                     .GrossSalary;
 
@@ -293,7 +291,7 @@ namespace Business.Mapping
             #region EmployeeBonus
 
             CreateMap<EmployeeBonus, EmployeeBonusListDto>()
-                .ForMember(dest => dest.BonusType, opt => opt.MapFrom(src => src.BonusType.GetDisplayName()))
+                .ForMember(dest => dest.BonusTypeName, opt => opt.MapFrom(src => src.BonusType.GetDisplayName()))
                 .ForMember(dest => dest.PaymentStatusName, opt => opt.MapFrom(src => src.PaymentStatus.GetDisplayName()));
 
             #endregion
@@ -303,7 +301,7 @@ namespace Business.Mapping
             #region EmployeeDeduction
 
             CreateMap<EmployeeDeduction, EmployeeDeductionListDto>()
-                .ForMember(dest => dest.DeductionType, opt => opt.MapFrom(src => src.DeductionType.GetDisplayName()))
+                .ForMember(dest => dest.DeductionTypeName, opt => opt.MapFrom(src => src.DeductionType.GetDisplayName()))
                 .ForMember(dest => dest.PaymentStatusName, opt => opt.MapFrom(src => src.PaymentStatus.GetDisplayName()));
 
             #endregion

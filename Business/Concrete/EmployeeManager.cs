@@ -206,7 +206,7 @@ namespace Business.Concrete
                 .Where(e => e.Id == employeeId && !e.User.IsDeleted);
 
             int yearId = await _yearService.GetCurrentYearIdAsync();
-             
+
             return new DataResponse<EmployeeDetailDto>(
                 _mapper.Map<EmployeeDetailDto>(await GetEmployeeWithManagerAsync(query, yearId)), 
                 CommonMessages.EntityFetch);
@@ -320,8 +320,8 @@ namespace Business.Concrete
 
         private async Task<List<EmployeeListDto>> GetEmployeeListByBranchAsync(IQueryable<Employee> query, PaginationRequest paginationRequest)
            => await query
-            .ApplyPagination(paginationRequest)
             .OrderByDescending(e => e.Id)
+            .ApplyPagination(paginationRequest)
             .Select(e => new EmployeeListDto
             {
                 Id = e.Id,
@@ -380,43 +380,7 @@ namespace Business.Concrete
                 EmployeeSalaries = e.EmployeeSalaries
                 .Where(e => !e.IsDeleted)
                 .OrderByDescending(e => e.CreateDate)
-                .Take(6)
-                .Select(e => new EmployeeSalary()
-                {
-                    Id = e.Id,
-                    BaseSalary = e.BaseSalary,
-                    GrossSalary = e.GrossSalary,
-                    MealAllowance = e.MealAllowance,
-                    TransportAllowance = e.TransportAllowance,
-                    EducationAllowance = e.EducationAllowance,
-                    PaymentStatus = e.PaymentStatus,
-                    Month = new Month()
-                    {
-                        Name = e.Month.Name,
-                        Year = new Year () { Name = e.Month.Year.Name },
-                        EmployeeBonuses = e.Month.EmployeeBonuses
-                        .Where(e => !e.IsDeleted)
-                        .Select(eb => new EmployeeBonus()
-                        {
-                            Id = eb.Id,
-                            BonusType = eb.BonusType,
-                            Amount = eb.Amount,
-                            PaymentStatus = eb.PaymentStatus
-                        })
-                        .ToList(),
-
-                        EmployeeDeductions = e.Month.EmployeeDeductions
-                        .Where(e => !e.IsDeleted)
-                        .Select(ed => new EmployeeDeduction()
-                        {
-                            Id = ed.Id,
-                            DeductionType = ed.DeductionType,
-                            Amount = ed.Amount,
-                            PaymentStatus = ed.PaymentStatus
-                        })
-                        .ToList()
-                    }
-                })
+                .Take(1)
                 .ToList(),
                 Branch = new Branch()
                 {

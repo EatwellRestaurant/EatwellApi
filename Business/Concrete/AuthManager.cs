@@ -12,6 +12,7 @@ using Core.Utilities.Email;
 using Entities.Concrete;
 using Entities.Dtos.User;
 using Entities.Enums;
+using Entities.Enums.OperationClaim;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 
@@ -46,7 +47,7 @@ namespace Business.Concrete
                 Verification = false,
                 VerificationCode = new Random().Next(10000, 99999).ToString(),
                 VerificationCodeDuration = DateTime.Now.AddMinutes(3),
-                OperationClaimId = (byte)OperationClaimType.User
+                OperationClaimId = (int)OperationClaimEnum.User
             };
 
             await _userService.AddAsync(user);

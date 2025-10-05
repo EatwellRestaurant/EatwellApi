@@ -3,16 +3,18 @@ using Core.Exceptions.User;
 using Core.Extensions;
 using Core.Utilities.Interceptors;
 using Core.Utilities.IoC;
+using Entities.Concrete;
 using Entities.Enums.OperationClaim;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.DependencyInjection;
+using System.Security.Claims;
 
 namespace Business.BusinessAspects.Autofac
 {
     public class SecuredOperation : MethodInterception
     {
         List<OperationClaimEnum> _roles;
-        private IHttpContextAccessor _httpContextAccessor;
+        private IHttpContextAccessor? _httpContextAccessor;
 
         public SecuredOperation(params OperationClaimEnum[] roles)
         {
@@ -23,13 +25,30 @@ namespace Business.BusinessAspects.Autofac
 
         protected override void OnBefore(IInvocation invocation)
         {
-            List<string> roleClaims = _httpContextAccessor.HttpContext.User.ClaimRoles();
+            ClaimsPrincipal? user = _httpContextAccessor.HttpContext?.User;
+
+            if (user == null || !user.Identity.IsAuthenticated)
+                throw new ForbiddenException("Kullanıcı oturumu geçersiz!");
 
 
-            if (_roles.Any(r => roleClaims.Select(r => r.ToLower()).Contains(r.ToString().ToLower())))
-                return;
 
-            throw new ForbiddenException();
+            string? expClaim = user.FindFirst("exp")?.Value;
+
+            if (expClaim != null && long.TryParse(expClaim, out var exp))
+            {
+                // Unix timestamp’i normal DateTime’a çeviriyoruz.
+                DateTime expirationTime = DateTimeOffset.FromUnixTimeSeconds(exp).UtcDateTime;
+
+                if (expirationTime < DateTime.UtcNow)
+                    throw new ForbiddenException("Oturum süreniz dolmuştur!");
+            }
+
+
+
+            List<string> roleClaims = user.ClaimRoles();
+
+            if (!_roles.Any(r => roleClaims.Select(r => r.ToLower()).Contains(r.ToString().ToLower())))
+                throw new ForbiddenException();
         }
     }
 }

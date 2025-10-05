@@ -57,7 +57,7 @@ namespace Business.Concrete
         public async Task<PaginationResponse<UserListDto>> GetAll(PaginationRequest paginationRequest)
         {
             IQueryable<User> query = _userDal
-                .GetAllQueryable(u => u.OperationClaimId != (byte)OperationClaimType.Admin && !u.IsDeleted);
+                .GetAllQueryable(u => u.OperationClaimId != (byte)OperationClaimEnum.Admin && !u.IsDeleted);
 
 
             List<UserListDto> userListDtos = _mapper.Map<List<UserListDto>>
@@ -74,7 +74,7 @@ namespace Business.Concrete
         public async Task<DataResponse<UserDetailDto>> Get(int userId)
         {
             User? user = await _userDal
-                .GetAsNoTrackingAsync(u => u.Id == userId && u.OperationClaimId != (byte)OperationClaimType.Admin)
+                .GetAsNoTrackingAsync(u => u.Id == userId && u.OperationClaimId != (byte)OperationClaimEnum.Admin)
                 ?? throw new EntityNotFoundException("Kullanıcı");
 
 

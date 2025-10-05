@@ -12,7 +12,9 @@ namespace Entities.Dtos.EmployeeDeduction
     {
         public int Id { get; set; }
 
-        public string DeductionType { get; set; }
+        public DeductionType DeductionType { get; set; }
+
+        public string DeductionTypeName { get; set; }
 
         public decimal Amount { get; set; }
 
