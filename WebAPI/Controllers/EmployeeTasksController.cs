@@ -25,5 +25,12 @@ namespace WebAPI.Controllers
             (int employeeId, [FromQuery] EmployeeTaskFilterRequestDto employeeTaskFilterRequestDto, [FromQuery] PaginationRequest paginationRequest)
             => Ok(await _employeeTaskService.GetEmployeeTaskFilteredAsync(employeeId, employeeTaskFilterRequestDto, paginationRequest));
 
+
+
+
+        [HttpGet("statistics")]
+        public async Task<IActionResult> GetStatisticsAsync(int employeeId)
+            => Ok(await _employeeTaskService.GetStatisticsAsync(employeeId));
+
     }
 }

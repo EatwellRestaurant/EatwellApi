@@ -6,9 +6,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Entities.Dtos.EmployeeSalary
+namespace Entities.Dtos.EmployeeTask
 {
-    public class PaymentStatusDto : LookupDto<byte>
+    public class PriorityLevelDto : LookupDto<byte>
     {
     }
 }

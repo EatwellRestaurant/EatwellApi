@@ -1,4 +1,5 @@
 ﻿using Core.Entities.Abstract;
+using Core.Entities.Dtos;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,10 +8,7 @@ using System.Threading.Tasks;
 
 namespace Entities.Dtos.Employee
 {
-    public class WorkStatusDto : IDto
+    public class WorkStatusDto : LookupDto<byte>
     {
-        public byte Id { get; set; }
-
-        public string Name { get; set; }
     }
 }

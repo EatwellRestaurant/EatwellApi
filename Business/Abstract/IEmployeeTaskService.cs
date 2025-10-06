@@ -1,13 +1,6 @@
 ﻿using Core.Requests;
 using Core.ResponseModels;
-using Entities.Dtos.Employee;
-using Entities.Dtos.EmployeeSalary;
 using Entities.Dtos.EmployeeTask;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Business.Abstract
 {
@@ -15,6 +8,7 @@ namespace Business.Abstract
     {
         Task<PaginationResponse<EmployeeTaskListDto>> GetEmployeeTaskFilteredAsync(int employeeId, EmployeeTaskFilterRequestDto employeeTaskFilterRequest, PaginationRequest paginationRequest);
 
+        Task<EmployeeTaskStatisticsDto> GetStatisticsAsync(int employeeId);
     }
 } 
  

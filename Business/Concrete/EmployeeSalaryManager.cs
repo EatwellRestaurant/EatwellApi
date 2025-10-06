@@ -9,7 +9,6 @@ using Core.Requests;
 using Core.ResponseModels;
 using DataAccess.Abstract;
 using Entities.Concrete;
-using Entities.Dtos.Employee;
 using Entities.Dtos.EmployeeSalary;
 using Entities.Dtos.Year;
 using Entities.Enums.OperationClaim;

@@ -10,6 +10,7 @@ using Core.ResponseModels;
 using DataAccess.Abstract;
 using Entities.Concrete;
 using Entities.Dtos.EmployeeTask;
+using Entities.Enums.EmployeeTask;
 using Entities.Enums.OperationClaim;
 using Microsoft.EntityFrameworkCore;
 
@@ -88,6 +89,34 @@ namespace Business.Concrete
                 (employeeTaskListDtos,
                 paginationRequest,
                 await query.CountAsync());
+        }
+
+
+
+
+        public async Task<EmployeeTaskStatisticsDto> GetStatisticsAsync(int employeeId)
+        {
+            IQueryable<EmployeeTask> query = _employeeTaskDal
+                .Where(e => e.AssigneeId == employeeId && !e.IsDeleted);
+
+
+            return new()
+            { 
+                TotalTaskCount = await query
+                .CountAsync(),
+                
+                CompletedTaskCount = await query
+                .FilterByTaskStatus(TaskStatusEnum.Completed)
+                .CountAsync(),
+
+                InProgressTaskCount = await query
+                .FilterByTaskStatus(TaskStatusEnum.InProgress)
+                .CountAsync(),
+
+                PendingTaskCount = await query
+                .FilterByTaskStatus(TaskStatusEnum.Pending)
+                .CountAsync()
+            };
         }
     }
 }

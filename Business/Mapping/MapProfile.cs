@@ -7,6 +7,7 @@ using Entities.Dtos.City;
 using Entities.Dtos.Employee;
 using Entities.Dtos.EmployeeBonus;
 using Entities.Dtos.EmployeeDeduction;
+using Entities.Dtos.EmployeeSalary;
 using Entities.Dtos.EmployeeTask;
 using Entities.Dtos.HeadOffice;
 using Entities.Dtos.MealCategory;

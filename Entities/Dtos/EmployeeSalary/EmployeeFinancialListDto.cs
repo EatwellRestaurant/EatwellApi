@@ -3,7 +3,7 @@ using Entities.Dtos.EmployeeBonus;
 using Entities.Dtos.EmployeeDeduction;
 using Entities.Enums.Employee;
 
-namespace Entities.Dtos.Employee
+namespace Entities.Dtos.EmployeeSalary
 {
     public class EmployeeFinancialListDto : IDto
     {
