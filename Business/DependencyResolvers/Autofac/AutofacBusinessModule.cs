@@ -98,6 +98,9 @@ namespace Business.DependencyResolvers.Autofac
 
             builder.RegisterType<EmployeeSalaryManager>().As<IEmployeeSalaryService>().InstancePerLifetimeScope();
             builder.RegisterType<EfEmployeeSalaryDal>().As<IEmployeeSalaryDal>().InstancePerLifetimeScope();
+            
+            builder.RegisterType<EmployeeTaskManager>().As<IEmployeeTaskService>().InstancePerLifetimeScope();
+            builder.RegisterType<EfEmployeeTaskDal>().As<IEmployeeTaskDal>().InstancePerLifetimeScope();
 
 
 

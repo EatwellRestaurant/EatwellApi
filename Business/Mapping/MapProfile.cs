@@ -7,6 +7,7 @@ using Entities.Dtos.City;
 using Entities.Dtos.Employee;
 using Entities.Dtos.EmployeeBonus;
 using Entities.Dtos.EmployeeDeduction;
+using Entities.Dtos.EmployeeTask;
 using Entities.Dtos.HeadOffice;
 using Entities.Dtos.MealCategory;
 using Entities.Dtos.OperationClaim;
@@ -303,6 +304,35 @@ namespace Business.Mapping
             CreateMap<EmployeeDeduction, EmployeeDeductionListDto>()
                 .ForMember(dest => dest.DeductionTypeName, opt => opt.MapFrom(src => src.DeductionType.GetDisplayName()))
                 .ForMember(dest => dest.PaymentStatusName, opt => opt.MapFrom(src => src.PaymentStatus.GetDisplayName()));
+
+            #endregion
+
+
+
+            #region EmployeeTask
+
+            CreateMap<EmployeeTask, EmployeeTaskListDto>()
+                .ForMember(dest => dest.PriorityLevelName, opt => opt.MapFrom(src => src.PriorityLevel.GetDisplayName()))
+                .ForMember(dest => dest.TaskStatusName, opt => opt.MapFrom(src => src.TaskStatus.GetDisplayName()))
+                .AfterMap((src, dest) =>
+                {
+                    User user = src.AssignedBy.User;
+
+                    dest.AssignedByFullName = $"{user.FirstName} {user.LastName}";
+
+
+                    if (src.EmployeeSubTasks.Any())
+                    {
+                        int completedCount = src.EmployeeSubTasks.Count(e => e.CompletedDate != null);
+                        int totalCount = src.EmployeeSubTasks.Count;
+
+                        dest.ProgressPercentage = (byte)Math.Round((double)completedCount / totalCount * 100);
+                    }
+                    else
+                    {
+                        dest.ProgressPercentage = 0;
+                    }
+                });
 
             #endregion
 

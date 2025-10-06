@@ -4,6 +4,7 @@ using DataAccess.Concrete.EntityFramework;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(RestaurantContext))]
-    partial class RestaurantContextModelSnapshot : ModelSnapshot
+    [Migration("20251005152842_AddEmployeeTaskCommentEntity")]
+    partial class AddEmployeeTaskCommentEntity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -33,7 +36,7 @@ namespace DataAccess.Migrations
                     b.Property<DateTime>("CreateDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2025, 10, 5, 22, 49, 39, 867, DateTimeKind.Local).AddTicks(7974));
+                        .HasDefaultValue(new DateTime(2025, 10, 5, 18, 28, 41, 265, DateTimeKind.Local).AddTicks(6189));
 
                     b.Property<DateTime?>("DeleteDate")
                         .HasColumnType("datetime2");
@@ -988,7 +991,7 @@ namespace DataAccess.Migrations
                     b.Property<DateTime>("CreateDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2025, 10, 5, 22, 49, 39, 875, DateTimeKind.Local).AddTicks(3333));
+                        .HasDefaultValue(new DateTime(2025, 10, 5, 18, 28, 41, 270, DateTimeKind.Local).AddTicks(7809));
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
@@ -1337,26 +1340,6 @@ namespace DataAccess.Migrations
                     b.ToTable("EmployeeSalaries");
                 });
 
-            modelBuilder.Entity("Entities.Concrete.EmployeeSubTask", b =>
-                {
-                    b.HasBaseType("Entities.Concrete.BaseEntity");
-
-                    b.Property<DateTime?>("CompletedDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<int>("EmployeeTaskId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(250)
-                        .HasColumnType("nvarchar(250)");
-
-                    b.HasIndex("EmployeeTaskId");
-
-                    b.ToTable("EmployeeSubTasks");
-                });
-
             modelBuilder.Entity("Entities.Concrete.EmployeeTask", b =>
                 {
                     b.HasBaseType("Entities.Concrete.BaseEntity");
@@ -1384,6 +1367,9 @@ namespace DataAccess.Migrations
                         .HasColumnType("tinyint")
                         .HasDefaultValue((byte)1);
 
+                    b.Property<byte>("ProgressPercentage")
+                        .HasColumnType("tinyint");
+
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("datetime2");
 
@@ -1396,7 +1382,10 @@ namespace DataAccess.Migrations
 
                     b.HasIndex("AssigneeId");
 
-                    b.ToTable("EmployeeTasks");
+                    b.ToTable("EmployeeTasks", t =>
+                        {
+                            t.HasCheckConstraint("CK_EmployeeTask_ProgressPercentage_Range", "[ProgressPercentage] BETWEEN 0 AND 100");
+                        });
                 });
 
             modelBuilder.Entity("Entities.Concrete.EmployeeTaskComment", b =>
@@ -1987,17 +1976,6 @@ namespace DataAccess.Migrations
                     b.Navigation("Month");
                 });
 
-            modelBuilder.Entity("Entities.Concrete.EmployeeSubTask", b =>
-                {
-                    b.HasOne("Entities.Concrete.EmployeeTask", "EmployeeTask")
-                        .WithMany("EmployeeSubTasks")
-                        .HasForeignKey("EmployeeTaskId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("EmployeeTask");
-                });
-
             modelBuilder.Entity("Entities.Concrete.EmployeeTask", b =>
                 {
                     b.HasOne("Entities.Concrete.Employee", "AssignedBy")
@@ -2211,8 +2189,6 @@ namespace DataAccess.Migrations
 
             modelBuilder.Entity("Entities.Concrete.EmployeeTask", b =>
                 {
-                    b.Navigation("EmployeeSubTasks");
-
                     b.Navigation("EmployeeTaskComments");
                 });
 

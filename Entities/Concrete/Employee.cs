@@ -58,6 +58,14 @@ namespace Entities.Concrete
         public ICollection<EmployeeSalary> EmployeeSalaries { get; set; }
         public ICollection<EmployeeBonus> EmployeeBonuses { get; set; }
         public ICollection<EmployeeDeduction> EmployeeDeductions { get; set; }
+        
+        // Bu çalışana atanan görevler
+        public ICollection<EmployeeTask> AssignedTasks { get; set; }
+        
+        // Bu çalışanın başkalarına atadığı görevler
+        public ICollection<EmployeeTask> CreatedTasks { get; set; }
+
+        public ICollection<EmployeeTaskComment> EmployeeTaskComments { get; set; }
 
 
     }

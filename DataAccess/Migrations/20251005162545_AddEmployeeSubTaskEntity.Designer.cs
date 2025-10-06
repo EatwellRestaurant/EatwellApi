@@ -4,6 +4,7 @@ using DataAccess.Concrete.EntityFramework;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(RestaurantContext))]
-    partial class RestaurantContextModelSnapshot : ModelSnapshot
+    [Migration("20251005162545_AddEmployeeSubTaskEntity")]
+    partial class AddEmployeeSubTaskEntity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -33,7 +36,7 @@ namespace DataAccess.Migrations
                     b.Property<DateTime>("CreateDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2025, 10, 5, 22, 49, 39, 867, DateTimeKind.Local).AddTicks(7974));
+                        .HasDefaultValue(new DateTime(2025, 10, 5, 19, 25, 44, 787, DateTimeKind.Local).AddTicks(8381));
 
                     b.Property<DateTime?>("DeleteDate")
                         .HasColumnType("datetime2");
@@ -988,7 +991,7 @@ namespace DataAccess.Migrations
                     b.Property<DateTime>("CreateDate")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValue(new DateTime(2025, 10, 5, 22, 49, 39, 875, DateTimeKind.Local).AddTicks(3333));
+                        .HasDefaultValue(new DateTime(2025, 10, 5, 19, 25, 44, 792, DateTimeKind.Local).AddTicks(3729));
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
@@ -1384,6 +1387,9 @@ namespace DataAccess.Migrations
                         .HasColumnType("tinyint")
                         .HasDefaultValue((byte)1);
 
+                    b.Property<byte>("ProgressPercentage")
+                        .HasColumnType("tinyint");
+
                     b.Property<DateTime>("StartDate")
                         .HasColumnType("datetime2");
 
@@ -1396,7 +1402,10 @@ namespace DataAccess.Migrations
 
                     b.HasIndex("AssigneeId");
 
-                    b.ToTable("EmployeeTasks");
+                    b.ToTable("EmployeeTasks", t =>
+                        {
+                            t.HasCheckConstraint("CK_EmployeeTask_ProgressPercentage_Range", "[ProgressPercentage] BETWEEN 0 AND 100");
+                        });
                 });
 
             modelBuilder.Entity("Entities.Concrete.EmployeeTaskComment", b =>

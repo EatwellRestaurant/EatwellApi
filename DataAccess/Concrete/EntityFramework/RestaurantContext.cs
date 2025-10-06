@@ -38,6 +38,10 @@ namespace DataAccess.Concrete.EntityFramework
         public DbSet<EmployeeSalary> EmployeeSalaries { get; set; }
         public DbSet<EmployeeBonus> EmployeeBonuses { get; set; }
         public DbSet<EmployeeDeduction> EmployeeDeductions { get; set; }
+        public DbSet<EmployeeTask> EmployeeTasks { get; set; }
+        public DbSet<EmployeeSubTask> EmployeeSubTasks { get; set; }
+        public DbSet<EmployeeTaskComment> EmployeeTaskComments { get; set; }
+
 
 
 

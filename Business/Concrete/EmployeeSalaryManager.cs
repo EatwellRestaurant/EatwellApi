@@ -102,8 +102,8 @@ namespace Business.Concrete
             List<EmployeeFinancialListDto> employeeFinancialListDtos =  _mapper.Map<List<EmployeeFinancialListDto>>(employeeSalaries);
 
 
-            return new PaginationResponse<EmployeeFinancialListDto>(
-                employeeFinancialListDtos,
+            return new
+                (employeeFinancialListDtos,
                 paginationRequest,
                 await query.CountAsync());
         }
