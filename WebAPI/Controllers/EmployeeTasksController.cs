@@ -1,5 +1,6 @@
 ﻿using Business.Abstract;
 using Core.Requests;
+using Core.ResponseModels;
 using Entities.Dtos.EmployeeTask;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -21,9 +22,9 @@ namespace WebAPI.Controllers
 
 
         [HttpGet]
-        public async Task<IActionResult> GetEmployeeTaskFilteredAsync
+        public async Task<IActionResult> GetEmployeeTasksAsync
             (int employeeId, [FromQuery] EmployeeTaskFilterRequestDto employeeTaskFilterRequestDto, [FromQuery] PaginationRequest paginationRequest)
-            => Ok(await _employeeTaskService.GetEmployeeTaskFilteredAsync(employeeId, employeeTaskFilterRequestDto, paginationRequest));
+            => Ok(await _employeeTaskService.GetEmployeeTasksAsync(employeeId, employeeTaskFilterRequestDto, paginationRequest));
 
 
 
@@ -31,6 +32,30 @@ namespace WebAPI.Controllers
         [HttpGet("statistics")]
         public async Task<IActionResult> GetStatisticsAsync(int employeeId)
             => Ok(await _employeeTaskService.GetStatisticsAsync(employeeId));
+
+
+
+
+        [HttpGet("filters")]
+        public IActionResult GetFilterOptions()
+            => Ok(_employeeTaskService.GetFilterOptions());
+
+
+
+
+        [HttpGet("overview")]
+        public async Task<IActionResult> GetEmployeeTaskOverview
+            (int employeeId, [FromQuery] EmployeeTaskFilterRequestDto employeeTaskFilterRequestDto, [FromQuery] PaginationRequest paginationRequest)
+            => Ok(
+                new DataResponse<EmployeeTaskOverviewDto>(
+                    new()
+                    { 
+                        Statistics = await _employeeTaskService.GetStatisticsAsync(employeeId),
+                        FilterOptions = _employeeTaskService.GetFilterOptions(),
+                        Tasks = await _employeeTaskService.GetEmployeeTasksAsync(employeeId, employeeTaskFilterRequestDto, paginationRequest)
+                    }));
+        
+
 
     }
 }

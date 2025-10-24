@@ -6,9 +6,11 @@ namespace Business.Abstract
 {
     public interface IEmployeeTaskService
     {
-        Task<PaginationResponse<EmployeeTaskListDto>> GetEmployeeTaskFilteredAsync(int employeeId, EmployeeTaskFilterRequestDto employeeTaskFilterRequest, PaginationRequest paginationRequest);
+        Task<PaginationResponse<EmployeeTaskListDto>> GetEmployeeTasksAsync(int employeeId, EmployeeTaskFilterRequestDto employeeTaskFilterRequest, PaginationRequest paginationRequest);
 
-        Task<EmployeeTaskStatisticsDto> GetStatisticsAsync(int employeeId);
+        Task<DataResponse<EmployeeTaskStatisticsDto>> GetStatisticsAsync(int employeeId);
+
+        DataResponse<EmployeeTaskFilterOptionsDto> GetFilterOptions();
     }
 } 
  

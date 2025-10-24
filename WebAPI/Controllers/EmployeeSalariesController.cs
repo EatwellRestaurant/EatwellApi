@@ -21,9 +21,16 @@ namespace WebAPI.Controllers
 
 
         [HttpGet]
-        public async Task<IActionResult> GetEmployeeSalaryFilteredAsync
+        public async Task<IActionResult> GetEmployeeSalaryAsync
             (int employeeId, [FromQuery] EmployeeSalaryFilterRequestDto employeeSalaryFilterRequestDto, [FromQuery] PaginationRequest paginationRequest)
-            => Ok(await _employeeSalaryService.GetEmployeeSalaryFilteredAsync(employeeId, employeeSalaryFilterRequestDto, paginationRequest));
+            => Ok(await _employeeSalaryService.GetEmployeeSalaryAsync(employeeId, employeeSalaryFilterRequestDto, paginationRequest));
+
+
+
+
+        [HttpGet("filters")]
+        public async Task<IActionResult> GetFilterOptionsAsync(int employeeId)
+            => Ok(await _employeeSalaryService.GetFilterOptionsAsync(employeeId));
 
     }
 }

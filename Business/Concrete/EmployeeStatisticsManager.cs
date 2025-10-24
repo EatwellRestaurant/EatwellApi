@@ -5,10 +5,7 @@ using Core.Requests;
 using Core.ResponseModels;
 using Core.Utilities.Helpers;
 using Entities.Dtos.Employee;
-using Entities.Dtos.EmployeeSalary;
-using Entities.Dtos.EmployeeTask;
 using Entities.Enums.Employee;
-using Entities.Enums.EmployeeTask;
 using Entities.Enums.OperationClaim;
 
 namespace Business.Concrete
@@ -18,18 +15,15 @@ namespace Business.Concrete
         readonly IEmployeeService _employeeService;
         readonly IOperationClaimService _operationClaimService;
         readonly IBranchService _branchService;
-        readonly IEmployeeSalaryService _employeeSalaryService;
 
         public EmployeeStatisticsManager
             (IEmployeeService employeeService, 
             IOperationClaimService operationClaimService, 
-            IBranchService branchService, 
-            IEmployeeSalaryService employeeSalaryService)
+            IBranchService branchService)
         {
             _employeeService = employeeService;
             _operationClaimService = operationClaimService;
             _branchService = branchService;
-            _employeeSalaryService = employeeSalaryService;
         }
 
 
@@ -57,41 +51,20 @@ namespace Business.Concrete
         }
     
     
-    
 
 
         [SecuredOperation(OperationClaimEnum.Admin)] 
-        public async Task<EmployeeFilterOptionsDto> GetEmployeeFilterOptionsAsync()
-            => new()
-            {
-                WorkStatusDtos = EnumHelper.ToLookupList<WorkStatusType, WorkStatusDto>(),
-                OperationClaimListDtos = await _operationClaimService.GetAllAsync(),
-                BranchDtos = await _branchService.GetAllForAdminLookupAsync()
-            };
+        public async Task<DataResponse<EmployeeFilterOptionsDto>> GetEmployeeFilterOptionsAsync()
+            => new(
+                new()
+                {
+                    WorkStatusDtos = EnumHelper.ToLookupList<WorkStatusType, WorkStatusDto>(),
+                    OperationClaimListDtos = await _operationClaimService.GetAllAsync(),
+                    BranchDtos = await _branchService.GetAllForAdminLookupAsync()
+                });
         
 
 
-
-
-        [SecuredOperation(OperationClaimEnum.Admin)]
-        public async Task<EmployeeSalaryFilterOptionsDto> GetEmployeeSalaryFilterOptionsAsync(int employeeId)
-            => new()
-            {
-                PaymentStatusDtos = EnumHelper.ToLookupList<PaymentStatusEnum, PaymentStatusDto>(),
-                YearListDtos = await _employeeSalaryService.GetEmployeeSalaryYearsAsync(employeeId)
-            };
-        
-        
-        
-        
-        
-        [SecuredOperation(OperationClaimEnum.Admin)]
-        public EmployeeTaskFilterOptionsDto GetEmployeeTaskFilterOptionsAsync()
-            => new()
-            {
-                PriorityLevelDtos = EnumHelper.ToLookupList<PriorityLevelEnum, PriorityLevelDto>(),
-                TaskStatusDtos = EnumHelper.ToLookupList<TaskStatusEnum, TaskStatusDto>()
-            };
         
     }
 }

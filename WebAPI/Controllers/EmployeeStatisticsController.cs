@@ -30,15 +30,7 @@ namespace WebAPI.Controllers
         
         
         
-        [HttpGet("{employeeId}")]
-        public async Task<IActionResult> GetEmployeeSalaryFilterOptionsAsync(int employeeId)
-            => Ok(await _employeeStatisticsService.GetEmployeeSalaryFilterOptionsAsync(employeeId));
         
-        
-        
-        [HttpGet]
-        public IActionResult GetEmployeeTaskFilterOptionsAsync()
-            => Ok(_employeeStatisticsService.GetEmployeeTaskFilterOptionsAsync());
 
 
 

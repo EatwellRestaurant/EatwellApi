@@ -7,10 +7,12 @@ using Core.Aspects.Autofac.Validation;
 using Core.Extensions;
 using Core.Requests;
 using Core.ResponseModels;
+using Core.Utilities.Helpers;
 using DataAccess.Abstract;
 using Entities.Concrete;
 using Entities.Dtos.EmployeeSalary;
 using Entities.Dtos.Year;
+using Entities.Enums.Employee;
 using Entities.Enums.OperationClaim;
 using Microsoft.EntityFrameworkCore;
 
@@ -38,7 +40,7 @@ namespace Business.Concrete
 
         [SecuredOperation(OperationClaimEnum.Admin, Priority = 1)]
         [ValidationAspect(typeof(EmployeeSalaryFilterRequestDtoValidator), Priority = 2)]
-        public async Task<PaginationResponse<EmployeeFinancialListDto>> GetEmployeeSalaryFilteredAsync
+        public async Task<PaginationResponse<EmployeeFinancialListDto>> GetEmployeeSalaryAsync
             (int employeeId, EmployeeSalaryFilterRequestDto employeeSalaryFilterRequestDto, PaginationRequest paginationRequest)
         {
             await _employeeService.CheckIfEmployeeIdExists(employeeId);
@@ -109,11 +111,26 @@ namespace Business.Concrete
 
 
 
-
-
-         
+       
         [SecuredOperation(OperationClaimEnum.Admin)]
-        public async Task<List<YearListDto>> GetEmployeeSalaryYearsAsync(int employeeId)
+        public async Task<DataResponse<EmployeeSalaryFilterOptionsDto>> GetFilterOptionsAsync(int employeeId)
+           => new(
+               new()
+               {
+                   PaymentStatusDtos = EnumHelper.ToLookupList<PaymentStatusEnum, PaymentStatusDto>(),
+                   YearListDtos = await GetEmployeeSalaryYearsAsync(employeeId)
+               });
+
+
+
+
+
+
+
+
+        #region OtherMethods
+        
+        private async Task<List<YearListDto>> GetEmployeeSalaryYearsAsync(int employeeId)
         {
             await _employeeService.CheckIfEmployeeIdExists(employeeId);
 
@@ -130,5 +147,8 @@ namespace Business.Concrete
                 .Distinct()
                 .ToListAsync();
         }
+
+        #endregion
+
     }
 }

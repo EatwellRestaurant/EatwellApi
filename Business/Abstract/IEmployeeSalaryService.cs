@@ -7,8 +7,8 @@ namespace Business.Abstract
 {
     public interface IEmployeeSalaryService
     {
-        Task<PaginationResponse<EmployeeFinancialListDto>> GetEmployeeSalaryFilteredAsync(int employeeId, EmployeeSalaryFilterRequestDto employeeSalaryFilterRequestDto, PaginationRequest paginationRequest);
+        Task<PaginationResponse<EmployeeFinancialListDto>> GetEmployeeSalaryAsync(int employeeId, EmployeeSalaryFilterRequestDto employeeSalaryFilterRequestDto, PaginationRequest paginationRequest);
 
-        Task<List<YearListDto>> GetEmployeeSalaryYearsAsync(int employeeId);
+        Task<DataResponse<EmployeeSalaryFilterOptionsDto>> GetFilterOptionsAsync(int employeeId);
     }
 }
