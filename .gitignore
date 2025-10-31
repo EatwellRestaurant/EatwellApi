@@ -84,6 +84,8 @@ BenchmarkDotNet.Artifacts/
 # .NET Core
 */appsettings.Development.json
 */appsettings.Production.json
+appsettings*.json
+Presentation/EatwellApi.Api/appsettings*.json
 project.lock.json
 project.fragment.lock.json
 artifacts/

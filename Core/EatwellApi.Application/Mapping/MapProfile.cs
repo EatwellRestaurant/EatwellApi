@@ -1,0 +1,360 @@
+﻿using AutoMapper;
+using EatwellApi.Application.Dtos.Branch;
+using EatwellApi.Application.Dtos.City;
+using EatwellApi.Application.Dtos.Employee;
+using EatwellApi.Application.Dtos.EmployeeBonus;
+using EatwellApi.Application.Dtos.EmployeeDeduction;
+using EatwellApi.Application.Dtos.EmployeeSalary;
+using EatwellApi.Application.Dtos.EmployeeTask;
+using EatwellApi.Application.Dtos.HeadOffice;
+using EatwellApi.Application.Dtos.MealCategory;
+using EatwellApi.Application.Dtos.Order;
+using EatwellApi.Application.Dtos.PageContent;
+using EatwellApi.Application.Dtos.Permission;
+using EatwellApi.Application.Dtos.Product;
+using EatwellApi.Application.Dtos.Reservation;
+using EatwellApi.Application.Dtos.ShiftDay;
+using EatwellApi.Application.Dtos.Table;
+using EatwellApi.Application.Dtos.User;
+using EatwellApi.Domain.Entities;
+using EatwellApi.Domain.Enums.Employee;
+using EatwellApi.Domain.Enums.Permission;
+using EatwellApi.Domain.Extensions;
+
+namespace EatwellApi.Application.Mapping
+{
+    public class MapProfile : Profile
+    {
+        public MapProfile()
+        {
+
+            #region User
+
+            CreateMap<UserUpdateDto, User>()
+                .ForMember(dest => dest.Password, opt => opt.Ignore())
+                .ForMember(dest => dest.UpdateDate, opt => opt.MapFrom(src => DateTime.Now));
+
+
+            CreateMap<EmployeeUpsertDto, User>()
+                .ForMember(dest => dest.Password, opt => opt.MapFrom(src => BCrypt.Net.BCrypt.HashPassword(src.Password)));
+
+
+            CreateMap<User, UserListDto>();
+
+
+            CreateMap<User, UserDetailDto>();
+
+            #endregion
+
+
+
+            #region MealCategory
+
+            CreateMap<MealCategory, MealCategoryListDto>();
+
+
+            CreateMap<MealCategory, MealCategoryDetailDto>();
+
+            #endregion
+
+
+
+            #region City
+
+            CreateMap<City, CityDto>();
+
+
+            CreateMap<City, CityWithBranchesDto>();
+
+
+            CreateMap<City, CityWithBranchCountDto>()
+                .ForMember(dest => dest.BranchCount, opt => opt.MapFrom(src => src.Branches.Count));
+
+            #endregion
+
+
+
+            #region Branch
+
+            CreateMap<Branch, BranchDto>();
+
+
+            CreateMap<Branch, BranchListDto>();
+
+
+            CreateMap<Branch, SalesBranchDto>();
+
+
+            CreateMap<Branch, NonSalesBranchDto>();
+
+
+            CreateMap<Branch, PendingBranchDto>()
+                .ForMember(dest => dest.StatusName, opt => opt.MapFrom(src => src.Status.GetDisplayName()));
+
+
+            CreateMap<Branch, BranchListWithCityDto>()
+                .ForMember(dest => dest.CityName, opt => opt.MapFrom(src => src.City.Name));
+
+
+            CreateMap<BranchInsertDto, Branch>();
+
+
+            CreateMap<BranchUpdateDto, Branch>();
+
+
+            CreateMap<Branch, BranchDetailDto>()
+                .ForMember(dest => dest.CityName, opt => opt.MapFrom(src => src.City.Name));
+
+            #endregion
+
+
+
+            #region Reservation
+
+            CreateMap<ReservationUpsertDto, Reservation>();
+
+
+            CreateMap<Reservation, ReservationListDto>()
+                .ForMember(dest => dest.TableNo, opt => opt.MapFrom(src => src.Table.No));
+
+
+            CreateMap<Reservation, ReservationDetailDto>()
+                .IncludeBase<Reservation, ReservationListDto>();
+
+
+            #endregion
+
+
+
+            #region Table
+
+            CreateMap<TableInsertDto, Table>();
+
+
+            CreateMap<TableUpdateDto, Table>();
+
+
+            CreateMap<Table, TableListDto>();
+
+            #endregion
+
+
+
+            #region Product
+
+            CreateMap<Product, ProductAdminListDto>();
+
+
+            CreateMap<Product, ProductListWithMealCategoryDto>()
+                .ForMember(dest => dest.MealCategoryName, opt => opt.MapFrom(src => src.MealCategory.Name));
+
+
+            CreateMap<Product, ProductDetailDto>();
+
+
+            CreateMap<Product, ProductDisplayDto>();
+
+            #endregion
+
+
+
+            #region PageContent
+
+            CreateMap<PageContent, PageContentListDto>()
+                .ForMember(dest => dest.SectionId, opt => opt.MapFrom(src => src.Section))
+                .ForMember(dest => dest.SectionName, opt => opt.MapFrom(src => src.Section.GetDisplayName()));
+
+            #endregion
+
+
+
+
+            #region Order
+
+            CreateMap<OrderInsertDto, Order>();
+
+            #endregion
+
+
+
+            #region HeadOffice     
+
+            CreateMap<HeadOffice, HeadOfficeDto>()
+                .ReverseMap();
+
+            #endregion
+
+
+
+            #region Employee        
+
+            CreateMap<EmployeeUpsertDto, Employee>()
+                .ForMember(dest => dest.MilitaryStatus, opt => opt.MapFrom(src => src.Gender == GenderType.Female ? null : src.MilitaryStatus));
+
+
+            CreateMap<Employee, EmployeeDetailDto>()
+                .ForMember(dest => dest.FirstName, opt => opt.MapFrom(src => src.User.FirstName))
+                .ForMember(dest => dest.LastName, opt => opt.MapFrom(src => src.User.LastName))
+                .ForMember(dest => dest.Email, opt => opt.MapFrom(src => src.User.Email))
+                .ForMember(dest => dest.Gender, opt => opt.MapFrom(src => src.Gender.GetDisplayName()))
+                .ForMember(dest => dest.MilitaryStatus, opt => opt.MapFrom(src => src.MilitaryStatus != null ? src.MilitaryStatus.GetDisplayName() : null))
+                .ForMember(dest => dest.MaritalStatus, opt => opt.MapFrom(src => src.MaritalStatus.GetDisplayName()))
+                .ForMember(dest => dest.PositionName, opt => opt.MapFrom(src => src.User.OperationClaim.Name))
+                .ForMember(dest => dest.PositionDisplayName, opt => opt.MapFrom(src => src.User.OperationClaim.DisplayName))
+                .ForMember(dest => dest.MaritalStatus, opt => opt.MapFrom(src => src.MaritalStatus.GetDisplayName()))
+                .ForMember(dest => dest.EmploymentType, opt => opt.MapFrom(src => src.EmploymentType.GetDisplayName()))
+                .ForMember(dest => dest.EducationLevel, opt => opt.MapFrom(src => src.EducationLevel.GetDisplayName()))
+                .ForMember(dest => dest.WorkStatusName, opt => opt.MapFrom(src => src.WorkStatus.ToString()))
+                .ForMember(dest => dest.WorkStatusDisplayName, opt => opt.MapFrom(src => src.WorkStatus.GetDisplayName()))
+                .ForMember(dest => dest.ShiftDayDtos, opt => opt.MapFrom(src => src.ShiftDays))
+                .ForMember(dest => dest.PermissionListDtos, opt => opt.MapFrom(src => src.Permissions))
+                .AfterMap((src, dest) =>
+                {
+                    dest.Salary = src.EmployeeSalaries
+                    .FirstOrDefault()?
+                    .GrossSalary;
+
+                    DateTime today = DateTime.Now;
+
+                    int years = today.Year - src.HireDate.Year;
+                    int months = today.Month - src.HireDate.Month;
+                    int days = today.Day - src.HireDate.Day;
+
+                    if (days < 0)
+                    {
+                        months--;
+
+                        days += DateTime.DaysInMonth(today.AddMonths(-1).Year, today.AddMonths(-1).Month);
+                    }
+
+                    if (months < 0)
+                    {
+                        years--;
+                        months += 12;
+                    }
+
+                    // ExperienceDuration string'ini oluşturuyoruz
+                    var parts = new List<string>();
+
+                    if (years > 0) parts.Add($"{years} yıl");
+                    if (months > 0) parts.Add($"{months} ay");
+                    if (days > 0) parts.Add($"{days} gün");
+
+                    dest.ExperienceDuration = parts.Count > 0 ? string.Join(" ", parts) : "Bugün işe başladı.";
+
+
+                    User? manager = src.Branch?.Employees
+                        .Select(e => e.User)
+                        .SingleOrDefault();
+
+
+                    dest.Manager = manager != null
+                        ? $"{manager.FirstName} {manager.LastName}"
+                        : "Atanmış bir yönetici bulunmamaktadır.";
+                });
+
+            #endregion
+
+
+
+            #region EmployeeSalary
+
+            CreateMap<EmployeeSalary, EmployeeFinancialListDto>()
+                .ForMember(dest => dest.Month, opt => opt.MapFrom(src => src.Month.Name))
+                .ForMember(dest => dest.Year, opt => opt.MapFrom(src => src.Month.Year.Name))
+                .ForMember(dest => dest.PaymentStatusName, opt => opt.MapFrom(src => src.PaymentStatus.GetDisplayName()))
+                .ForMember(dest => dest.EmployeeDeductionListDtos, opt => opt.MapFrom(src => src.Month.EmployeeDeductions))
+                .ForMember(dest => dest.EmployeeBonusListDtos, opt => opt.MapFrom(src => src.Month.EmployeeBonuses))
+                .AfterMap((src, dest) =>
+                {
+                    decimal employeeBonusAmount = dest.EmployeeBonusListDtos
+                        .Sum(e => e.Amount);
+
+
+                    decimal employeeDeductionAmount = dest.EmployeeDeductionListDtos
+                        .Sum(e => e.Amount);
+
+
+                    dest.NetSalary = src.GrossSalary + employeeBonusAmount - employeeDeductionAmount;
+                    dest.Bonuses = employeeBonusAmount;
+                    dest.Deductions = employeeDeductionAmount;
+                    dest.AdditionalPayments = (dest.MealAllowance ?? 0) + (dest.TransportAllowance ?? 0) + (dest.EducationAllowance ?? 0);
+                });
+
+            #endregion
+
+
+
+            #region EmployeeBonus
+
+            CreateMap<EmployeeBonus, EmployeeBonusListDto>()
+                .ForMember(dest => dest.BonusTypeName, opt => opt.MapFrom(src => src.BonusType.GetDisplayName()))
+                .ForMember(dest => dest.PaymentStatusName, opt => opt.MapFrom(src => src.PaymentStatus.GetDisplayName()));
+
+            #endregion
+
+
+
+            #region EmployeeDeduction
+
+            CreateMap<EmployeeDeduction, EmployeeDeductionListDto>()
+                .ForMember(dest => dest.DeductionTypeName, opt => opt.MapFrom(src => src.DeductionType.GetDisplayName()))
+                .ForMember(dest => dest.PaymentStatusName, opt => opt.MapFrom(src => src.PaymentStatus.GetDisplayName()));
+
+            #endregion
+
+
+
+            #region EmployeeTask
+
+            CreateMap<EmployeeTask, EmployeeTaskListDto>()
+                .ForMember(dest => dest.PriorityLevelName, opt => opt.MapFrom(src => src.PriorityLevel.GetDisplayName()))
+                .ForMember(dest => dest.TaskStatusName, opt => opt.MapFrom(src => src.TaskStatus.GetDisplayName()))
+                .AfterMap((src, dest) =>
+                {
+                    User user = src.AssignedBy.User;
+
+                    dest.AssignedByFullName = $"{user.FirstName} {user.LastName}";
+
+
+                    if (src.EmployeeSubTasks.Any())
+                    {
+                        int completedCount = src.EmployeeSubTasks.Count(e => e.CompletedDate != null);
+                        int totalCount = src.EmployeeSubTasks.Count;
+
+                        dest.ProgressPercentage = (byte)Math.Round((double)completedCount / totalCount * 100);
+                    }
+                    else
+                    {
+                        dest.ProgressPercentage = 0;
+                    }
+                });
+
+            #endregion
+
+
+
+            #region ShiftDay  
+
+            CreateMap<ShiftDayDto, ShiftDay>()
+                .ReverseMap();
+
+            #endregion
+
+
+
+            #region Permission
+
+            CreateMap<PermissionUpsertDto, Permission>()
+                .ForMember(dest => dest.Status, opt => opt.MapFrom(src => StatusType.Pending));
+
+
+            CreateMap<Permission, PermissionListDto>()
+                .ForMember(dest => dest.StatusName, opt => opt.MapFrom(src => src.Status.GetDisplayName()))
+                .ForMember(dest => dest.LeaveTypeName, opt => opt.MapFrom(src => src.LeaveType.Name));
+
+            #endregion
+
+        }
+    }
+}
