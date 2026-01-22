@@ -11,6 +11,7 @@
     <PackageReference Include="BCrypt.Net-Next" Version="4.0.0" />
     <PackageReference Include="Castle.Core" Version="5.0.0" />
     <PackageReference Include="FluentValidation" Version="11.8.0" />
+    <PackageReference Include="MediatR" Version="12.*" />
     <PackageReference Include="Microsoft.AspNetCore.Http" Version="2.3.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.15" />
   </ItemGroup>
@@ -20,7 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Abstractions\Services\" />
+    <Folder Include="Features\Queries\" />
   </ItemGroup>
 
 </Project>

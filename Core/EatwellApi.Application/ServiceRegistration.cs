@@ -1,5 +1,5 @@
-﻿using AutoMapper;
-using EatwellApi.Application.Mapping;
+﻿using EatwellApi.Application.Mapping;
+using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace EatwellApi.Application
@@ -9,13 +9,10 @@ namespace EatwellApi.Application
         public static void AddApplicationServices(this IServiceCollection services)
         {
             services.AddAutoMapper(typeof(MapProfile).Assembly);
-
-
-            services.AddScoped(provider => new MapperConfiguration(cfg =>
+            services.AddMediatR(cfg =>
             {
-                cfg.AddProfile(new MapProfile());
-            })
-            .CreateMapper());
+                cfg.RegisterServicesFromAssembly(typeof(ServiceRegistration).Assembly);
+            });
         }
     }
 }

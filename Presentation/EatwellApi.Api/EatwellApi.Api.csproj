@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="8.0.0" />
     <PackageReference Include="FluentValidation" Version="11.9.0" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.8" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
@@ -15,10 +16,6 @@
   <ItemGroup>
     <ProjectReference Include="..\..\Infrastructure\EatwellApi.Infrastructure\EatwellApi.Infrastructure.csproj" />
     <ProjectReference Include="..\..\Infrastructure\EatwellApi.Persistence\EatwellApi.Persistence.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Controllers\" />
   </ItemGroup>
 
 </Project>

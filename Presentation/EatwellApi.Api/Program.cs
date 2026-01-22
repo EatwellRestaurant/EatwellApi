@@ -1,14 +1,25 @@
+using Autofac;
+using Autofac.Extensions.DependencyInjection;
 using EatwellApi.Api.Middlewares;
 using EatwellApi.Application;
-using EatwellApi.Infrastructure;
+using EatwellApi.Application.Utilities.Security.Encryption;
 using EatwellApi.Domain.Security;
+using EatwellApi.Infrastructure;
+using EatwellApi.Persistence;
+using EatwellApi.Persistence.DependencyResolvers;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Globalization;
-using EatwellApi.Application.Utilities.Security.Encryption;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory())
+    .ConfigureContainer<ContainerBuilder>(builder =>
+    {
+        builder.RegisterModule(new AutofacBusinessModule());
+    });
+
 
 var cultureInfo = new CultureInfo("tr-TR");
 
@@ -20,6 +31,8 @@ CultureInfo.DefaultThreadCurrentUICulture = cultureInfo;
 builder.Services.AddApplicationServices();
 
 builder.Services.AddInfrastructureServices();
+
+builder.Services.AddPersistenceServices(builder.Configuration);
 
 builder.Services.AddHttpContextAccessor();
 

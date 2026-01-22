@@ -2,6 +2,6 @@
 {
     public class ImagePaths
     {
-        public static string ImagePath = @"wwwroot\Images\";
+        public const string ImagePath = @"wwwroot\Images\";
     }
 }

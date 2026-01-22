@@ -1,20 +1,20 @@
-﻿using EatwellApi.Domain.Entities.Common;
+﻿using EatwellApi.Domain.Entities.Abstract;
 
 namespace EatwellApi.Application.Abstractions.Repositories
 {
-    public interface IWriteRepository<T> : IRepository<T> where T : BaseEntity
+    public interface IWriteRepository<T> where T : class, IEntity, new()
     {
-        Task<bool> AddAsync(T entity);
+        Task AddAsync(T entity);
 
-        Task<bool> AddRangeAsync(List<T> entities);
+        Task AddRangeAsync(IEnumerable<T> entities);
 
-        bool Remove(T entity);
+        void Remove(T entity);
 
-        Task<bool> RemoveAsync(int id);
+        void RemoveRange(IEnumerable<T> entities);
 
-        bool Update(T entity);
+        void Update(T entity);
 
-        Task<int> SaveChangesAsync();
+        void UpdateRange(IEnumerable<T> entities);
 
     }
 }

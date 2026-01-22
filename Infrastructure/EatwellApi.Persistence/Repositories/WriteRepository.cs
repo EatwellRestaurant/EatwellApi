@@ -1,67 +1,51 @@
 ﻿using EatwellApi.Application.Abstractions.Repositories;
-using EatwellApi.Domain.Entities.Common;
+using EatwellApi.Domain.Entities.Abstract;
 using EatwellApi.Persistence.Context;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.ChangeTracking;
 
 namespace EatwellApi.Persistence.Repositories
 {
-    public class WriteRepository<T> : IWriteRepository<T> where T : BaseEntity
+    public class WriteRepository<T> : IWriteRepository<T> where T : class, IEntity, new()
     {
-        readonly RestaurantContext _context;
+        readonly DbSet<T> _dbSet;
 
         public WriteRepository(RestaurantContext context)
-            => _context = context;
+            => _dbSet = context.Set<T>();
 
 
-        public DbSet<T> Table
-            => _context.Set<T>();
 
 
-        public async Task<bool> AddAsync(T entity)
-        {
-            EntityEntry<T> entityEntry = await _context.AddAsync(entity);
+        public async Task AddAsync(T entity)
+           => await _dbSet.AddAsync(entity);
 
-            return entityEntry.State == EntityState.Added;
-        }
+        
 
 
-        public async Task<bool> AddRangeAsync(List<T> entities)
-        {
-            await Table.AddRangeAsync(entities);
-
-            return true;
-        }
+        public async Task AddRangeAsync(IEnumerable<T> entities)
+            => await _dbSet.AddRangeAsync(entities);
 
 
-        public bool Remove(T entity)
-        {
-            EntityEntry<T> entityEntry = _context.Remove(entity);
-
-            return entityEntry.State == EntityState.Deleted;
-        }
 
 
-        public async Task<bool> RemoveAsync(int id)
-        {
-            T? entity = await Table.SingleOrDefaultAsync(e => e.Id == id);
-
-            if (entity == null)
-                return false;
-
-            return Remove(entity);
-        }
+        public void Remove(T entity)
+            => _dbSet.Remove(entity);
 
 
-        public bool Update(T entity)
-        {
-            EntityEntry<T> entityEntry = Table.Update(entity);
-
-            return entityEntry.State == EntityState.Modified;
-        }
 
 
-        public async Task<int> SaveChangesAsync()
-            => await _context.SaveChangesAsync();
+        public void RemoveRange(IEnumerable<T> entities)
+            => _dbSet.RemoveRange(entities);
+
+
+
+
+        public void Update(T entity)
+            => _dbSet.Update(entity);
+
+
+
+
+        public void UpdateRange(IEnumerable<T> entities)
+            => _dbSet.UpdateRange(entities);
     }
 }
