@@ -10,6 +10,8 @@ namespace EatwellApi.Application.Abstractions.Services.User
 
         Task<DomainUser?> GetByEmailAsync(string email);
 
+        Task<DomainUser> GetByIdAsync(int id);
+
         DataResponse<AccessToken> CreateAccessToken(DomainUser user);
     }
 }

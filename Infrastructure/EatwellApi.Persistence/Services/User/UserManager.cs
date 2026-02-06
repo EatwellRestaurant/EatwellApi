@@ -39,6 +39,14 @@ namespace EatwellApi.Persistence.Services.User
 
 
 
+        public async Task<DomainUser> GetByIdAsync(int id)
+            => await _userReadRepository
+            .Where(u => u.Id == id && !u.IsDeleted)
+            .SingleOrDefaultAsync() ?? 
+            throw new EntityNotFoundException("Kullanıcı");
+        
+
+
         public DataResponse<AccessToken> CreateAccessToken(DomainUser user)
             => new DataResponse<AccessToken>
             (_tokenHelper.CreateToken(user, user.OperationClaim.Name));

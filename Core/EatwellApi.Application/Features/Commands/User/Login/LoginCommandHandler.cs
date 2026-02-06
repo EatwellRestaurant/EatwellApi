@@ -33,7 +33,12 @@ namespace EatwellApi.Application.Features.Commands.User.Login
 
 
             DataResponse<AccessToken> dataResponse = _userService.CreateAccessToken(user);
-            user.LastLoginDate = DateTime.Now;
+
+            // Türkiye saatini hesapla
+            var turkeyTimeZone = TimeZoneInfo.FindSystemTimeZoneById("Turkey Standard Time");
+            var turkeyTime = TimeZoneInfo.ConvertTime(DateTime.UtcNow, turkeyTimeZone);
+
+            user.LastLoginDate = turkeyTime;
 
 
             await _unitOfWork.SaveChangesAsync();

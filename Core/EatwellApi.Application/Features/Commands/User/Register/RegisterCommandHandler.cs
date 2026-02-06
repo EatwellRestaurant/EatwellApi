@@ -32,6 +32,10 @@ namespace EatwellApi.Application.Features.Commands.User.Register
         {
             await _userService.CheckIfUserEMailAsync(request.Email);
 
+            // Türkiye saatini hesapla
+            var turkeyTimeZone = TimeZoneInfo.FindSystemTimeZoneById("Turkey Standard Time");
+            var turkeyTime = TimeZoneInfo.ConvertTime(DateTime.UtcNow, turkeyTimeZone);
+
             DomainUser user = new()
             { 
                 Email = request.Email,
@@ -40,7 +44,7 @@ namespace EatwellApi.Application.Features.Commands.User.Register
                 Password = BCrypt.Net.BCrypt.HashPassword(request.Password),
                 Verification = false,
                 VerificationCode = RandomNumberGenerator.GetInt32(10000, 99999).ToString(),
-                VerificationCodeDuration = DateTime.Now.AddMinutes(VerificationConstants.CodeDurationMinutes),
+                VerificationCodeDuration = turkeyTime.AddMinutes(VerificationConstants.CodeDurationMinutes),
                 OperationClaimId = (int)OperationClaimEnum.User
             };
 

@@ -15,7 +15,10 @@ namespace EatwellApi.Infrastructure.Services.EmailService.Sendinblue
         {
             _sendinblueSettings = configuration.GetSection("SendinblueSettings").Get<SendinblueSettings>()!;
 
-            Configuration.Default.ApiKey.Add("api-key", _sendinblueSettings.ApiKey);
+            if (!Configuration.Default.ApiKey.ContainsKey("api-key"))
+            {
+                Configuration.Default.ApiKey.Add("api-key", _sendinblueSettings.ApiKey);
+            }
         }
 
 

@@ -1,5 +1,7 @@
 ﻿using EatwellApi.Application.Features.Commands.User.Login;
 using EatwellApi.Application.Features.Commands.User.Register;
+using EatwellApi.Application.Features.Commands.User.ResendEmail;
+using EatwellApi.Application.Features.Commands.User.VerifyEmail;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
@@ -16,6 +18,7 @@ namespace EatwellApi.Api.Controllers
             _mediator = mediator;
         }
 
+        
         [HttpPost]
         public async Task<IActionResult> Login(LoginCommandRequest loginCommandRequest)
             => Ok(await _mediator.Send(loginCommandRequest));
@@ -29,15 +32,17 @@ namespace EatwellApi.Api.Controllers
 
 
 
-        //[HttpPost]
-        //public async Task<IActionResult> VerifyEmailOfUser(int userId, VerificationCodeDto codeDto)
-        //    => Ok(await _mediator.VerifyEmailOfUser(userId, codeDto));
+
+        [HttpPost]
+        public async Task<IActionResult> VerifyEmailOfUser(VerifyEmailCommandRequest verifyEmailCommandRequest)
+            => Ok(await _mediator.Send(verifyEmailCommandRequest));
 
 
 
-        //[HttpPost]
-        //public async Task<IActionResult> SendEmailAsync(int userId)
-        //    => Ok(await _mediator.SendEmailAsync(userId));
+
+        [HttpPost] 
+        public async Task<IActionResult> ResendEmail(ResendEmailCommandRequest resendEmailCommandRequest)
+            => Ok(await _mediator.Send(resendEmailCommandRequest));
 
     }
 }
