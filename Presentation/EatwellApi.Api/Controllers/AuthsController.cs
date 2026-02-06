@@ -1,4 +1,4 @@
-﻿using EatwellApi.Application.Dtos.User;
+﻿using EatwellApi.Application.Features.Commands.User.Login;
 using EatwellApi.Application.Features.Commands.User.Register;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -16,10 +16,9 @@ namespace EatwellApi.Api.Controllers
             _mediator = mediator;
         }
 
-
-        //[HttpPost]
-        //public async Task<IActionResult> Login(UserForLoginDto userForLoginDto)
-        //    => Ok(await _mediator.Login(userForLoginDto));
+        [HttpPost]
+        public async Task<IActionResult> Login(LoginCommandRequest loginCommandRequest)
+            => Ok(await _mediator.Send(loginCommandRequest));
 
 
 

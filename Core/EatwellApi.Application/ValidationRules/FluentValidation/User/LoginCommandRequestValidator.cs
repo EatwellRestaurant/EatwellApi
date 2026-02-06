@@ -1,18 +1,18 @@
-﻿using EatwellApi.Application.Dtos.User;
+﻿using EatwellApi.Application.Features.Commands.User.Login;
 using FluentValidation;
 
 namespace EatwellApi.Application.ValidationRules.FluentValidation.User
 {
-    public class UserForLoginDtoValidator : AbstractValidator<UserForLoginDto>
+    public class LoginCommandRequestValidator : AbstractValidator<LoginCommandRequest>
     {
-        public UserForLoginDtoValidator()
+        public LoginCommandRequestValidator()
         {
-            RuleFor(u => u.Email)
+            RuleFor(l => l.Email)
                 .NotEmpty()
                 .WithMessage("Lütfen e-posta adresinizi giriniz!");
 
 
-            RuleFor(u => u.Password)
+            RuleFor(l => l.Password)
                 .NotEmpty()
                 .WithMessage("Lütfen şifrenizi giriniz!");
         }

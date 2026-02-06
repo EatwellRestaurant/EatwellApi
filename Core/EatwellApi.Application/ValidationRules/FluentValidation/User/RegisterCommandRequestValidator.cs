@@ -1,14 +1,14 @@
-﻿using EatwellApi.Application.Dtos.User;
+﻿using EatwellApi.Application.Features.Commands.User.Register;
 using FluentValidation;
 using System.Text.RegularExpressions;
 
 namespace EatwellApi.Application.ValidationRules.FluentValidation.User
 {
-    public class UserForRegisterDtoValidator : AbstractValidator<UserForRegisterDto>
+    public class RegisterCommandRequestValidator : AbstractValidator<RegisterCommandRequest>
     {
-        public UserForRegisterDtoValidator()
+        public RegisterCommandRequestValidator()
         {
-            RuleFor(u => u.FirstName)
+            RuleFor(r => r.FirstName)
                 .Cascade(CascadeMode.Stop)
                 .NotEmpty()
                 .WithMessage("Lütfen isminizi giriniz!")
@@ -17,7 +17,7 @@ namespace EatwellApi.Application.ValidationRules.FluentValidation.User
 
 
 
-            RuleFor(u => u.LastName)
+            RuleFor(r => r.LastName)
                 .Cascade(CascadeMode.Stop)
                 .NotEmpty()
                 .WithMessage("Lütfen soy isminizi giriniz!")
@@ -26,7 +26,7 @@ namespace EatwellApi.Application.ValidationRules.FluentValidation.User
 
 
 
-            RuleFor(u => u.Email)
+            RuleFor(r => r.Email)
                 .Cascade(CascadeMode.Stop)
                 .NotEmpty()
                 .WithMessage("Lütfen e-posta adresinizi giriniz!")
@@ -37,7 +37,7 @@ namespace EatwellApi.Application.ValidationRules.FluentValidation.User
 
 
 
-            RuleFor(u => u.Password)
+            RuleFor(r => r.Password)
                 .Cascade(CascadeMode.Stop)
                 .NotEmpty()
                 .WithMessage("Lütfen şifrenizi giriniz!")
