@@ -9,16 +9,12 @@ namespace EatwellApi.Api.Controllers
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
-    public class AuthsController : Controller
+    public class AuthsController(IMediator mediator) : Controller
     {
-        readonly IMediator _mediator;
+        readonly IMediator _mediator = mediator;
 
-        public AuthsController(IMediator mediator)
-        {
-            _mediator = mediator;
-        }
 
-        
+
         [HttpPost]
         public async Task<IActionResult> Login(LoginCommandRequest loginCommandRequest)
             => Ok(await _mediator.Send(loginCommandRequest));

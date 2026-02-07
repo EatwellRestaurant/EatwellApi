@@ -1,6 +1,12 @@
 ﻿using EatwellApi.Application.Abstractions.Repositories;
+using EatwellApi.Application.Abstractions.Repositories.HeadOffice;
+using EatwellApi.Application.Abstractions.Repositories.PageContent;
+using EatwellApi.Application.Abstractions.Repositories.Product;
 using EatwellApi.Application.Abstractions.Services.User;
 using EatwellApi.Persistence.Context;
+using EatwellApi.Persistence.Repositories.HeadOffice;
+using EatwellApi.Persistence.Repositories.PageContent;
+using EatwellApi.Persistence.Repositories.Product;
 using EatwellApi.Persistence.Repositories.User;
 using EatwellApi.Persistence.Services.User;
 using Microsoft.EntityFrameworkCore;
@@ -20,6 +26,12 @@ namespace EatwellApi.Persistence
             });
 
 
+
+            services.AddScoped<IProductReadRepository, ProductReadRepository>();
+
+            services.AddScoped<IPageContentReadRepository, PageContentReadRepository>();
+
+            services.AddScoped<IHeadOfficeReadRepository, HeadOfficeReadRepository>();
 
             services.AddScoped<IUserReadRepository, UserReadRepository>();
             services.AddScoped<IUserWriteRepository, UserWriteRepository>();
