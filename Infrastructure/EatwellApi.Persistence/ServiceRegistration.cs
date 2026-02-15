@@ -1,13 +1,22 @@
 ﻿using EatwellApi.Application.Abstractions.Repositories;
+using EatwellApi.Application.Abstractions.Repositories.Employee;
 using EatwellApi.Application.Abstractions.Repositories.HeadOffice;
 using EatwellApi.Application.Abstractions.Repositories.PageContent;
 using EatwellApi.Application.Abstractions.Repositories.Product;
+using EatwellApi.Application.Abstractions.Repositories.Reservation;
+using EatwellApi.Application.Abstractions.Services.Employee;
+using EatwellApi.Application.Abstractions.Services.Reservation;
 using EatwellApi.Application.Abstractions.Services.User;
 using EatwellApi.Persistence.Context;
+using EatwellApi.Persistence.Repositories;
+using EatwellApi.Persistence.Repositories.Employee;
 using EatwellApi.Persistence.Repositories.HeadOffice;
 using EatwellApi.Persistence.Repositories.PageContent;
 using EatwellApi.Persistence.Repositories.Product;
+using EatwellApi.Persistence.Repositories.Reservation;
 using EatwellApi.Persistence.Repositories.User;
+using EatwellApi.Persistence.Services.Employee;
+using EatwellApi.Persistence.Services.Reservation;
 using EatwellApi.Persistence.Services.User;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -25,7 +34,7 @@ namespace EatwellApi.Persistence
                 options.EnableSensitiveDataLogging();
             });
 
-
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             services.AddScoped<IProductReadRepository, ProductReadRepository>();
 
@@ -35,6 +44,12 @@ namespace EatwellApi.Persistence
 
             services.AddScoped<IUserReadRepository, UserReadRepository>();
             services.AddScoped<IUserWriteRepository, UserWriteRepository>();
+
+            services.AddScoped<IEmployeeService, EmployeeManager>();
+            services.AddScoped<IEmployeeReadRepository, EmployeeReadRepository>();
+
+            services.AddScoped<IReservationService, ReservationManager>();
+            services.AddScoped<IReservationReadRepository, ReservationReadRepository>();
 
             services.AddScoped<IUserService, UserManager>();
             services.AddScoped<IUserReadService, UserReadManager>();

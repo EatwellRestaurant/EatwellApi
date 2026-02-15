@@ -1,4 +1,5 @@
 ﻿using EatwellApi.Application.Wrappers;
+using EatwellApi.Domain.Enums.OperationClaim;
 using EatwellApi.Domain.Security;
 using DomainUser = EatwellApi.Domain.Entities.User;
 
@@ -13,5 +14,7 @@ namespace EatwellApi.Application.Abstractions.Services.User
         Task<DomainUser> GetByIdAsync(int id);
 
         DataResponse<AccessToken> CreateAccessToken(DomainUser user);
+
+        Task<int> CountUsersByClaimAsync(OperationClaimEnum claimEnum);
     }
 }

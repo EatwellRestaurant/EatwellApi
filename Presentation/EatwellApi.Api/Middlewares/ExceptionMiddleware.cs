@@ -70,11 +70,11 @@ namespace EatwellApi.Api.Middlewares
              ex switch
              {
                  ValidationException => StatusCodes.Status422UnprocessableEntity,
-                 ForbiddenException or SecurityException => StatusCodes.Status401Unauthorized,
+                 ForbiddenBaseException or SecurityException => StatusCodes.Status403Forbidden,
+                 UnauthorizedBaseException => StatusCodes.Status401Unauthorized,
                  NotFoundBaseException => StatusCodes.Status404NotFound,
                  BadRequestBaseException => StatusCodes.Status400BadRequest,
                  //Exceptions.ValidationException => StatusCodes.Status422UnprocessableEntity,
-                 //DBBaseException => StatusCodes.Status409Conflict,
                  _ => StatusCodes.Status500InternalServerError
              };
 

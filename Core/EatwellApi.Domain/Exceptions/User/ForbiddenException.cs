@@ -2,7 +2,7 @@
 
 namespace EatwellApi.Domain.Exceptions.User
 {
-    public class ForbiddenException : BadRequestBaseException
+    public class ForbiddenException : ForbiddenBaseException
     {
         /// <summary>
         /// Yetkiniz yok!

@@ -2,6 +2,7 @@
 using EatwellApi.Application.Abstractions.Security;
 using EatwellApi.Application.Abstractions.Services.User;
 using EatwellApi.Application.Wrappers;
+using EatwellApi.Domain.Enums.OperationClaim;
 using EatwellApi.Domain.Exceptions.General;
 using EatwellApi.Domain.Security;
 using Microsoft.EntityFrameworkCore;
@@ -50,7 +51,12 @@ namespace EatwellApi.Persistence.Services.User
         public DataResponse<AccessToken> CreateAccessToken(DomainUser user)
             => new DataResponse<AccessToken>
             (_tokenHelper.CreateToken(user, user.OperationClaim.Name));
-        
+
+
+
+        public async Task<int> CountUsersByClaimAsync(OperationClaimEnum claimEnum)
+            => await _userReadRepository.CountAsync(u => u.OperationClaimId == (int)claimEnum && !u.IsDeleted);
+
 
     }
 }

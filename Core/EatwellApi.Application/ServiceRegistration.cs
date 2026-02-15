@@ -1,4 +1,6 @@
-﻿using EatwellApi.Application.Mapping;
+﻿using EatwellApi.Application.Behaviors.Authorization;
+using EatwellApi.Application.Behaviors.Validation;
+using EatwellApi.Application.Mapping;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -13,6 +15,9 @@ namespace EatwellApi.Application
             {
                 cfg.RegisterServicesFromAssembly(typeof(ServiceRegistration).Assembly);
             });
+
+            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
+            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(AuthorizationBehavior<,>));
         }
     }
 }

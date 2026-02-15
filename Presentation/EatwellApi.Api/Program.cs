@@ -6,20 +6,12 @@ using EatwellApi.Application.Utilities.Security.Encryption;
 using EatwellApi.Domain.Security;
 using EatwellApi.Infrastructure;
 using EatwellApi.Persistence;
-using EatwellApi.Persistence.DependencyResolvers;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Globalization;
 
 var builder = WebApplication.CreateBuilder(args);
-
-builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory())
-    .ConfigureContainer<ContainerBuilder>(builder =>
-    {
-        builder.RegisterModule(new AutofacBusinessModule());
-    });
-
 
 var cultureInfo = new CultureInfo("tr-TR");
 
