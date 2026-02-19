@@ -20,7 +20,7 @@ namespace EatwellApi.Domain.Entities
 
         public DateTime? VerificationCodeDuration { get; set; }
 
-        public DateTime? LastLoginDate { get; set; }
+        public DateTime LastLoginDate { get; set; }
 
 
 

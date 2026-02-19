@@ -34,6 +34,7 @@ namespace EatwellApi.Application.Features.Commands.User.VerifyEmail
 
 
             user.Verification = true;
+            user.LastLoginDate = turkeyTime;
             await _unitOfWork.SaveChangesAsync();
 
             return new SuccessResponse(AuthMessages.VerificationSuccessful, StatusCodes.Status200OK);

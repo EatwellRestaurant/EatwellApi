@@ -1,5 +1,3 @@
-using Autofac;
-using Autofac.Extensions.DependencyInjection;
 using EatwellApi.Api.Middlewares;
 using EatwellApi.Application;
 using EatwellApi.Application.Utilities.Security.Encryption;
@@ -22,7 +20,7 @@ CultureInfo.DefaultThreadCurrentUICulture = cultureInfo;
 
 builder.Services.AddApplicationServices();
 
-builder.Services.AddInfrastructureServices();
+builder.Services.AddInfrastructureServices(builder.Configuration);
 
 builder.Services.AddPersistenceServices(builder.Configuration);
 

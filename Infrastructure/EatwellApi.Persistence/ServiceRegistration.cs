@@ -34,6 +34,8 @@ namespace EatwellApi.Persistence
                 options.EnableSensitiveDataLogging();
             });
 
+            services.AddScoped(typeof(IReadRepository<>), typeof(ReadRepository<>));
+            services.AddScoped(typeof(IWriteRepository<>), typeof(WriteRepository<>));
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             services.AddScoped<IProductReadRepository, ProductReadRepository>();

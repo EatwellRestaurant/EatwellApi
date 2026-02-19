@@ -1,4 +1,5 @@
 ﻿using EatwellApi.Application.Behaviors.Authorization;
+using EatwellApi.Application.Behaviors.Cache;
 using EatwellApi.Application.Behaviors.Validation;
 using EatwellApi.Application.Mapping;
 using MediatR;
@@ -18,6 +19,7 @@ namespace EatwellApi.Application
 
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(AuthorizationBehavior<,>));
+            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(RedisCacheBehavior<,>));
         }
     }
 }
