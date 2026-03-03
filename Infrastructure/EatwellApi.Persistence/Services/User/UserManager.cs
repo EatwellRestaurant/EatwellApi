@@ -54,8 +54,8 @@ namespace EatwellApi.Persistence.Services.User
 
 
 
-        public async Task<int> CountUsersByClaimAsync(OperationClaimEnum claimEnum)
-            => await _userReadRepository.CountAsync(u => u.OperationClaimId == (int)claimEnum && !u.IsDeleted);
+        public async Task<int> CountUsersByClaimAsync()
+            => await _userReadRepository.CountAsync(u => u.OperationClaimId == (int)OperationClaimEnum.User && !u.IsDeleted);
 
 
     }

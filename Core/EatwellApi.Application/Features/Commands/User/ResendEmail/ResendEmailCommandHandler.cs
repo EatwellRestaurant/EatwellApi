@@ -2,6 +2,7 @@
 using EatwellApi.Application.Abstractions.Services.EmailService;
 using EatwellApi.Application.Abstractions.Services.User;
 using EatwellApi.Application.Constants.Messages.Entity;
+using EatwellApi.Application.Extensions;
 using EatwellApi.Application.Wrappers;
 using MediatR;
 using Microsoft.AspNetCore.Http;
@@ -27,12 +28,8 @@ namespace EatwellApi.Application.Features.Commands.User.ResendEmail
         {
             DomainUser user = await _userService.GetByIdAsync(request.UserId);
 
-            // Türkiye saatini hesapla
-            var turkeyTimeZone = TimeZoneInfo.FindSystemTimeZoneById("Turkey Standard Time");
-            var turkeyTime = TimeZoneInfo.ConvertTime(DateTime.UtcNow, turkeyTimeZone);
-
             user.VerificationCode = new Random().Next(10000, 99999).ToString();
-            user.VerificationCodeDuration = turkeyTime.AddMinutes(3);
+            user.VerificationCodeDuration = DateTime.UtcNow.ToTurkeyTime().AddMinutes(3);
 
             await _emailService.SendEmailAsync(user.Email, user.FirstName, user.VerificationCode);
             await _unitOfWork.SaveChangesAsync();

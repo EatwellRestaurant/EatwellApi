@@ -19,7 +19,7 @@ namespace EatwellApi.Infrastructure.Services.Security.Jwt
         public JwtHelper(IConfiguration configuration)
         {
             Configuration = configuration;
-            _tokenOptions = Configuration.GetSection("TokenOptions").Get<TokenOptions>();
+            _tokenOptions = Configuration.GetSection(nameof(TokenOptions)).Get<TokenOptions>()!;
         }
 
         public AccessToken CreateToken(User user, string operationClaimName)

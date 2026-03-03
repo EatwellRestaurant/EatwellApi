@@ -1,6 +1,7 @@
 ﻿using EatwellApi.Application.Abstractions.Repositories;
 using EatwellApi.Application.Abstractions.Services.User;
 using EatwellApi.Application.Constants.Messages.Entity;
+using EatwellApi.Application.Extensions;
 using EatwellApi.Application.Wrappers;
 using EatwellApi.Domain.Exceptions.User;
 using EatwellApi.Domain.Security;
@@ -33,12 +34,7 @@ namespace EatwellApi.Application.Features.Commands.User.Login
 
 
             DataResponse<AccessToken> dataResponse = _userService.CreateAccessToken(user);
-
-            // Türkiye saatini hesapla
-            var turkeyTimeZone = TimeZoneInfo.FindSystemTimeZoneById("Turkey Standard Time");
-            var turkeyTime = TimeZoneInfo.ConvertTime(DateTime.UtcNow, turkeyTimeZone);
-
-            user.LastLoginDate = turkeyTime;
+            user.LastLoginDate = DateTime.UtcNow.ToTurkeyTime();
 
 
             await _unitOfWork.SaveChangesAsync();

@@ -13,7 +13,7 @@ namespace EatwellApi.Api.Controllers
 
 
         [HttpGet]
-        public async Task<IActionResult> GetAsync()
+        public async Task<IActionResult> Get()
             => Ok(await _mediator.Send(new GetHeadOfficeQueryRequest()));
     }
 }

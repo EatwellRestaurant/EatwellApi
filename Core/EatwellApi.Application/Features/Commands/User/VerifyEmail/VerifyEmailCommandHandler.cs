@@ -1,6 +1,7 @@
 ﻿using EatwellApi.Application.Abstractions.Repositories;
 using EatwellApi.Application.Abstractions.Services.User;
 using EatwellApi.Application.Constants.Messages.Entity;
+using EatwellApi.Application.Extensions;
 using EatwellApi.Application.Wrappers;
 using EatwellApi.Domain.Exceptions.User;
 using MediatR;
@@ -25,9 +26,7 @@ namespace EatwellApi.Application.Features.Commands.User.VerifyEmail
         {
             DomainUser user = await _userService.GetByIdAsync(request.UserId);
 
-            // Türkiye saatini hesapla
-            var turkeyTimeZone = TimeZoneInfo.FindSystemTimeZoneById("Turkey Standard Time");
-            var turkeyTime = TimeZoneInfo.ConvertTime(DateTime.UtcNow, turkeyTimeZone);
+            DateTime turkeyTime = DateTime.UtcNow.ToTurkeyTime();
 
             if (user.VerificationCode != request.Code || turkeyTime > user.VerificationCodeDuration)
                 throw new InvalidVerificationCodeException();

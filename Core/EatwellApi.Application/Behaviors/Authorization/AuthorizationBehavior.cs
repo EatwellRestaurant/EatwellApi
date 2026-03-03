@@ -1,8 +1,7 @@
-﻿using EatwellApi.Application.Abstractions.Security;
+﻿using EatwellApi.Application.Abstractions.Services;
 using EatwellApi.Application.Wrappers;
 using EatwellApi.Domain.Exceptions.User;
 using MediatR;
-using Microsoft.AspNetCore.Http;
 
 namespace EatwellApi.Application.Behaviors.Authorization
 {
@@ -10,28 +9,43 @@ namespace EatwellApi.Application.Behaviors.Authorization
         where TRequest : IRequest<TResponse>
         where TResponse : Response
     {
-        readonly IHttpContextAccessor _httpContextAccessor;
+        readonly ICurrentUserService _currentUser;
 
-        public AuthorizationBehavior(IHttpContextAccessor httpContextAccessor)
+        public AuthorizationBehavior(ICurrentUserService currentUser)
         {
-            _httpContextAccessor = httpContextAccessor;
+            _currentUser = currentUser;
         }
 
 
         public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
         {
-            var user = _httpContextAccessor.HttpContext?.User;
+            // Request sınıfındaki [Secured] attribute'larını buluyoruz.
+            var securedAttributes = request.GetType()
+                .GetCustomAttributes(typeof(SecuredAttribute), true)
+                .Cast<SecuredAttribute>()
+                .ToList();
 
-            if (request is ISecuredRequest securedRequest)
-            {
-                if (user?.Identity is not { IsAuthenticated: true })
-                    throw new UnauthorizedException(); 
+
+            // Attribute yoksa herkese açık endpoint demektir
+            if (!securedAttributes.Any())
+                return await next();
 
 
-                if (!securedRequest.Roles.Any(role => user.IsInRole(role)))
-                    throw new ForbiddenException(); 
-            }
+            // Token yoksa / giriş yapılmamışsa erişimi engelliyoruz
+            if (!_currentUser.IsAuthenticated)
+                throw new UnauthorizedException();
 
+
+            // Gerekli claim'lerden en az biri kullanıcıda var mı?
+            var requiredRoles = securedAttributes.SelectMany(a => a.Roles).ToList();
+
+            var hasPermission = requiredRoles.Any(role => _currentUser.HasClaim(role));
+
+            
+            if (!hasPermission)
+                throw new ForbiddenException();
+
+            
             return await next();
         }
     }

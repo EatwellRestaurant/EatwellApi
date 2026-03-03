@@ -3,6 +3,7 @@ using EatwellApi.Application.Abstractions.Services.EmailService;
 using EatwellApi.Application.Abstractions.Services.User;
 using EatwellApi.Application.Constants.Messages.Entity;
 using EatwellApi.Application.Constants.Verification;
+using EatwellApi.Application.Extensions;
 using EatwellApi.Application.Wrappers;
 using EatwellApi.Domain.Enums.OperationClaim;
 using MediatR;
@@ -32,10 +33,6 @@ namespace EatwellApi.Application.Features.Commands.User.Register
         {
             await _userService.CheckIfUserEMailAsync(request.Email);
 
-            // Türkiye saatini hesapla
-            var turkeyTimeZone = TimeZoneInfo.FindSystemTimeZoneById("Turkey Standard Time");
-            var turkeyTime = TimeZoneInfo.ConvertTime(DateTime.UtcNow, turkeyTimeZone);
-
             DomainUser user = new()
             { 
                 Email = request.Email,
@@ -44,7 +41,7 @@ namespace EatwellApi.Application.Features.Commands.User.Register
                 Password = BCrypt.Net.BCrypt.HashPassword(request.Password),
                 Verification = false,
                 VerificationCode = RandomNumberGenerator.GetInt32(10000, 99999).ToString(),
-                VerificationCodeDuration = turkeyTime.AddMinutes(VerificationConstants.CodeDurationMinutes),
+                VerificationCodeDuration = DateTime.UtcNow.ToTurkeyTime().AddMinutes(VerificationConstants.CodeDurationMinutes),
                 OperationClaimId = (int)OperationClaimEnum.User
             };
 

@@ -3,7 +3,6 @@ using EatwellApi.Application.Abstractions.Services.Reservation;
 using EatwellApi.Application.Abstractions.Services.User;
 using EatwellApi.Application.Dtos.Dashboard;
 using EatwellApi.Application.Wrappers;
-using EatwellApi.Domain.Enums.OperationClaim;
 using MediatR;
 
 namespace EatwellApi.Application.Features.Queries.Dashboard.Get
@@ -26,7 +25,7 @@ namespace EatwellApi.Application.Features.Queries.Dashboard.Get
         public async Task<DataResponse<DashboardStatisticsDto>> Handle(GetStatisticsQueryRequest request, CancellationToken cancellationToken)
             => new(new()
             {
-                UserCount = await _userService.CountUsersByClaimAsync(OperationClaimEnum.User),
+                UserCount = await _userService.CountUsersByClaimAsync(),
                 ReservationCount = await _reservationService.CountReservationsAsync(),
                 EmployeeCount = await _employeeService.CountEmployeesAsync(),
             });

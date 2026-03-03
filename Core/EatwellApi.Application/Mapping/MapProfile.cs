@@ -16,10 +16,10 @@ using EatwellApi.Application.Dtos.Reservation;
 using EatwellApi.Application.Dtos.ShiftDay;
 using EatwellApi.Application.Dtos.Table;
 using EatwellApi.Application.Dtos.User;
+using EatwellApi.Application.Extensions;
 using EatwellApi.Domain.Entities;
 using EatwellApi.Domain.Enums.Employee;
 using EatwellApi.Domain.Enums.Permission;
-using EatwellApi.Domain.Extensions;
 
 namespace EatwellApi.Application.Mapping
 {

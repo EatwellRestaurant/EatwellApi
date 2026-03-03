@@ -13,7 +13,7 @@ namespace EatwellApi.Api.Controllers
 
 
         [HttpGet]
-        public async Task<IActionResult> GetProductsBySelectionStatusAsync([FromQuery] GetBySelectionStatusQueryRequest statusQueryRequest)
+        public async Task<IActionResult> GetProductsBySelectionStatus([FromQuery] GetBySelectionStatusQueryRequest statusQueryRequest)
             => Ok(await _mediator.Send(statusQueryRequest));
     }
 }

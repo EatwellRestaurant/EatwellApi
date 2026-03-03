@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.Reflection;
 
-namespace EatwellApi.Domain.Extensions
+namespace EatwellApi.Application.Extensions
 {
     public static class EnumExtensions
     {

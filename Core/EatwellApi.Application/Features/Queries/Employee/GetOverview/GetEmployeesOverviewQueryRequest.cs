@@ -5,10 +5,10 @@ using EatwellApi.Application.Wrappers;
 using EatwellApi.Domain.Enums.OperationClaim;
 using MediatR;
 
-namespace EatwellApi.Application.Features.Queries.User.GetOverview
+namespace EatwellApi.Application.Features.Queries.Employee.GetOverview
 {
     [Secured(OperationClaimEnum.Admin)]
-    public class GetUsersOverviewQueryRequest : PaginationRequest, IRequest<DataResponse<UsersOverviewDto>>, ICacheableQuery
+    public class GetEmployeesOverviewQueryRequest : PaginationRequest, IRequest<DataResponse<EmployeesOverviewDto>>, ICacheableQuery
     {
     }
 }

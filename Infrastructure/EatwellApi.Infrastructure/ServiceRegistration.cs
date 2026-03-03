@@ -1,7 +1,9 @@
 ﻿using EatwellApi.Application.Abstractions.Cache;
 using EatwellApi.Application.Abstractions.Security;
+using EatwellApi.Application.Abstractions.Services;
 using EatwellApi.Application.Abstractions.Services.EmailService;
 using EatwellApi.Application.Utilities.IoC;
+using EatwellApi.Infrastructure.Services;
 using EatwellApi.Infrastructure.Services.Cache.RedisCache;
 using EatwellApi.Infrastructure.Services.EmailService.Sendinblue;
 using EatwellApi.Infrastructure.Services.Security.Jwt;
@@ -64,6 +66,7 @@ namespace EatwellApi.Infrastructure
                 return ConnectionMultiplexer.Connect(options);
             });
 
+            services.AddScoped<ICurrentUserService, CurrentUserService>();
             services.AddScoped<IEmailService, SendinblueService>();
             services.AddScoped<ITokenHelper, JwtHelper>();
             services.AddSingleton<ICacheService, RedisCacheService>();
