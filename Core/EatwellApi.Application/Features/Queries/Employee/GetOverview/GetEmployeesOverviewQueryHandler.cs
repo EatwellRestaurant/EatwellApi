@@ -6,14 +6,10 @@ using MediatR;
 
 namespace EatwellApi.Application.Features.Queries.Employee.GetOverview
 {
-    public class GetEmployeesOverviewQueryHandler : IRequestHandler<GetEmployeesOverviewQueryRequest, DataResponse<EmployeesOverviewDto>>
+    public class GetEmployeesOverviewQueryHandler(IEmployeeService employeeService) 
+        : IRequestHandler<GetEmployeesOverviewQueryRequest, DataResponse<EmployeesOverviewDto>>
     {
-        readonly IEmployeeService _employeeService;
-
-        public GetEmployeesOverviewQueryHandler(IEmployeeService employeeService)
-        {
-            _employeeService = employeeService;
-        }
+        readonly IEmployeeService _employeeService = employeeService;
 
 
 
@@ -26,7 +22,6 @@ namespace EatwellApi.Application.Features.Queries.Employee.GetOverview
                 Waiters = await _employeeService.CountEmployeesAsync(OperationClaimEnum.Waiter),
                 Employees = await _employeeService.GetPagedEmployeesAsync(request)
             },
-                CommonMessages.StatisticsFetch);
-
+                CommonMessages.StatisticsFetched);
     }
 }

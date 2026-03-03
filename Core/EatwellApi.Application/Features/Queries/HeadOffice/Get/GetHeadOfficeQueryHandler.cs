@@ -24,7 +24,7 @@ namespace EatwellApi.Application.Features.Queries.HeadOffice.Get
                 _mapper.Map<HeadOfficeDto>
                 (await _readRepository
                 .GetAsNoTrackingAsync(h => h.Id == 1)),
-                CommonMessages.EntityFetch);
+                CommonMessages.EntityFetched);
         
     }
 }

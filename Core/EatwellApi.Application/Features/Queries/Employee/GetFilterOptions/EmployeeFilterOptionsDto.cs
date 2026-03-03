@@ -1,8 +1,9 @@
 ﻿using EatwellApi.Application.Dtos.Branch;
+using EatwellApi.Application.Dtos.Employee;
 using EatwellApi.Application.Dtos.OperationClaim;
 using EatwellApi.Domain.Entities.Abstract;
 
-namespace EatwellApi.Application.Dtos.Employee
+namespace EatwellApi.Application.Features.Queries.Employee.GetFilterOptions
 {
     public class EmployeeFilterOptionsDto : IDto
     {

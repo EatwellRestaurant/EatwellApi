@@ -12,8 +12,11 @@
 
         public const string EntityListed = "Veriler başarılı bir şekilde listelendi.";
 
-        public const string EntityFetch = "Veri başarılı bir şekilde getirildi.";
+        public const string EntityFetched = "Veri başarılı bir şekilde getirildi.";
 
-        public const string StatisticsFetch = "İstatistikler başarılı bir şekilde getirildi.";
-    }
+        public const string StatisticsFetched = "İstatistikler başarılı bir şekilde getirildi.";
+         
+        public const string FilterOptionsFetched = "Filtreleme seçenekleri başarılı bir şekilde getirildi.";
+    } 
 }
+ 
