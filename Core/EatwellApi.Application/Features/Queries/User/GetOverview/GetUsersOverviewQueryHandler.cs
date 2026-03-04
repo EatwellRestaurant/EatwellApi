@@ -1,4 +1,5 @@
 ﻿using EatwellApi.Application.Abstractions.Repositories;
+using EatwellApi.Application.Constants.Messages;
 using EatwellApi.Application.Dtos.User;
 using EatwellApi.Application.Extensions;
 using EatwellApi.Application.Wrappers;
@@ -9,14 +10,9 @@ using DomainUser = EatwellApi.Domain.Entities.User;
 
 namespace EatwellApi.Application.Features.Queries.User.GetOverview
 {
-    public class GetUsersOverviewQueryHandler : IRequestHandler<GetUsersOverviewQueryRequest, DataResponse<UsersOverviewDto>>
+    public class GetUsersOverviewQueryHandler(IUserReadRepository readRepository) : IRequestHandler<GetUsersOverviewQueryRequest, DataResponse<UsersOverviewDto>>
     {
-        readonly IUserReadRepository _readRepository;
-
-        public GetUsersOverviewQueryHandler(IUserReadRepository readRepository)
-        {
-            _readRepository = readRepository;
-        }
+        readonly IUserReadRepository _readRepository = readRepository;
 
 
 
@@ -48,6 +44,7 @@ namespace EatwellApi.Application.Features.Queries.User.GetOverview
 
 
             List<UserListDto> users = await query
+                .OrderByDescending(u => u.CreateDate)
                 .ApplyPagination(request)
                 .Select(u => new UserListDto
                 {
@@ -58,7 +55,7 @@ namespace EatwellApi.Application.Features.Queries.User.GetOverview
                     Verification = u.Verification,
                     CreateDate = u.CreateDate
                 })
-                .ToListAsync();
+                .ToListAsync(cancellationToken);
 
 
             return new(new()
@@ -74,7 +71,8 @@ namespace EatwellApi.Application.Features.Queries.User.GetOverview
                     ChurnedUsersCount = statistics.ChurnedUsersCount 
                 },
                 Users = new(users, request, statistics.TotalUsers)
-            });
+            },
+            CommonMessages.StatisticsFetched);
         }
     }
 }

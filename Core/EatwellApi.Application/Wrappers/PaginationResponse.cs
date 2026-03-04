@@ -5,20 +5,24 @@ namespace EatwellApi.Application.Wrappers
 {
     public record PaginationResponse<T> : Response
     {
-        public List<T> Data { get; }
+        public List<T> Data { get; init; } = new();
 
-        public int PageNumber { get; set; }
+        public int PageNumber { get; init; }
 
-        public int PageSize { get; set; }
+        public int PageSize { get; init; }
 
-        public int TotalPages { get; }
+        public int TotalPages { get; init; }
 
-        public int TotalItems { get; }
+        public int TotalItems { get; init; }
 
         public bool HasPrevious => PageNumber > 1;
 
         public bool HasNext => PageNumber < TotalPages;
 
+
+        // Cacheleme işleminde JSON Deserialize sırasında parametresiz constructor'a ihtiyaç duyuluyor.
+        // Bunun için parametresiz constructor ekliyoruz.
+        public PaginationResponse() { }
 
 
         public PaginationResponse(List<T> data, PaginationRequest paginationRequest, int totalItems)

@@ -2,12 +2,14 @@
 using EatwellApi.Application.Abstractions.Repositories.Branch;
 using EatwellApi.Application.Abstractions.Repositories.Employee;
 using EatwellApi.Application.Abstractions.Repositories.HeadOffice;
+using EatwellApi.Application.Abstractions.Repositories.MealCategory;
 using EatwellApi.Application.Abstractions.Repositories.OperationClaim;
 using EatwellApi.Application.Abstractions.Repositories.PageContent;
 using EatwellApi.Application.Abstractions.Repositories.Product;
 using EatwellApi.Application.Abstractions.Repositories.Reservation;
 using EatwellApi.Application.Abstractions.Services.Branch;
 using EatwellApi.Application.Abstractions.Services.Employee;
+using EatwellApi.Application.Abstractions.Services.MealCategory;
 using EatwellApi.Application.Abstractions.Services.OperationClaim;
 using EatwellApi.Application.Abstractions.Services.Reservation;
 using EatwellApi.Application.Abstractions.Services.User;
@@ -16,6 +18,7 @@ using EatwellApi.Persistence.Repositories;
 using EatwellApi.Persistence.Repositories.Branch;
 using EatwellApi.Persistence.Repositories.Employee;
 using EatwellApi.Persistence.Repositories.HeadOffice;
+using EatwellApi.Persistence.Repositories.MealCategory;
 using EatwellApi.Persistence.Repositories.OperationClaim;
 using EatwellApi.Persistence.Repositories.PageContent;
 using EatwellApi.Persistence.Repositories.Product;
@@ -23,6 +26,7 @@ using EatwellApi.Persistence.Repositories.Reservation;
 using EatwellApi.Persistence.Repositories.User;
 using EatwellApi.Persistence.Services.Branch;
 using EatwellApi.Persistence.Services.Employee;
+using EatwellApi.Persistence.Services.MealCategory;
 using EatwellApi.Persistence.Services.OperationClaim;
 using EatwellApi.Persistence.Services.Reservation;
 using EatwellApi.Persistence.Services.User;
@@ -67,6 +71,9 @@ namespace EatwellApi.Persistence
 
             services.AddScoped<IBranchService, BranchManager>();
             services.AddScoped<IBranchReadRepository, BranchReadRepository>();
+
+            services.AddScoped<IMealCategoryService, MealCategoryManager>();
+            services.AddScoped<IMealCategoryReadRepository, MealCategoryReadRepository>();
 
             services.AddScoped<IOperationClaimService, OperationClaimManager>();
             services.AddScoped<IOperationClaimReadRepository, OperationClaimReadRepository>();

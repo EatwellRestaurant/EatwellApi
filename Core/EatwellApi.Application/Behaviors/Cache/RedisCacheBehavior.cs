@@ -1,4 +1,5 @@
 ﻿using EatwellApi.Application.Abstractions.Cache;
+using EatwellApi.Application.Parameters;
 using EatwellApi.Application.Wrappers;
 using MediatR;
 
@@ -20,6 +21,10 @@ namespace EatwellApi.Application.Behaviors.Cache
             if (request is ICacheableQuery cacheableQuery)
             {
                 string cacheKey = typeof(TRequest).Name;
+
+                if (request is PaginationRequest paginationRequest)
+                    cacheKey += $"_{paginationRequest.PageNumber}_{paginationRequest.PageSize}";
+
 
                 TResponse? cachedData = await _cacheService
                     .GetAsync<TResponse>(cacheKey);
