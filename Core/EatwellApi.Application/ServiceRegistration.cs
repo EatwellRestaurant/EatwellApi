@@ -17,8 +17,12 @@ namespace EatwellApi.Application
                 cfg.RegisterServicesFromAssembly(typeof(ServiceRegistration).Assembly);
             });
 
-            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
+
+            // Pipeline sıralamasının bu şekilde olması gerekiyor. Öncelikle yetkilendirme,
+            // ardından doğrulama ve son olarak önbellekleme işlemi gerçekleştirilir.
+
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(AuthorizationBehavior<,>));
+            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(RedisCacheBehavior<,>));
         }
     }

@@ -1,6 +1,6 @@
 ﻿namespace EatwellApi.Application.Dtos.Branch
 {
-    public class NonSalesBranchDto : BaseBranchDto
+    public class NonSalesBranchDto : BranchLookupDto
     {
     }
 }

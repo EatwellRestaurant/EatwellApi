@@ -11,7 +11,7 @@ namespace EatwellApi.Application.Features.Queries.Employee.GetFilterOptions
 
         public List<OperationClaimListDto> OperationClaimListDtos { get; set; }
 
-        public List<BaseBranchDto> BranchDtos { get; set; }
+        public List<BranchLookupDto> BranchDtos { get; set; }
 
     }
 }

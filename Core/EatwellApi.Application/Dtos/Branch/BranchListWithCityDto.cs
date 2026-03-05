@@ -1,6 +1,6 @@
 ﻿namespace EatwellApi.Application.Dtos.Branch
 {
-    public class BranchListWithCityDto : BranchDto
+    public class BranchListWithCityDto : BranchListDto
     {
         public int CityId { get; set; }
 

@@ -2,6 +2,7 @@
 using EatwellApi.Application.Abstractions.Services.City;
 using EatwellApi.Application.Constants.Messages;
 using EatwellApi.Application.Dtos.City;
+using EatwellApi.Application.Extensions;
 using EatwellApi.Application.Parameters;
 using EatwellApi.Application.Wrappers;
 using Microsoft.EntityFrameworkCore;
@@ -34,6 +35,7 @@ namespace EatwellApi.Persistence.Services.City
 
 
             return new(await query
+                .ApplyPagination(request)
                 .Select(c => new CityListDto
                 {
                     Id = c.Id,

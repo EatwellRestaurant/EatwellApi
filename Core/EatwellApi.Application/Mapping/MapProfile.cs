@@ -73,7 +73,7 @@ namespace EatwellApi.Application.Mapping
 
             #region Branch
 
-            CreateMap<Branch, BranchDto>();
+            CreateMap<Branch, BranchListDto>();
 
 
             CreateMap<Branch, BranchListDto>();

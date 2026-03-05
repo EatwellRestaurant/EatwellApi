@@ -2,7 +2,7 @@
 
 namespace EatwellApi.Application.Dtos.Branch
 {
-    public class PendingBranchDto : BaseBranchDto
+    public class PendingBranchDto : BranchLookupDto
     {
         public BranchStatusEnum Status { get; set; }
 
