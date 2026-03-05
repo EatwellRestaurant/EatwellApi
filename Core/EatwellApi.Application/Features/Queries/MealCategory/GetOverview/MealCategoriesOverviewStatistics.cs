@@ -1,4 +1,4 @@
-﻿namespace EatwellApi.Application.Features.Queries.MealCategories.GetOverview
+﻿namespace EatwellApi.Application.Features.Queries.MealCategory.GetOverview
 {
     public sealed record MealCategoriesOverviewStatistics(
         int TotalMealCategories,

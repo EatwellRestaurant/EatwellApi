@@ -1,4 +1,4 @@
-﻿using EatwellApi.Application.Features.Queries.MealCategories.GetOverview;
+﻿using EatwellApi.Application.Features.Queries.MealCategory.GetOverview;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 

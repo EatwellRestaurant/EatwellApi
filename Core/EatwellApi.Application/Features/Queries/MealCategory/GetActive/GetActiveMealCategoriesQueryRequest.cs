@@ -4,7 +4,7 @@ using EatwellApi.Application.Parameters;
 using EatwellApi.Application.Wrappers;
 using MediatR;
 
-namespace EatwellApi.Application.Features.Queries.MealCategories.GetActive
+namespace EatwellApi.Application.Features.Queries.MealCategory.GetActive
 {
     public class GetActiveMealCategoriesQueryRequest : PaginationRequest, IRequest<PaginationResponse<MealCategoryLookupDto>>, ICacheableQuery
     {

@@ -1,6 +1,6 @@
-﻿using EatwellApi.Application.Features.Queries.MealCategories.GetActive;
-using EatwellApi.Application.Features.Queries.MealCategories.GetAll;
-using EatwellApi.Application.Features.Queries.MealCategories.GetLookup;
+﻿using EatwellApi.Application.Features.Queries.MealCategory.GetActive;
+using EatwellApi.Application.Features.Queries.MealCategory.GetAll;
+using EatwellApi.Application.Features.Queries.MealCategory.GetLookup;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 

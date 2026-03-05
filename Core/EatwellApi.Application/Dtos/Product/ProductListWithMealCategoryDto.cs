@@ -1,6 +1,6 @@
 ﻿namespace EatwellApi.Application.Dtos.Product
 {
-    public class ProductListWithMealCategoryDto : ProductAdminListDto
+    public class ProductListWithMealCategoryDto : ProductListDto
     {
         public int MealCategoryId { get; set; }
 

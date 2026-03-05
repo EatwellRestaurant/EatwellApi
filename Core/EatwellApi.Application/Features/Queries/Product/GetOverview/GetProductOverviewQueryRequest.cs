@@ -1,14 +1,14 @@
 ﻿using EatwellApi.Application.Abstractions.Cache;
 using EatwellApi.Application.Behaviors.Authorization;
-using EatwellApi.Application.Dtos.MealCategory;
+using EatwellApi.Application.Parameters;
 using EatwellApi.Application.Wrappers;
 using EatwellApi.Domain.Enums.OperationClaim;
 using MediatR;
 
-namespace EatwellApi.Application.Features.Queries.MealCategories.GetLookup
+namespace EatwellApi.Application.Features.Queries.Product.GetOverview
 {
     [Secured(OperationClaimEnum.Admin)]
-    public class GetLookupMealCategoryQueryRequest : IRequest<DataResponse<List<MealCategoryLookupDto>>>, ICacheableQuery
+    public class GetProductOverviewQueryRequest : PaginationRequest, IRequest<DataResponse<ProductsOverviewDto>>, ICacheableQuery
     {
     }
 }

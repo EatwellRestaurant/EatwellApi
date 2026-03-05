@@ -2,7 +2,7 @@
 using EatwellApi.Application.Wrappers;
 using EatwellApi.Domain.Entities.Abstract;
 
-namespace EatwellApi.Application.Features.Queries.MealCategories.GetOverview
+namespace EatwellApi.Application.Features.Queries.MealCategory.GetOverview
 {
     public class MealCategoriesOverviewDto : IDto
     {
@@ -17,4 +17,3 @@ namespace EatwellApi.Application.Features.Queries.MealCategories.GetOverview
         public PaginationResponse<MealCategoryListDto> MealCategories { get; set; }
     }
 }
- 

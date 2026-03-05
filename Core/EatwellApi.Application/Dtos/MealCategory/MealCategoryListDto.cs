@@ -1,6 +1,6 @@
 ﻿namespace EatwellApi.Application.Dtos.MealCategory
 {
-    public class MealCategoryListDto : EntityAdminDto
+    public class MealCategoryListDto : AuditableDto
     {
         public string Name { get; set; }
 

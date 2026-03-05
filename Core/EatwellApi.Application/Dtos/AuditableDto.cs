@@ -2,7 +2,7 @@
 
 namespace EatwellApi.Application.Dtos
 {
-    public class EntityAdminDto : IDto
+    public class AuditableDto : IDto
     {
         public int Id { get; set; }
 

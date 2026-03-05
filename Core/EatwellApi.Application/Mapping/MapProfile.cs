@@ -61,13 +61,10 @@ namespace EatwellApi.Application.Mapping
 
             #region City
 
-            CreateMap<City, CityDto>();
+            CreateMap<City, CityLookupDto>();
 
 
-            CreateMap<City, CityWithBranchesDto>();
-
-
-            CreateMap<City, CityWithBranchCountDto>()
+            CreateMap<City, CityListDto>()
                 .ForMember(dest => dest.BranchCount, opt => opt.MapFrom(src => src.Branches.Count));
 
             #endregion
@@ -142,7 +139,7 @@ namespace EatwellApi.Application.Mapping
 
             #region Product
 
-            CreateMap<Product, ProductAdminListDto>();
+            CreateMap<Product, ProductListDto>();
 
 
             CreateMap<Product, ProductListWithMealCategoryDto>()

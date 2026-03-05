@@ -3,7 +3,7 @@ using EatwellApi.Application.Dtos.MealCategory;
 using EatwellApi.Application.Wrappers;
 using MediatR;
 
-namespace EatwellApi.Application.Features.Queries.MealCategories.GetLookup
+namespace EatwellApi.Application.Features.Queries.MealCategory.GetLookup
 {
     public class GetLookupMealCategoryQueryHandler(IMealCategoryService mealCategoryService) : IRequestHandler<GetLookupMealCategoryQueryRequest, DataResponse<List<MealCategoryLookupDto>>>
     {

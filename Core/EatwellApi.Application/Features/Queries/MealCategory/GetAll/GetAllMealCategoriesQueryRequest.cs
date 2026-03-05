@@ -6,7 +6,7 @@ using EatwellApi.Application.Wrappers;
 using EatwellApi.Domain.Enums.OperationClaim;
 using MediatR;
 
-namespace EatwellApi.Application.Features.Queries.MealCategories.GetAll
+namespace EatwellApi.Application.Features.Queries.MealCategory.GetAll
 {
     [Secured(OperationClaimEnum.Admin)]
     public class GetAllMealCategoriesQueryRequest : PaginationRequest, IRequest<PaginationResponse<MealCategoryListDto>>, ICacheableQuery

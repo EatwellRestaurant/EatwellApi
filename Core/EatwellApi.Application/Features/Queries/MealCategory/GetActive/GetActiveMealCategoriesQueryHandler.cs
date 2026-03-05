@@ -3,7 +3,7 @@ using EatwellApi.Application.Dtos.MealCategory;
 using EatwellApi.Application.Wrappers;
 using MediatR;
 
-namespace EatwellApi.Application.Features.Queries.MealCategories.GetActive
+namespace EatwellApi.Application.Features.Queries.MealCategory.GetActive
 {
     public class GetActiveMealCategoriesQueryHandler(IMealCategoryService mealCategoryService) : IRequestHandler<GetActiveMealCategoriesQueryRequest, PaginationResponse<MealCategoryLookupDto>>
     {

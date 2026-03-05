@@ -1,6 +1,6 @@
 ﻿namespace EatwellApi.Application.Dtos.City
 {
-    public class CityWithBranchCountDto : CityDto
+    public class CityListDto : CityLookupDto
     {
         public int BranchCount { get; set; }
     }

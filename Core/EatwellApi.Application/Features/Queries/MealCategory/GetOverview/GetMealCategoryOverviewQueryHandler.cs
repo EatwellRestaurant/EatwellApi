@@ -7,7 +7,7 @@ using MediatR;
 using Microsoft.EntityFrameworkCore;
 using DomainMealCategory = EatwellApi.Domain.Entities.MealCategory;
 
-namespace EatwellApi.Application.Features.Queries.MealCategories.GetOverview
+namespace EatwellApi.Application.Features.Queries.MealCategory.GetOverview
 {
     public class GetMealCategoryOverviewQueryHandler(IMealCategoryReadRepository readRepository) : IRequestHandler<GetMealCategoryOverviewQueryRequest, DataResponse<MealCategoriesOverviewDto>>
     {
