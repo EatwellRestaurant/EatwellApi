@@ -1,6 +1,7 @@
 ﻿using EatwellApi.Application.Abstractions.Services.Employee;
 using EatwellApi.Application.Abstractions.Services.Reservation;
 using EatwellApi.Application.Abstractions.Services.User;
+using EatwellApi.Application.Constants.Messages;
 using EatwellApi.Application.Dtos.Dashboard;
 using EatwellApi.Application.Wrappers;
 using MediatR;
@@ -28,6 +29,7 @@ namespace EatwellApi.Application.Features.Queries.Dashboard.Get
                 UserCount = await _userService.CountUsersByClaimAsync(),
                 ReservationCount = await _reservationService.CountReservationsAsync(),
                 EmployeeCount = await _employeeService.CountEmployeesAsync(),
-            });
+            },
+                CommonMessages.StatisticsFetched);
     }
 }

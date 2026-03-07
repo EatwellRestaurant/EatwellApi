@@ -2,6 +2,7 @@
 using EatwellApi.Application.Behaviors.Cache;
 using EatwellApi.Application.Behaviors.Validation;
 using EatwellApi.Application.Mapping;
+using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -12,6 +13,7 @@ namespace EatwellApi.Application
         public static void AddApplicationServices(this IServiceCollection services)
         {
             services.AddAutoMapper(typeof(MapProfile).Assembly);
+            services.AddValidatorsFromAssembly(typeof(ServiceRegistration).Assembly);
             services.AddMediatR(cfg =>
             {
                 cfg.RegisterServicesFromAssembly(typeof(ServiceRegistration).Assembly);

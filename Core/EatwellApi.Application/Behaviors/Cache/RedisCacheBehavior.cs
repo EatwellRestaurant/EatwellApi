@@ -1,6 +1,5 @@
 ﻿using EatwellApi.Application.Abstractions.Cache;
 using EatwellApi.Application.Constants.Cache;
-using EatwellApi.Application.Parameters;
 using EatwellApi.Application.Wrappers;
 using MediatR;
 using System.Reflection;
@@ -20,12 +19,9 @@ namespace EatwellApi.Application.Behaviors.Cache
         public async Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
         {
             // Sadece query’leri cacheliyoruz.
-            if (request is ICacheableQuery)
+            if (request is ICacheableQuery cacheableQuery)
             {
-                string cacheKey = typeof(TRequest).Name;
-
-                if (request is PaginationRequest paginationRequest)
-                    cacheKey += $"_{paginationRequest.PageNumber}_{paginationRequest.PageSize}";
+                string cacheKey = cacheableQuery.GetCacheKey();
 
 
                 TResponse? cachedData = await _cacheService
