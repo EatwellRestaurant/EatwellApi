@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using EatwellApi.Application.Abstractions.Repositories.PageContent;
+using EatwellApi.Application.Constants.Messages;
 using EatwellApi.Application.Dtos.PageContent;
 using EatwellApi.Application.Wrappers;
 using EatwellApi.Domain.Exceptions.General;
@@ -31,7 +32,8 @@ namespace EatwellApi.Application.Features.Queries.PageContent.GetByPage
 
 
             return new DataResponse<List<PageContentListDto>>
-                (_mapper.Map<List<PageContentListDto>>(pageContents));
+                (_mapper.Map<List<PageContentListDto>>(pageContents),
+                CommonMessages.EntityFetched);
         }
     }
 }

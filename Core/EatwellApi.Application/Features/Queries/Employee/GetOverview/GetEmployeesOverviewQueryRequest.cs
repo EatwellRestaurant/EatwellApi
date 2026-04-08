@@ -10,5 +10,6 @@ namespace EatwellApi.Application.Features.Queries.Employee.GetOverview
     [Secured(OperationClaimEnum.Admin)]
     public class GetEmployeesOverviewQueryRequest : PaginationRequest, IRequest<DataResponse<EmployeesOverviewDto>>, ICacheableQuery
     {
+        string ICacheableQuery.CacheKey => $"employees:overview:page:{PageNumber}:size:{PageSize}";
     }
 }

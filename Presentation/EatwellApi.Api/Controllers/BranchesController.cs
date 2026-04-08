@@ -13,7 +13,7 @@ namespace EatwellApi.Api.Controllers
 
 
         [HttpGet("all")]
-        public async Task<IActionResult> GetAll([FromQuery] GetAllBranchQueryRequest request)
+        public async Task<IActionResult> GetAll([FromQuery] GetAllBranchesQueryRequest request)
             => Ok(await _mediator.Send(request));
     }
 }

@@ -9,5 +9,6 @@ namespace EatwellApi.Application.Features.Queries.Product.GetBySelection
     {
         public bool IsSelected { get; set; }
 
+        string ICacheableQuery.CacheKey => $"products:selected:{IsSelected.ToString().ToLower()}";
     }
 }

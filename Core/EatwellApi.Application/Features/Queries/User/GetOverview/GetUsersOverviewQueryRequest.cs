@@ -10,5 +10,6 @@ namespace EatwellApi.Application.Features.Queries.User.GetOverview
     [Secured(OperationClaimEnum.Admin)]
     public class GetUsersOverviewQueryRequest : PaginationRequest, IRequest<DataResponse<UsersOverviewDto>>, ICacheableQuery
     {
+        string ICacheableQuery.CacheKey => $"users:overview:page:{PageNumber}:size:{PageSize}";
     }
 }

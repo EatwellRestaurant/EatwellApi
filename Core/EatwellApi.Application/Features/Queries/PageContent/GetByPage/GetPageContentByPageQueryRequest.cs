@@ -14,5 +14,7 @@ namespace EatwellApi.Application.Features.Queries.PageContent.GetByPage
         {
             PageEnum = page;
         }
+
+        string ICacheableQuery.CacheKey => $"page-contents:{PageEnum}";
     }
 }

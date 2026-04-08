@@ -12,8 +12,6 @@ namespace EatwellApi.Application.Features.Queries.Reservation.GetOverview
     {
         public int BranchId { get; set; }
 
-
-        public string GetCacheKey()
-            => $"{GetType().Name}:Branch_{BranchId}:Page_{PageNumber}_{PageSize}";
+        string ICacheableQuery.CacheKey => $"reservations:branch:{BranchId}:overview:page:{PageNumber}:size:{PageSize}";
     }
 }

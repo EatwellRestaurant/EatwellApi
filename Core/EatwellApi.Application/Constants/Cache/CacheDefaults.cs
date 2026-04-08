@@ -2,6 +2,6 @@
 {
     public static class CacheDefaults
     {
-        public static readonly int DefaultDuration = 30;
+        public static readonly int DefaultDuration = 60;
     }
 }

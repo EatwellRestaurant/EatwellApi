@@ -9,5 +9,6 @@ namespace EatwellApi.Application.Features.Queries.Employee.GetFilterOptions
     [Secured(OperationClaimEnum.Admin)]
     public class GetEmployeeFilterOptionsQueryRequest : IRequest<DataResponse<EmployeeFilterOptionsDto>>, ICacheableQuery
     {
+        string ICacheableQuery.CacheKey => "employees:filter-options";
     }
 }

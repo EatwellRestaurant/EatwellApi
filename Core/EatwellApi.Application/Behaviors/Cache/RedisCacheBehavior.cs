@@ -1,8 +1,6 @@
 ﻿using EatwellApi.Application.Abstractions.Cache;
-using EatwellApi.Application.Constants.Cache;
 using EatwellApi.Application.Wrappers;
 using MediatR;
-using System.Reflection;
 
 namespace EatwellApi.Application.Behaviors.Cache
 {
@@ -21,7 +19,7 @@ namespace EatwellApi.Application.Behaviors.Cache
             // Sadece query’leri cacheliyoruz.
             if (request is ICacheableQuery cacheableQuery)
             {
-                string cacheKey = cacheableQuery.GetCacheKey();
+                string cacheKey = cacheableQuery.CacheKey;
 
 
                 TResponse? cachedData = await _cacheService
@@ -34,18 +32,12 @@ namespace EatwellApi.Application.Behaviors.Cache
                 TResponse? response = await next();
 
 
-                // Request sınıfındaki [Cache] attribute'larını buluyoruz.
-                var cacheAttributes = request.GetType()
-                    .GetCustomAttributes<CacheAttribute>()
-                    .FirstOrDefault();
-
-
                 if (response != null)
                     await _cacheService
                         .SetAsync(
                             cacheKey,
                             response,
-                            TimeSpan.FromMinutes(cacheAttributes?.Duration ?? CacheDefaults.DefaultDuration)
+                            TimeSpan.FromMinutes(cacheableQuery.CacheDuration)
                         );
 
 

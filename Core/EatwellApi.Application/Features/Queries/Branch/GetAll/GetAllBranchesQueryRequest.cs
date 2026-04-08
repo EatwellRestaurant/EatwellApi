@@ -6,7 +6,8 @@ using MediatR;
 
 namespace EatwellApi.Application.Features.Queries.Branch.GetAll
 {
-    public class GetAllBranchQueryRequest : PaginationRequest, IRequest<PaginationResponse<BranchListWithCityDto>>, ICacheableQuery
+    public class GetAllBranchesQueryRequest : PaginationRequest, IRequest<PaginationResponse<BranchListWithCityDto>>, ICacheableQuery
     {
+        string ICacheableQuery.CacheKey => $"branches:page:{PageNumber}:size:{PageSize}";
     }
 }

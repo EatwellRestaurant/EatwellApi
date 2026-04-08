@@ -10,5 +10,6 @@ namespace EatwellApi.Application.Features.Queries.MealCategory.GetOverview
     [Secured(OperationClaimEnum.Admin)]
     public class GetMealCategoryOverviewQueryRequest : PaginationRequest, IRequest<DataResponse<MealCategoriesOverviewDto>>, ICacheableQuery
     {
+        string ICacheableQuery.CacheKey => $"meal-categories:overview:page:{PageNumber}:size:{PageSize}";
     }
 }

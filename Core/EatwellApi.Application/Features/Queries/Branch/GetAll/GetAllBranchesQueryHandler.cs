@@ -5,13 +5,13 @@ using MediatR;
 
 namespace EatwellApi.Application.Features.Queries.Branch.GetAll
 {
-    public class GetAllBranchQueryHandler(IBranchService branchService) : IRequestHandler<GetAllBranchQueryRequest, PaginationResponse<BranchListWithCityDto>>
+    public class GetAllBranchesQueryHandler(IBranchService branchService) : IRequestHandler<GetAllBranchesQueryRequest, PaginationResponse<BranchListWithCityDto>>
     {
         readonly IBranchService _branchService = branchService;
 
 
 
-        public Task<PaginationResponse<BranchListWithCityDto>> Handle(GetAllBranchQueryRequest request, CancellationToken cancellationToken)
+        public Task<PaginationResponse<BranchListWithCityDto>> Handle(GetAllBranchesQueryRequest request, CancellationToken cancellationToken)
             => _branchService.GetAllAsync(request);
     }
 }

@@ -1,19 +1,12 @@
-﻿using EatwellApi.Application.Parameters;
+﻿using EatwellApi.Application.Constants.Cache;
 
 namespace EatwellApi.Application.Abstractions.Cache
 {
     // Sadece cache'lenebilecek query’leri işaretliyoruz.
     public interface ICacheableQuery
     {
-        string GetCacheKey()
-        {
-            string key = GetType().Name;
+        string CacheKey { get; }
 
-            // Eğer sınıf PaginationRequest'ten türüyorsa, sayfalama bilgilerini de ekliyoruz
-            if (this is PaginationRequest paginationRequest)
-                key += $":Page_{paginationRequest.PageNumber}_{paginationRequest.PageSize}";
-
-            return key;
-        }
+        int CacheDuration => CacheDefaults.DefaultDuration;
     }
 }

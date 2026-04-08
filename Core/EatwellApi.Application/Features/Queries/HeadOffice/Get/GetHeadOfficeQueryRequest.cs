@@ -7,5 +7,6 @@ namespace EatwellApi.Application.Features.Queries.HeadOffice.Get
 {
     public class GetHeadOfficeQueryRequest : IRequest<DataResponse<HeadOfficeDto>>, ICacheableQuery
     {
+        string ICacheableQuery.CacheKey => "headoffice";
     }
 }
