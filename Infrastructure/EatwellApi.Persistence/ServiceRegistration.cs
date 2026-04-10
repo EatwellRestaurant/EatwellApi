@@ -13,6 +13,7 @@ using EatwellApi.Application.Abstractions.Services.City;
 using EatwellApi.Application.Abstractions.Services.Employee;
 using EatwellApi.Application.Abstractions.Services.MealCategory;
 using EatwellApi.Application.Abstractions.Services.OperationClaim;
+using EatwellApi.Application.Abstractions.Services.Product;
 using EatwellApi.Application.Abstractions.Services.Reservation;
 using EatwellApi.Application.Abstractions.Services.User;
 using EatwellApi.Persistence.Context;
@@ -32,6 +33,7 @@ using EatwellApi.Persistence.Services.City;
 using EatwellApi.Persistence.Services.Employee;
 using EatwellApi.Persistence.Services.MealCategory;
 using EatwellApi.Persistence.Services.OperationClaim;
+using EatwellApi.Persistence.Services.Product;
 using EatwellApi.Persistence.Services.Reservation;
 using EatwellApi.Persistence.Services.User;
 using Microsoft.EntityFrameworkCore;
@@ -54,6 +56,7 @@ namespace EatwellApi.Persistence
             services.AddScoped(typeof(IWriteRepository<>), typeof(WriteRepository<>));
             services.AddScoped<IUnitOfWork, UnitOfWork>();
 
+            services.AddScoped<IProductService, ProductManager>();
             services.AddScoped<IProductReadRepository, ProductReadRepository>();
 
             services.AddScoped<IPageContentReadRepository, PageContentReadRepository>();

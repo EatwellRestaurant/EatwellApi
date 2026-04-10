@@ -6,7 +6,11 @@ namespace EatwellApi.Domain.Entities
     {
         public string Name { get; set; }
 
-        public string ImagePath { get; set; }
+        public string IconPath { get; set; }
+
+        public string IconName { get; set; }
+         
+        public string ImagePath { get; set; } 
 
         public string ImageName { get; set; }
 
